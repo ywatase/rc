@@ -1,0 +1,103 @@
+#compdef cpan-uninstall perlsourcew perlpath perlversion perlmethod
+
+local curcontext="$curcontext" state line expl args ret=1
+typeset -A opt_args
+
+__perl_modules () {
+  local opts
+  zparseopts -D -a opts S: q
+
+  # Set a sensible default caching policy.  This has to be done inside
+  # this function otherwise we wouldn't know the context for the style.
+  local update_policy
+  zstyle -s ":completion:${curcontext}:" cache-policy update_policy
+  if [[ -z "$update_policy" ]]; then
+    zstyle ":completion:${curcontext}:" cache-policy \
+      __perl_modules_caching_policy
+  fi
+
+  local perl=${words[1]%doc} perl_modules
+  if whence $perl >/dev/null; then
+    perl_modules=_${${perl//[^[:alnum:]]/_}#_}_modules
+  elif (( ${+commands[perl]} )); then
+    perl_modules=_perl_modules
+  else
+    perl_modules=_unknown_perl_modules
+  fi
+  perl=perl
+
+  if ( [[ ${(P)+perl_modules} -eq 0 ]] || _cache_invalid $perl_modules ) &&
+     ! _retrieve_cache ${perl_modules#_};
+  then
+    if zstyle -t ":completion:${curcontext}:modules" try-to-use-pminst &&
+       (( ${+commands[pminst]} ));
+    then
+      set -A $perl_modules $(pminst)
+    else
+      local inc libdir new_pms
+
+      if [[ ${+perl} -eq 1 ]]; then
+        inc=( $( $perl -e 'print "@INC"' ) )
+      else
+        # If perl isn't there, one wonders why the user's trying to
+        # complete Perl modules.  Maybe her $path is wrong?
+        _message "didn't find perl on \$PATH; guessing @INC ..."
+
+        inc=( /usr/lib/perl5{,/{site_perl/,}<5->.([0-9]##)}(N) 
+              ${(s.:.)PERL5LIB} )
+      fi
+
+      typeset -agU $perl_modules  # $perl_modules is global, no duplicates
+      set -A $perl_modules
+
+      for libdir in $inc; do
+        # Ignore cwd - could be too expensive e.g. if we're near /
+        if [[ $libdir == '.' ]]; then continue; fi
+
+        # Find all modules
+        if [[ -d $libdir && -x $libdir ]]; then
+          new_pms=( $libdir/{[A-Z]*/***/,}*.pm~*blib* )
+          new_pms=( "${(@)new_pms##$libdir/##}" )
+        fi
+
+        # Convert to Perl nomenclature
+        new_pms=( ${new_pms:r:fs#/#::#} )
+
+        set -A $perl_modules $new_pms ${(P)perl_modules}
+      done
+    fi
+
+    _store_cache ${perl_modules#_} $perl_modules
+  fi
+
+  local expl
+
+  _wanted modules expl 'Perl modules' compadd "$opts[@]" -a $perl_modules
+}
+
+__perl_modules_caching_policy () {
+  local _perllocals
+
+  # rebuild if cache is more than a week old
+  oldp=( "$1"(mw+1) )
+  (( $#oldp )) && return 0
+
+  _perllocals=( /usr/lib/perl5/**/perllocal.pod )
+
+  if (( $#_perllocals )); then
+    for pod in $_perllocals; do
+      [[ "$pod" -nt "$1" ]] && return 0
+    done
+  fi
+
+  return 1
+}
+
+__perl_modules "$@"
+
+_alternative \
+  'modules:: __perl_modules' \
+   && ret=0
+
+return ret
+

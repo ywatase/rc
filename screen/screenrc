@@ -1,0 +1,45 @@
+source $HOME/.screen_setting
+escape ^z^z
+# must make symbolic link
+bind . source $HOME/.screen_setting
+
+###
+# Status Line
+###
+# case 1
+#hardstatus alwayslastline "[%02c]%`%-w%{=b bw}%n %t%{-}%+w"
+
+# case 2
+#caption always "%{= wk} %-w%{=bu dr}%n %t%{-}%+w %= %{=b wb}%y/%m/%d(%D) %{=b wb}%c"
+#defhstatus "[^En:^Et]"
+#hardstatus alwayslastline "$USER@$HOSTNAME %h"
+
+# case 3
+caption always "%{= wk} %-w%{=bu dg}%n %t%{-}%+w %= %{=b wb}%y/%m/%d(%D) %{=b wb}%c"
+defhstatus "[^En:^Et]"
+hardstatus alwayslastline "$USER@$HOSTNAME %h"
+
+#nethack on
+vbell off
+startup_message off
+
+# encoding
+bind  encoding utf8
+bind  encoding euc
+#C-z :encoding (utf8|euc|sjis)
+
+# keybind
+bind -c REGION s split
+bind -c REGION v split -v
+bind -c REGION o only
+bind -c REGION c remove
+bind -c REGION k focus up
+bind -c REGION j focus down
+bind -c REGION h focus up
+bind -c REGION l focus down
+bind -c REGION t focus top
+bind -c REGION b focus bottom
+bind -c REGION w focus
+bind ^w command -c REGION
+
+defscrollback 3000

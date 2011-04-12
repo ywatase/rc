@@ -1,0 +1,75 @@
+.code {
+	border-bottom    : 1px solid #777777;
+	border-left      : 5px solid #777777;
+	border-right     : 1px solid #777777;
+	border-top       : 1px solid #777777;
+	background       : #555555;
+	color            : #ffffff;
+	overflow-x       : auto;
+	white-space      : nowrap;
+	font-family      : monospace;
+}
+
+/* source code */
+.code>.Comment {
+	color: #aaaaaa;
+}
+.code>.Constant,
+.code>.String,
+.code>.Character,
+.code>.Number,
+.code>.Boolean,
+.code>.Float {
+	color: #aa7777;
+}
+.code>.Identifier,
+.code>.Function {
+	color: #77aa77;
+}
+.code>.Statement,
+.code>.Conditional,
+.code>.Repeat,
+.code>.Label,
+.code>.Operator,
+.code>.Keyword,
+.code>.Exception {
+	color: #77aaaa;
+}
+.code>.PreProc,
+.code>.Include,
+.code>.Define,
+.code>.Macro,
+.code>.PreCondit {
+	color: #aaffff;
+}
+.code>.Type,
+.code>.StorageClass,
+.code>.Structure,
+.code>.Typedef {
+	color: #aaaa55;
+}
+.code>.Special,
+.code>.SpecialChar,
+.code>.Tag,
+.code>.Delimiter,
+.code>.SpecialComment,
+.code>.Debug {
+	color: #777777;
+}
+.code>.Underlined {
+	color: #00ff00;
+	text-decoration: underline;
+}
+.code>.Ignore {
+	color: #777777;
+}
+.code>.Error {
+	color: #ff0000;
+}
+.code>.Todo {
+	color: #0000ff;
+}
+.code>.Folded {
+	color: #aaffff;
+	background-color: #aaaaaa;
+}

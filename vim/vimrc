@@ -1,0 +1,443 @@
+" vimrc for Y.Watase
+" Last Modified:  2011/04/12.
+
+
+""""""""""""""""""""""""""""""
+" gerenal
+"
+""""""""""""""""""""""""""""""
+set nocompatible          " We're running Vim, not Vi!
+ 
+""""""""""""""""""""""""""""""
+" keybind
+"
+""""""""""""""""""""""""""""""
+noremap! <C-h> <backspace>
+noremap! <C-d> <delete>
+" global 
+"nmap <C-n> :cn<CR>
+"nmap <C-p> :cp<CR>
+nmap 	   :GtagsCursor<CR>
+nmap     :Gtags -r <CR>
+" // global 
+:cnoremap <C-a> <Home>
+:cnoremap <C-e> <End>
+:cnoremap <C-f> <Right>
+:cnoremap <C-b> <Left>
+:cnoremap <C-n> <Down>
+:cnoremap <C-p> <Up>
+
+nmap <F4> :vertical diffsplit
+
+""""""""""""""""""""""""""""""
+" Search
+"
+""""""""""""""""""""""""""""""
+" key /, *, #, g*, g#
+" incremental search
+set incsearch
+" hylight search result
+set hlsearch
+
+""""""""""""""""""""""""""""""
+" Tab and FuzzyFinder
+"
+""""""""""""""""""""""""""""""
+set showtabline=2
+" Pattern A map t & f
+"nnoremap <Space>t t
+"nnoremap <Space>T T
+"nnoremap t <Nop>
+"nnoremap <silent> tc :<C-u>tabnew<CR>:tabmove<CR>
+"nnoremap <silent> tk :<C-u>tabclose<CR>
+"nnoremap <silent> tn :<C-u>tabnext<CR>
+"nnoremap <silent> tp :<C-u>tabprevious<CR>
+
+"" FuzzyFinder.vim
+"nnoremap <Space>f f
+"nnoremap <Space>F F
+"nnoremap f <Nop>
+"nnoremap <silent> fb :<C-u>FuzzyFinderBuffer!<CR>
+"nnoremap <silent> ff :<C-u>FuzzyFinderFile! <C-r>=expand('%:~:.')[:-1-len(expand('%:~:.:t'))]<CR><CR>
+"nnoremap <silent> fm :<C-u>FuzzyFinderMruFile!<CR>
+"nnoremap <silent> tb :<C-u>tabnew<CR>:tabmove<CR>:FuzzyFinderBuffer!<CR>
+"nnoremap <silent> tf :<C-u>tabnew<CR>:tabmove<CR>:FuzzyFinderFile! <C-r>=expand('#:~:.')[:-1-len(expand('#:~:.:t'))]<CR><CR>
+"nnoremap <silent> tm :<C-u>tabnew<CR>:tabmove<CR>:FuzzyFinderMruFile!<CR>
+
+" Pattern B map <Space>t & <Space>f
+nnoremap <Space>t <Nop>
+nnoremap <silent> <Space>tc :<C-u>tabnew<CR>:tabmove<CR>
+nnoremap <silent> <Space>tk :<C-u>tabclose<CR>
+nnoremap <silent> <Space>tn :<C-u>tabnext<CR>
+nnoremap <silent> <Space>tp :<C-u>tabprevious<CR>
+
+" FuzzyFinder.vim
+nnoremap <silent> <Space>fb :<C-u>FuzzyFinderBuffer!<CR>
+nnoremap <silent> <Space>ff :<C-u>FuzzyFinderFile! <C-r>=expand('%:~:.')[:-1-len(expand('%:~:.:t'))]<CR><CR>
+nnoremap <silent> <Space>fm :<C-u>FuzzyFinderMruFile!<CR>
+nnoremap <silent> <Space>tb :<C-u>tabnew<CR>:tabmove<CR>:FuzzyFinderBuffer!<CR>
+nnoremap <silent> <Space>tf :<C-u>tabnew<CR>:tabmove<CR>:FuzzyFinderFile! <C-r>=expand('#:~:.')[:-1-len(expand('#:~:.:t'))]<CR><CR>
+nnoremap <silent> <Space>tm :<C-u>tabnew<CR>:tabmove<CR>:FuzzyFinderMruFile!<CR>
+
+
+""""""""""""""""""""""""""""""
+" 整形
+"
+""""""""""""""""""""""""""""""
+" tabの見た目の長さを指定
+set tabstop=4
+
+" インデントの幅を指定
+set shiftwidth=4
+
+" tabをスペースに展開しない
+set noexpandtab
+
+" 括弧入力時に対応する括弧を表示 (noshowmatch:表示しない)
+set showmatch
+
+" コマンドライン補完するときに強化されたものを使う(参照 :help wildmenu)
+set wildmenu
+
+" テキスト挿入中の自動折り返しを日本語に対応させる
+set formatoptions+=mM
+
+" folding
+set foldmethod=indent
+" Don't autofold on opening file
+set foldlevel=100
+
+" Align plugin for multibyte charactor
+let g:Align_xstrlen=3
+
+""""""""""""""""""""""""""""""
+" 装飾
+"
+""""""""""""""""""""""""""""""
+" 行番号を表示
+set number
+
+" シンタックスハイライトを使用する
+syntax on
+
+"---------------------------------------------------------------------------
+" 日本語対応のための設定:
+"---------------------------------------------------------------------------
+" 文字コードの自動認識
+" from http://www.kawaz.jp/pukiwiki/?vim#cb691f26
+if !(has('win32'))
+	set termencoding=utf-8
+	set encoding=utf-8
+	set fileencoding=utf-8
+	set fileencodings=utf-8,cp932
+endif
+
+if &encoding !=# 'utf-8'
+  set encoding=japan
+  set fileencoding=japan
+endif
+if has('iconv')
+  let s:enc_euc = 'euc-jp'
+  let s:enc_jis = 'iso-2022-jp'
+  " iconvがeucJP-msに対応しているかをチェック
+  if iconv("\x87\x64\x87\x6a", 'cp932', 'eucjp-ms') ==# "\xad\xc5\xad\xcb"
+    let s:enc_euc = 'eucjp-ms'
+    let s:enc_jis = 'iso-2022-jp-3'
+  " iconvがJISX0213に対応しているかをチェック
+  elseif iconv("\x87\x64\x87\x6a", 'cp932', 'euc-jisx0213') ==# "\xad\xc5\xad\xcb"
+    let s:enc_euc = 'euc-jisx0213'
+    let s:enc_jis = 'iso-2022-jp-3'
+  endif
+  " fileencodingsを構築
+  if &encoding ==# 'utf-8'
+    let s:fileencodings_default = &fileencodings
+
+    " from http://d.hatena.ne.jp/heavenshell/20080105/1199536148
+    if !(has('win32'))
+      let &fileencodings = s:enc_jis .','. s:enc_euc
+      let &fileencodings = &fileencodings .','. s:fileencodings_default
+    else
+      let &fileencodings = s:enc_jis .','. s:enc_euc .',cp932'
+      let &fileencodings = &fileencodings .','. s:fileencodings_default
+    endif
+
+    unlet s:fileencodings_default
+  else
+    let &fileencodings = &fileencodings .','. s:enc_jis
+    set fileencodings+=utf-8,ucs-2le,ucs-2
+    if &encoding =~# '^\(euc-jp\|euc-jisx0213\|eucjp-ms\)$'
+      set fileencodings+=cp932
+      set fileencodings-=euc-jp
+      set fileencodings-=euc-jisx0213
+      set fileencodings-=eucjp-ms
+      let &encoding = s:enc_euc
+      let &fileencoding = s:enc_euc
+    else
+      let &fileencodings = &fileencodings .','. s:enc_euc
+    endif
+  endif
+  " 定数を処分
+  unlet s:enc_euc
+  unlet s:enc_jis
+endif
+" 日本語を含まない場合は fileencoding に encoding を使うようにする
+if has('autocmd')
+  function! AU_ReCheck_FENC()
+    if &fileencoding =~# 'iso-2022-jp' && search("[^\x01-\x7e]", 'n') == 0
+      let &fileencoding=&encoding
+    endif
+  endfunction
+  autocmd BufReadPost * call AU_ReCheck_FENC()
+endif
+" 改行コードの自動認識
+set fileformats=unix,dos,mac
+" □とか○の文字があってもカーソル位置がずれないようにする
+if exists('&ambiwidth')
+  set ambiwidth=double
+endif
+
+
+" メッセージを日本語にする (Windowsでは自動的に判断・設定されている)
+if !(has('win32') || has('mac')) && has('multi_lang')
+  if !exists('$LANG') || $LANG.'X' ==# 'X'
+    if !exists('$LC_CTYPE') || $LC_CTYPE.'X' ==# 'X'
+      language ctype ja_JP.eucJP
+    endif
+    if !exists('$LC_MESSAGES') || $LC_MESSAGES.'X' ==# 'X'
+      language messages ja_JP.eucJP
+    endif
+  endif
+endif
+
+" for utf8
+"set encoding=utf-8
+"set fileencodings=iso-2022-jp,cp932,euc-jp,utf-8,ucs-2le,ucs-2
+
+" for euc-jp
+"set encoding=euc-jp
+"set fileencodings=iso-2022-jp,utf-8,euc-jp,ucs-2le,ucs-2,cp932
+
+" for shift jis
+"set encoding=cp932
+"set fileencodings=iso-2022-jp,euc-jp,utf-8,ucs-21e,ucs-2,cp932
+
+
+" ファイルを開くとき、改行コードを指定。
+set ff=unix
+
+" ステータスラインに改行コードと文字コードを表示
+set laststatus=2
+set statusline=%y%{GetStatusEx()}\ 0x%B(%b)%F%m%r%=<%c:%l>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" filetype setting
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+""""""""""""""""""""""""""""""
+" Enable filetype-specific indenting and plugins
+filetype plugin indent on 
+
+
+""""""""""""""""""""""""""""""
+" Perl script 用の設定
+
+let g:Perl_AuthorName = 'Yusuke Wtase'
+let g:Perl_AuthorRef  = 'YW'
+let g:Perl_Company    = 'Adways Co., Ltd.'
+let g:Perl_Email      = 'ywatase@gmail.com'
+let g:Perl_FormatDate = '%Y/%m/%d'
+let g:Perl_MapLeader  = ','
+"let g:Perl_Dictionary_File = $HOME . '/.vim/dict/perl.dict'
+
+
+
+" set the new fold function, etc
+autocmd BufRead,BufNewFile *.pl,*.pm,*.cgi,*.t :set filetype=perl 
+autocmd Filetype perl call MyPerlSettings()
+"autocmd BufWritePost *.pl,*.pm,*.cgi,*.t make
+function MyPerlSettings()
+   call PerlSyntaxCheck()
+   call PerlCritic()
+   set smartindent expandtab
+endfunction
+
+
+function! PerlSyntaxCheck()
+	set makeprg=perl\ -cw\ %\ 2>&1\ \\\|\ perl\ -pe\ \'/at\\s\(\\S\+\)\\sline\\s\(\\d+\)\/\;print\ \"\$1:\$2:\"\;'
+	set efm=%f:%l:%m
+endfunction
+
+
+" 'perl -cw' current buffer into a new window
+function! PerlCritic()
+    set grepformat=%f:%l:%c:m
+    set grepprg=perlcritic\ -2\ -verbose\ 1\ %
+endfunction
+
+""""""""""""""""""""""""""""""
+" Ruby script 用の設定
+
+" Load matchit (% to bounce from do to end, etc.)
+runtime! macros/matchit.vim
+" Ruby scriptの場合、:make したとき、rubyを実行する
+autocmd FileType ruby,eruby call MyRubySettings()
+function MyRubySettings()
+    compiler ruby
+    set autoindent expandtab
+endfunction
+
+""""""""""""""""""""""""""""""
+" TSkelton
+
+let g:tskelDateFormat = g:Perl_FormatDate
+let g:tskelUserName   = g:Perl_AuthorName
+let g:tskelUserEmail  = g:Perl_Email
+let g:tskelUserWWW    = 'http://u-suke.org/'
+let g:tskelLicense    = 'apache'
+
+
+""""""""""""""""""""""""""""""
+" インデントの設定
+
+" autoindent, always expand tabs
+autocmd FileType yaml set ai et
+autocmd FileType c set smartindent et
+autocmd Filetype java call MyJavaSettings()
+
+function! MyJavaSettings () 
+	set makeprg=javac\ %
+	set grepprg=java\ `basename\ %\ .java`
+	set smartindent et
+endfunction
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Plugin setting
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""
+" neocomplcache.vim
+""""""""""""""""""""""""""""""
+" Disable AutoComplPop. 
+let g:acp_enableAtStartup = 0 
+" Use neocomplcache. 
+let g:neocomplcache_enable_at_startup = 1 
+" Use smartcase. 
+let g:neocomplcache_enable_smart_case = 1 
+" Use camel case completion. 
+let g:neocomplcache_enable_camel_case_completion = 1 
+" Use underbar completion. 
+let g:neocomplcache_enable_underbar_completion = 1 
+" Set minimum syntax keyword length. 
+let g:neocomplcache_min_syntax_length = 3 
+"let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*' 
+
+" Define dictionary. 
+let g:neocomplcache_dictionary_filetype_lists = {} 
+"let g:neocomplcache_dictionary_filetype_lists = { 
+"    \ 'default'  : '', 
+"    \ 'vimshell' : $HOME.'/.vimshell_hist', 
+"    \ 'scheme'   : $HOME.'/.gosh_completions' 
+"    \ } 
+
+" Define keyword. 
+if !exists('g:neocomplcache_keyword_patterns') 
+    let g:neocomplcache_keyword_patterns = {} 
+endif 
+let g:neocomplcache_keyword_patterns['default'] = '\h\w*' 
+
+" Plugin key-mappings. 
+imap <C-k>     <Plug>(neocomplcache_snippets_expand) 
+smap <C-k>     <Plug>(neocomplcache_snippets_expand) 
+"inoremap <expr><C-g>     neocomplcache#undo_completion() 
+inoremap <expr><C-l>     neocomplcache#complete_common_string() 
+
+
+map ,nr <ESC>:NeoComplCacheCachingInclude<CR>
+
+" SuperTab like snippets behavior. 
+"imap <expr><TAB> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : pumvisible() ? "\<C-n>" : "\<TAB>" 
+
+" Recommended key-mappings. 
+" <CR>: close popup and save indent. 
+"inoremap <expr><CR>  neocomplcache#smart_close_popup() . "\<CR>" 
+"" <TAB>: completion. 
+"inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>" 
+"" <C-h>, <BS>: close popup and delete backword char. 
+"inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>" 
+"inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>" 
+"inoremap <expr><C-y>  neocomplcache#close_popup() 
+"inoremap <expr><C-e>  neocomplcache#cancel_popup() 
+
+" AutoComplPop like behavior. 
+"let g:neocomplcache_enable_auto_select = 1 
+
+" Shell like behavior(not recommended). 
+"set completeopt+=longest 
+"let g:neocomplcache_enable_auto_select = 1 
+"let g:neocomplcache_disable_auto_complete = 1 
+"inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<TAB>" 
+"inoremap <expr><CR>  neocomplcache#smart_close_popup() . "\<CR>" 
+
+" Enable omni completion. 
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS 
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags 
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS 
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete 
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags 
+
+" Enable heavy omni completion. 
+if !exists('g:neocomplcache_omni_patterns') 
+let g:neocomplcache_omni_patterns = {} 
+endif 
+let g:neocomplcache_omni_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::' 
+"autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete 
+let g:neocomplcache_omni_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+let g:neocomplcache_omni_patterns.perl = '[^. \t]->\h\w*\|\h\w*::'
+
+""""""""""""""""""""""""""""""
+" Tohtml.vim
+"
+""""""""""""""""""""""""""""""
+let g:use_xhtml = 1
+let g:html_use_css = 1
+let g:html_no_pre = 1
+
+""""""""""""""""""""""""""""""
+" dicwin.vim
+"
+""""""""""""""""""""""""""""""
+let plugin_dicwin_disable = 1
+" <Ctrl-k> k : search
+" <Ctrl-k> n : next
+" <Ctrl-k> p : previous
+" <Ctrl-k> w : move to result window
+" <Ctrl-k> c : close result window
+" <Ctrl-k> / : input keyword directly 
+
+""""""""""""""""""""""""""""""
+" keisen.vim
+"
+""""""""""""""""""""""""""""""
+let autodate_format= '%Y/%m/%d'
+let autodate_keyword_pre = '\cLast Modified:'
+
+""""""""""""""""""""""""""""""
+" taglist.vim : toggle the taglist window
+" taglist.vim : define the title texts for Perl
+""""""""""""""""""""""""""""""
+noremap <silent> <F11>       :Tlist<CR>
+inoremap <silent> <F11>  <C-C>:Tlist<CR>
+
+let tlist_perl_settings  = 'perl;c:constants;l:labels;p:package;s:subroutines;d:POD'
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" ユーザー定義関数
+" 
+" 改行コードと文字コードを取得
+function! GetStatusEx()
+let str = ''
+let str = str . '' . &fileformat . ']'
+if has('multi_byte') && &fileencoding != ''
+let str = '[' . &fileencoding . ':' . str
+endif
+return str
+endfunction

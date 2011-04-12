@@ -1,0 +1,65 @@
+#compdef bulk_ssh.pl bulk_cp.pl adduser_remote.pl dsh
+
+(( $+functions[_dsh_groups] )) ||
+_dsh_groups () {
+	local dshgroups
+	dshgroups=($(ls $HOME/.dsh/group/))
+	compadd "$@" -a dshgroups
+}
+
+_adduser_remote() {
+	_arguments -C -S \
+		"$_dsh_common_opts[@]" \
+		'-u[username]' \
+		&& return 0
+
+}
+
+_bulk_cp() {
+	_arguments -S \
+		"$_dsh_common_opts[@]" \
+		'-s[source file]:file:_files' \
+		'-t[target directory]' \
+		&& return 0
+}
+
+_bulk_ssh() {
+	_arguments -S \
+		"$_dsh_common_opts[@]" \
+		'-c[command]' \
+		'-t[tty mode]'
+}
+
+_dsh() {
+	_arguments -S \
+		"$_dsh_common_opts[@]" \
+		&& return 0
+}
+
+
+_dsh_utils () {
+	local _dsh_common_opts
+
+	_dsh_common_opts=(
+		'(- *)-h[display help]'
+		'(-a)-g[target dsh group]:target dsh group:_dsh_groups'
+		'(-g)-a[all machines of dsh config]'
+	)
+
+	case "$service" in
+		dsh)
+			_dsh "$@"
+			;;
+		bulk_ssh.pl)
+			_bulk_ssh "$@"
+			;;
+		bulk_cp.pl)
+			_bulk_cp "$@"
+			;;
+		adduser_remote.pl)
+			_adduser_remote "$@"
+			;;
+	esac
+}
+
+_dsh_utils "$@"

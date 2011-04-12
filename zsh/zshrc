@@ -1,0 +1,724 @@
+###
+# Set shell options
+##
+setopt auto_menu auto_cd correct auto_name_dirs auto_remove_slash
+setopt pushd_ignore_dups rm_star_silent sun_keyboard_hack
+setopt extended_glob list_types no_beep always_last_prompt
+setopt cdable_vars sh_word_split auto_param_keys
+
+###
+# Alias
+###
+alias l=ls
+alias ls="ls -F --show-control-chars --color=auto"
+alias la="ls -aF"
+alias ll="ls -l"
+alias rdesktop_full="rdesktop -fr clipboard -k en-us -zP"
+alias get_viplugin="lftp -u viplugin,667well www.satokar.com"
+alias rdesk="rdesktop -zPf -ken-us"
+alias start_selenium_server='java -jar /home/watase/selenium-server/selenium-server.jar'
+
+alias -g V='| vim -'
+alias -g G='| grep '
+alias -g L='| less'
+alias -g T='| tail -f'
+alias -g SPLIT="| perl -le 'map{chomp;print+join\"\\n\",split/\$ARGV[0]/}<STDIN>'"
+alias -g JOIN="| perl -le 'print+join\"\$ARGV[0]\",(map{chomp;\$_}<STDIN>)'"
+
+
+_SUDO=sudo
+# for windows
+if [ "$CYGWIN" ] ; then
+	_SUDO=''
+	alias vi=vim
+	alias gvim=/usr/local/vim/gvim
+	alias traceroute="tracert"
+	alias svn="LANG=C LC_ALL=C svn"
+#	alias svn="env LC_CTYPE=ja_jP.UTF-8 svn"
+fi
+
+if [ "`echo $HOST | awk -F. '{print $1}'`" = "pc-igademo" ] ; then
+	export LANG=C
+	export GIT_PROXY_COMMAND=$HOME/bin/git-proxy
+fi
+
+# ssh agent
+if [ "$CYGWIN" ] ||  [ `hostname | awk -F. '{print $1}'` = 'pc-igademo' ] ; then
+	keychain ~/.ssh/id_dsa
+	source ~/.keychain/$HOST-sh
+else
+	agent="$HOME/tmp/ssh-agent-$USER"
+	if [ -S "$SSH_AUTH_SOCK" ] ; then
+		case $SSH_AUTH_SOCK in
+			/tmp/*/agent.[0-9]*)
+			if ! [ -e "$HOME/tmp" ] ; then
+				mkdir "$HOME/tmp"
+			fi
+			ln -snf "$SSH_AUTH_SOCK" $agent && export SSH_AUTH_SOCK=$agent
+		esac
+	elif [ -S $agent ]; then
+		export SSH_AUTH_SOCK=$agent
+	else
+		echo "no ssh-agent"
+	fi
+fi
+
+###
+# Perl
+###
+alias perlsource="PAGER=vim perldoc -m "
+
+# perlbrew
+path=($HOME/perl5/perlbrew/bin(N-/) $HOME/perl5/perlbrew/perls/current/bin(N-/) $HOME/bin(N-/) $path)
+
+
+perlpath () {
+	for MODULE in $@
+	do
+		perl -MClass::Inspector -le "print Class::Inspector->resolved_filename(qq{$MODULE})"
+	done
+	MODULE=
+}
+perlversion () {
+	for MODULE in $@
+	do
+		perl -le "eval { require $MODULE}; print qq{${MODULE}: \$${MODULE}::VERSION}"
+	done
+	MODULE=
+}
+perlsourcew () {
+	${_SUDO} vim $(perlpath $1)
+}
+perlmethod () {
+	PERLMETHOD_ALL=; PERLMETHOD_USAGE=
+	while getopts a PERLMETHOD_OPT
+	do
+		case $PERLMETHOD_OPT in
+			a) PERLMETHOD_ALL=1;;
+			*) PERLMETHOD_USAGE=1;;
+		esac
+	done
+	shift `expr $OPTIND - 1`
+	if [ "$PERLMETHOD_USAGE" ] || ! [ "$1" ] ||  [ "$2" ] ; then
+		echo -e "perlmethod [-a] Some::Perl::Module -- show methods of Perl Module\n\ta:\tshow private method"
+	elif [ "$PERLMETHOD_ALL" ] ; then 
+		perl -M$1 -le"map{print}sort+grep{defined&{\"$1::\$_\"}}keys%{$1::}"
+	else
+		perl -M$1 -le"map{print}sort+grep{defined&{\"$1::\$_\"}&&m{^[^_]}}keys%{$1::}"
+	fi
+	PERLMETHOD_ALL=; PERLMETHOD_USAGE=
+}
+cpan-uninstall () {
+	for MODULE in $@
+	do
+		${_SUDO} perl -MConfig -MExtUtils::Install -e '($FULLEXT=shift)=~s{::}{/}g;uninstall "$Config{sitearchexp}/auto/$FULLEXT/.packlist",1' $MODULE
+	done
+}
+
+cpan-uninstall-perlbrew () {
+	for MODULE in $@
+	do
+		perl -MConfig -MExtUtils::Install -e '($FULLEXT=shift)=~s{::}{/}g;uninstall "$Config{sitearchexp}/auto/$FULLEXT/.packlist",1' $MODULE
+	done
+}
+
+xml2yaml () {
+	for FILE in $@
+	do 
+		BASENAME=$(basename $FILE .xml)
+		perl -MYAML -MXML::Simple -e 'print Dump XMLin "$ARGV[0]"' $FILE > $BASENAME.yaml
+	done
+}
+
+json2yaml () {
+	for FILE in $@
+	do 
+		BASENAME=$(basename $FILE .json)
+		perl -MYAML -MJSON -e 'open my $fh, "<", $ARGV[0] or die $!; print Dump JSON::decode_json(join(q{}, $fh));close $fh;' $FILE > $BASENAME.yaml
+	done
+}
+
+locallib () {
+	echo "OLD PATH: $PATH"
+	if [ "$1" = "" ] ; then
+		echo 'usage: locallib [locallib path]'
+	elif [ -d $1 ] ; then
+		if [ "x$PERL_LOCAL_LIB_ROOT" != "x" ] ; then
+			PATH=$(echo $PATH | sed "s#\(^\|:\)$PERL_LOCAL_LIB_ROOT\/bin:##")
+		fi
+		eval $(perl -Mlocal::lib=$1)
+	else
+		echo "$1 doen't exit"
+	fi
+	echo "NEW PATH: $PATH"
+}
+
+locallib_delete () {
+	unset PERL_LOCAL_LIB_ROOT PERL_MB_OPT PERL_MM_OPT PERL5LIB
+}
+
+
+###
+# rpm
+###
+rpm_list () {
+	rpm2cpio $1 | cpio --list
+}
+rpm_extract () {
+	rpm2cpio $1 | cpio -id
+}
+
+
+
+###
+# screen
+###
+if [ "$TERM" = "screen" ]; then
+    preexec() {
+        # see [zsh-workers:13180]
+        # http://www.zsh.org/mla/workers/2000/msg03993.html
+        emulate -L zsh
+        local -a cmd; cmd=(${(z)2})
+        case $cmd[1] in
+            fg)
+                if (( $#cmd == 1 )); then
+                    cmd=(builtin jobs -l %+)
+                else
+                    cmd=(builtin jobs -l $cmd[2])
+                fi
+                ;;
+            %*)
+                cmd=(builtin jobs -l $cmd[1])
+                ;;
+            ls)
+                return
+                ;; 
+            cd)
+                if (( $#cmd == 2)); then
+                    cmd[1]=$cmd[2]:t
+                else
+                    cmd[1]="~"
+                fi
+                change_status_title $cmd[1]
+                prev=$cmd[1]
+                return
+                ;;
+            vim|vi|gvim|sh|perl|bash)
+                if (( $#cmd == 2)); then
+                  cmd[1]="$cmd[1]:$cmd[2]:t"
+                fi
+                change_status_title $cmd[1]
+                prev=$cmd[1]
+                return
+                ;;
+            *)
+                change_status_title $cmd[1]:t
+                prev=$cmd[1]
+                return
+                ;;
+        esac
+        local -A jt; jt=(${(kv)jobtexts})
+        $cmd >>(read num rest
+            cmd=(${(z)${(e):-\$jt$num}})
+            change_status_title $cmd[1]:t) 2>/dev/null
+        prev=$cmd[1]
+    }
+#    precmd() {
+#        change_status_title $:$prev:t
+#    }
+    change_status_title() {
+      echo -n "k$1\\"
+    }
+fi 
+
+function ssh_screen(){
+ eval server=\${$#}
+ screen -t $server ssh "$@"
+}
+if [ x$TERM = xscreen ]; then
+  alias ssh=ssh_screen
+fi
+
+function ssh_resolve_cname () {
+    TARGET=`host $1 | perl -e '$a=join q{},<>;$a=~m/is an alias for ([^\s]+)/; print $1'`
+	if [ x$TARGET = x ] ; then
+		ssh $@
+	else
+		shift
+		echo $TARGET
+		ssh $@ $TARGET
+	fi
+}
+
+r() {
+	local f
+	f=(~/.zsh/functions/*(.))
+	unfunction $f:t 2> /dev/null
+	autoload -U $f:t
+	compinit -u
+}
+
+
+###
+# Prompt
+###
+setopt prompt_subst # enable to set escape sequence
+#PROMPT='${WINDOW:+"[$WINDOW]"}%{$fg[cyan]%}%#%{$reset_color%} '
+#RPROMPT='%{$fg[white]%}%~%{$fg[cyan]%}:%{$fg[white]%}%!%{$reset_color%}'
+#if [[ -r /proc/loadavg ]]; then
+#    PROMPT='%{$(load_avg)%}%m%{$reset_color%}'$PROMPT
+#else
+#    PROMPT='%m'$PROMPT
+#fi
+
+# バージョン管理システム
+autoload -Uz vcs_info
+zstyle ':vcs_info:*' formats '(%s)-[%b]'
+zstyle ':vcs_info:*' actionformats '(%s)-[%b|%a]'
+precmd () {
+	psvar=()
+	LANG=C vcs_info
+	# バージョン管理下ならpsvar[1]に代入
+	[[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_" 
+	# local::libを利用していたらpsvar[2]に代入
+	[[ -n "$PERL_LOCAL_LIB_ROOT" ]] && psvar[2]="$PERL_LOCAL_LIB_ROOT"
+}
+
+
+# %1(v|%F{green}%1v%f|)        : psvar[1]が存在すればgreenで表示
+# %2(v|%F{magenta}%2v%f|)'     : psvar[2]が存在すればmagentaで表示
+# %2(v|%F{magenta}(%2v%)%f |)' : 表示を'(psvar[2]) 'にしたバージョン
+# %F{}%f                       : %fまでを%F{フォーマット指定}したフォーマットで表示
+PROMPT='%{[$[32+$RANDOM % 5]m%}%U%B[%n@%m]%b%%%{[m%}%u '
+#PROMPT='%{[$[32]m%}%U%B[%n@%m]'"%b%%%{[m%}%u "
+#RPROMPT='%{[33m%}[%~]%{[m%}'
+RPROMPT='%{[33m%}[%~]%{[m%}%1(v|%F{green}%1v%f|)%2(v|%F{magenta}(locallib:%2v%)%f|)'
+#PROMPT='[%n@%m]%~%# '    # default prompt
+
+###
+# Environment variable
+###
+eval `dircolors -b` # set LS_COLORS
+path=(/usr/local/ec2-api-tools/bin(N-/) $HOME/eclipse(N-/) $HOME/android-sdk(N-/) $HOME/bin(N-/) $path)
+typeset -U path
+export PAGER=less
+export EDITOR=vi
+export TZ=JST-9
+export SHELL=/bin/zsh
+export CVS_RSH=ssh
+export SVN_SSH=ssh
+export WORDCHARS='i*?_-.[]~=&;!#$%^(){}<>'
+fpath=($HOME/.zsh/functions(N-/) $fpath)
+typeset -U fpath
+umask 022
+
+bindkey -e             # emacs key bindings
+#bindkey -v             # vi key bindings
+bindkey ' ' magic-space  # also do history expansion on space
+bindkey "^?" backward-delete-char # delete for debian
+
+
+###
+# keybord-history
+###
+HISTFILE=$HOME/.zsh-history           # 履歴をファイルに保存する
+HISTSIZE=100000                       # メモリ内の履歴の数
+SAVEHIST=100000                       # 保存される履歴の数
+setopt extended_history               # 履歴ファイルに時刻を記録
+setopt share_history
+setopt hist_ignore_dups hist_ignore_space
+function history-all { history -E 1 } # 全履歴の一覧を出力する
+autoload history-search-end
+zle -N history-beginning-search-backward-end history-search-end
+zle -N history-beginning-search-forward-end history-search-end
+bindkey "^P" history-beginning-search-backward-end
+bindkey "^N" history-beginning-search-forward-end
+
+###
+# predict
+###
+#autoload predict-on
+#predict-on
+
+###
+# command auto complete
+###
+autoload -U compinit
+if [ "$CYGWIN" ] ; then
+	compinit -u
+else
+	compinit
+fi
+
+zstyle ':completion:*' verbose yes
+zstyle ':completion:*:descriptions' format '%B%d%b'
+zstyle ':completion:*:messages' format '%d'
+zstyle ':completion:*:warnings' format 'No matches for: %d'
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}  # color 
+zstyle ':completion:*' use-cache true
+
+# This file gives some examples of compctl commands.
+# You can either put the compctl commands in your .zshrc
+# or include a separate file from your .zshrc with the
+# source command.
+
+###
+# complete database
+###
+# All completions for zsh.
+
+# git-svn
+_git-svn () {
+    `git-svn --help | grep "^  \w" | sed "s/^  //" | sed "s/ .*//" | sed 's/^/ compadd /'`
+}
+compdef _git-svn git-svn
+
+###
+# hostname completion 
+###
+
+make_p () {
+    local t s
+    t="$1"; shift
+
+    [ -f $t ] || return 0
+
+    for s; do
+	[ $s -nt $t ] && return 0
+    done
+
+    return 1
+}
+
+cache_hosts_file="$HOME/.cache_hosts"
+known_hosts_file="$HOME/.ssh/known_hosts"
+
+print_cache_hosts () {
+    if [ -f $known_hosts_file ]; then
+	awk '{ if (split($1, a, ",") > 1) for (i in a) { if (a[i] ~ /^[a-z]/) print a[i] } else print $1 }' $known_hosts_file
+    fi
+}
+
+update_cache_hosts () {
+    print_cache_hosts | sort -u > $cache_hosts_file
+	if [ -f $known_hosts_file ]; then
+		hostnames=(`perl -ne  'if (/^([a-zA-Z0-9.-]+)/) { print "$1\n";}' $known_hosts_file`) 
+	elif [ -f /etc/hosts ]; then                 
+		hostnames=(`awk '{print $2}' /etc/hosts`)
+	else
+		hostnames=(localhost)
+	fi
+}
+
+make_p $cache_hosts_file $known_hosts_file && update_cache_hosts
+
+_cache_hosts=( $(< $cache_hosts_file) )
+
+
+
+#if [ -f ~/.netrc ]; then
+#        ftpsites=( `grep '^machine' ~/.netrc | awk '{print $2}'` \
+#                        $hosts )
+#else    
+#        ftpsites=($hosts)
+#fi
+
+# These are just examples, use and modify to personal taste.  Copying this
+# file without thought will needlessly increase zsh's memory usage and
+# startup time.
+
+# For an explanation of what all this means, read either the
+# introduction for some explanation or the manual for a detailed
+# description.
+
+# Strip, profile, and debug only executables.  The compctls for the
+# debuggers could be better, of course.
+#compctl -g '*(x-)' strip gprof adb dbx xdbx ups
+
+# See the func/cdmatch function in the distribution
+autoload cdmatch
+compctl -K cdmatch -S '/' -x 'S[/][~]' -g '*(-/)' -- cd pushd
+compctl -g "*(/)" -S / -x 'S[/][~]' -g '*(-/)' --  cd pushd chdir pu
+compctl -g "(|.)*(-/)" cd pushd chdir pu apath
+
+# For rcs users, co and rlog from the RCS directory.  We don't want to see
+# the RCS and ,v though.
+#compctl -g 'RCS/*(:t:s/\,v//)' co rlog rcs
+
+# Anything after nohup is a command by itself with its own completion
+# (the one for the trap builtin isn't perfect -- it does not complete
+# signal names)
+#compctl -l '' nohup exec nice eval trap time fep
+#compctl -l '' -x 'p[1]' -B -- builtin
+
+# kill takes signal names as the first argument after -, but job names after %
+#compctl -j -P % -x 's[-] p[1]' -k signals -- kill
+
+# gzip files, but gzip -d only gzipped or compressed files
+#compctl -f -x 'R[-*d,^*]' -g '(|.)*.(gz|z|Z) (|.)*(-/)' + -g '(|.)*(-/)' -- gzip
+#compctl -g '*.gz *.z *.Z' + -g '(|.)*(-/)' gunzip   # zcat if you use GNU
+#compctl -g '*.Z' + -g '(|.)*(-/)' uncompress zmore  # zcat if you don't use GNU
+## compctl -g '*.F' + -g '(|.)*(-/)' melt fcat
+
+## # find is very system dependend, this one is for GNU find.
+## compctl -x 's[-]' -k "(daystart depth follow maxdepth mindepth noleaf version xdev \
+## amin anewer cmin cnewer ctime empty false fstype gid group inum links lname mmin \
+## mtime name newer nouser nogroup path perm regex size true type uid used user xtype \
+## exec fprint fprint0 fprintf ok print print0 printf prune ls)" - \
+## 'p[1]' -g '. .. *(-/)' - \
+## 'c[-1,-anewer][-1,-cnewer][-1,-newer][-1,-fprint][-1,fprint0][-1,fprintf]' -f - \
+## 'c[-1,-fstype]' -k '(ufs 4.2 4.3 nfs tmp mfs S51K S52K)' - \
+## 'c[-1,-group]' -s '$(groups)' - \
+## 'c[-1,-user]' -u - \
+## 'r[-exec,;][-ok,;]' -l '' -- find
+
+# su takes an username and args for the shell, the `-c' case is
+# handled specially here
+#compctl -u -x 'w[2,-c] p[3,-1]' -l '' -- su
+
+# There are (at least) two ways to complete manual pages.  This one is
+# extremely memory expensive if you have lots of man pages
+#man_var() {
+#  man_pages=( $^manpath/man*/*(N:t:r) )   # Check your setting of SH_WORD_SPLIT
+#  compctl -k man_pages man
+#  reply=( $man_pages )
+#}
+#compctl -K man_var man
+# This one isn't that expensive but somewhat slower
+#man_glob () {
+#  local a
+#  read -cA a
+#  if [[ $a[2] = -s ]] then         # Or [[ $a[2] = [0-9]* ]] for BSD
+#    reply=( $^manpath/man$a[3]/$1*$2(N:t:r) )    # See above
+#  elif [[ $a[2] = [0-9]* ]] then
+#    reply=( $^manpath/(man|cat)$a[2]/$1*$2(N:s/.gz//:t:r))
+#  else
+#    reply=( $^manpath/(man|cat)*/$1*$2(N:s/.gz//:t:r))    # See above
+#  fi
+#}
+#compctl -K man_glob man
+
+# Misc.
+compctl -s '$(groups)' newgrp
+compctl -f -x 'p[1]' -s '$(groups)' -- chgrp
+compctl -f -x 'p[1]' -u -- chown
+## compctl -g '*.x' + -g '*(-/)' rpcgen
+## compctl -u -x 's[+] c[-1,-f],s[-f+]' -g '~/Mail/*(:t)' - \
+##   's[-f],c[-1,-f]' -f -- mail elm
+
+# Some builtins.
+compctl -j -P % fg bg wait jobs disown
+compctl -A shift
+compctl -caF whence which
+compctl -F unfunction
+compctl -a unalias
+compctl -v unset typeset declare vared readonly export integer
+compctl -e disable
+compctl -d enable
+compctl -k '(cputime filesize datasize stacksize coredumpsize resident \
+  memoryuse memorylocked descriptors openfiles vmemorysize)' limit u{n,}limit
+compctl -l '' -x 'p[1]' -f -- . source
+
+## # Various MH completions by Peter Stephenson
+## # Still to do:
+## # Support for searching for files in standard MH locations.
+## 
+## # mhcomp is best autoloaded.  Edit path where indicated.
+## function mhcomp {
+##   # Completion function for MH folders.
+##   # Works with both + (rel. to top) and @ (rel. to current).
+##   local nword args pref char mhpath
+##   integer ngtrue
+##   read -nc nword
+##   read -cA args
+## 
+##   [[ -o nullglob ]] && ngtrue=1 || setopt nullglob
+## 
+##   pref=$args[$nword]
+##   char=$pref[1]
+##   pref=$pref[2,-1]
+## 
+## # The `...`'s here account for most of the time spent in this function.
+##   if [[ $char = + ]]; then
+## #    mhpath=`mhpath +`
+## # EDIT ME:  Use a hard wired value here: it's faster.
+##     mhpath=~/Mail
+##   elif [[ $char = @ ]]; then
+##     mhpath=`mhpath`
+##   fi
+## 
+##   reply="reply=($mhpath/$pref*(-/))"
+##   eval $reply
+## 
+##   # I'm frankly amazed that this next step works, but it does.
+##   reply=(${reply#$mhpath/})
+## 
+##   (( ngtrue )) || unsetopt nullglob
+## }
+## 
+## mhfseq() { set -A reply $(mark | awk -F: '{print $1}') \
+## next cur prev first last all unseen }
+## 
+## compctl -K mhfseq -x 's[+][@]' -K mhcomp -S / -q - \
+##   's[-]' -k '(all fast nofast header noheader help list nolist \
+##   pack nopack pop push recurse norecurse total nototal)' -- folder
+## compctl -K mhfseq -x 's[+][@],c[-1,-draftfolder] s[+][@]' \
+##   -K mhcomp -S / -q - 'c[-1,-draftmessage]' -K mhfseq - \
+##   'C[-1,-(editor|whatnowproc)]' -c - \
+##   's[-]' -k '(draftfolder draftmessage nodraftfolder editor noedit \
+##   file form use nouse whatnowproc nowhatnowproc help)' -- comp
+## compctl -K mhfseq + -x 's[+][@]' -K mhcomp -S / -q - \
+##   's[-]' -k '(audit noaudit changecur nochangecur form format \
+##   file silent nosilent truncate notruncate width help)' - \
+##   'C[-1,-(audit|form|file)]' -f -- inc
+## compctl -K mhfseq -x 's[+][@],C[-1,-src] s[+][@]' \
+##   -K mhcomp -S / -q - 'c[-1,-file]' -f - 'c[-1,-rmmprov]' -c - \
+##   's[-]' -k '(draft link nolink preserve nopreserve src file \
+##   rmmproc normmproc help)' -- refile
+## compctl -K mhfseq -x 's[+][@],C[-1,-(draftfolder|fcc)] s[+][@]' \
+##   -K mhcomp -S / -q - 'c[-1,-draftmessage]' -K mhfseq -\
+##   's[-]' -k '(annotate noannotate cc nocc draftfolder nodraftfolder \
+##   draftmessage editor noedit fcc filter form inplace noinplace query \
+##   noquery width whatnowproc nowhatnowproc help)' - 'c[-1,(cc|nocc)]' \
+##   -k '(all to cc me)' - 'C[-1,-(filter|form)]' -f - \
+##   'C[-1,-(editor|whatnowproc)]' -c -- repl
+## compctl -K mhfseq -x 's[+][@]' -K mhcomp -S / -q - \
+##   's[-]' -k '(clear noclear form format header noheader reverse noreverse \
+##   file help width)' - 'C[-1,-(file|form)]' -f -- scan
+## compctl -K mhfseq -x 's[+][@]'  -K mhcomp -S / -q - \
+##   's[-]' -k '(draft header noheader showproc noshowproc)' - \
+##   'c[-1,showproc]' -c -- show
+## compctl -K mhfseq -x 's[+][@]' -K mhcomp -S / -q - 's[-]' \
+##   -k '(help)' -- rmm
+
+compctl -g "~/Mail/*(/)(:t)" 			   refn
+compctl -K "(all cur first last next prev unseen)" -S : -x \
+	's[+]' -g "~/Mail/*(/)(:t)" -- inc show scan
+
+# End of MH completions
+
+###
+# for archivers
+##
+compctl -f -x 'C[-1,*f*] p[2]' -g "(|.)*.tar (|.)*(-/)" -- tar
+compctl -f -x \
+	's[--]' -k "(atime-preserve remove-files exclude help)" - \
+	'C[-1,*z*] p[2]' -g "*.tar.(Z|z|gz) *.taz *.tgz (|.)*(-/)" - \
+	'C[-1,*f*] p[2]' -g "*.tar (|.)*(-/)"		-- gtar
+###
+# for directory operators
+###
+# Rmdir only real directories
+compctl -g '(|.)*(-/)' rmdir dircmp rd mdcd mkdir
+compctl -x 'p[2]' -k "(wheel staff ftpadmin okoma)"	-- pubmd
+
+###
+# for hostname-sensitive commands
+###
+compctl -u -S @ -x \
+	'n[5,,]' -k hostnames -S '' - \
+	'n[4,,]' -k hostnames -S '' - \
+	'n[3,,]' -k hostnames -S '' - \
+	'n[2,,]' -k hostnames -S '' - \
+	'n[1,,]' -k hostnames -S '' - \
+	'n[*,{]' -k hostnames -S , - \
+	'n[1,@]' -k hostnames - \
+	'S[.]' -k '(.local)' -S @ - \
+	's[-]' -k'(m l s q i b f w h p)'		-- finger
+compctl -u -S @ -x 'n[1,@]' -k hostnames		-- talk phone
+compctl -k hostnames + -k ftpsites	ping {,nc}ftp telnet traceroute spray
+
+###
+# for variable-aware commands
+###
+# Default completion at argc[0]
+#compctl -C -c -x \
+#	's[DISPLAY=]' -k hostnames -S ":0" - \
+#	's[LANG=]' -k (japanese C) - \
+#	's[TERM=]' -k (vt100 kterm xterm news screen pc3 cons25) - \
+#	's[LESSCHARSET=]' -k (japanese jis sjis ujis) - \
+##	'C[0,[A-Z][A-Z][A-Z]*]' -v -k (LANG JAPANESE LESSCHARSET DISPLAY) \
+#		-S = - \
+#	'n[1,=]' -f
+# Default completion maybe right of parameter assignment
+compctl -D -f -x \
+	'C[-1,DISPLAY=*]' -k hostnames -S ":0" - \
+	'C[-1,LANG=*]' -k "(japanese C)" - \
+	'C[-1,PAGER=*]' -k "(less more)" - \
+	'C[-1,TERM=*]' -k "(vt100 kterm xterm news screen)" - \
+	'C[-1,LESSCHARSET=*]' -k "(japanese jis sjis ujis)"
+	
+# setenv (personal function)
+compctl -f -x \
+	'p[1]' -v -k "(LANG DISPLAY TERM LESSCHARSET)" - \
+	'c[-1,DISPLAY]' -k hostnames -S ":0" - \
+	'c[-1,LANG]' -k "(japanese C)" - \
+	'c[-1,PAGER]' -k "(less more)" - \
+	'c[-1,TERM]' -k "(vt100 kterm xterm news screen)" - \
+	'c[-1,LESSCHARSET]' -k "(japanese jis sjis ujis)" 	-- setenv
+
+# Similar things for tex, texinfo and dvi files.
+compctl -g '*.tex*' + -g '*(-/)' {big,}{J,j,}latex {big,}{J,j,}tex
+#compctl -g '*.dvi' + -g '*(-/)' -x \
+#	'c[-1,-o]' -k (landscape a5 b4 b4landscape)	-- dvi2ps jdvi2kps
+
+###
+# for archivers and compression tools
+###
+compctl -f -x 'p[1,2]' \
+	-g "*(-/) *.[Ll][Zz][Hh] *.[Ee][Xx][Ee]"	-- lha lhp
+compctl -f -x 'p[1]' -g "*(-/) *.[Aa][Rr][Cc]"		-- arc
+compctl -f -x 'p[1,2]' -g "*(-/) *.[Zz][Ii][Pp]"	-- zip unzip
+compctl -f -x 'p[1,2]' -g "*(-/) *.[Aa][Rr][Jj]"	-- unarj
+compctl -g "*(-/) *.(Z|z|gz)"				zmore zless zgrep zcmp
+
+# C compilers
+compctl -g "*.[cCoa]" -x 's[-I][-L]' -g "*(/)" - \
+	'C[-1,-o]' -g "*.c(:r)" - \
+	's[-l]' -s '${(s.:.)^LD_LIBRARY_PATH}/lib*.a(:t:r:s/lib//) \
+		/usr/{,*/}lib/lib*.a(:t:r:s/lib//)'	-- cc gcc
+
+# Java compiler and interpreter
+compctl -g "*(-/) *.java"				javac
+compctl -g "*.class(:r)" -x \
+	'p[2,-1]' -f					-- java kaffe
+
+###
+# Miscellaneous
+###
+# GNU Emacs
+compctl -g "^*[#~] .*" -x \
+	's[-]' -k "(user nw batch e insert kill load display geometry)" - \
+	's[+]' -X "Line number" - \
+	'c[-2,-batch] c[-1,-e]' -k "(batch-byte-compile)" - \
+	'c[-1,-batch]' -k "(-e)" -S ' batch-byte-compile ' - \
+	'c[-1,-e]' -k "(mh-rmail mh-smail resume-windows trr)" - \
+	'c[-1,-display]' -k hostnames -S ":0 " - \
+	'c[-1,-geometry]' -k "(+0+0 80x37+0+0 80x26+0+0)" - \
+	'c[-1,-user]' -u		-- mule $emacs m1 tamago canna emacs
+
+#compctl -g "*(-/)" -x \
+#	's[-]' -k (fstype name perm prune type user nouser group nogroup size \
+#		inum atime mtime ctime exec ok print ls cpio ncpio newer \
+#		xdev depth) - \
+#	'c[-1,-type]' -k (c b d f p l s) - 'c[-1,-user]' -u - \
+#	'r[-exec,;][-ok,;]' -l ''			-- find
+
+#compctl -x \
+#	'c[-1,-f]' -g "[Mm]ake* *.[Mm]*[Kk] *(-/)" - \
+#	's[CC]' -P "='" -k (gcc cc) -S " -pipe" - \
+#	'S[CF]' -S "='" -k (CFLAGS) - \
+#	's[-I],s[-L]' -g "*(-/)"			-- make gmake
+
+compctl -g "(|.)*~*.[ch] *(-/)"				rm
+
+#compctl -f -x \
+#       'c[-1,-man]' -g "*.[0-9] *.man *(-/)"           -- nroff
+
+#compctl -g "(|*).obj *(-/)"				tgif prtgif
+#
+##compctl -f -x \
+#	's[-]' -k (s R mv rm mkindex refresh pick flush perf \
+#		   delete reclassify) - \
+#							-- ftpurl

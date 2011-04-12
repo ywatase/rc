@@ -1,0 +1,12 @@
+<setting files>
+
+  - vim, zsh, screen, snmp, perl and so on
+
+<particular kinds>
+
+  - centos/
+      centos setup script
+  - ck/
+      ck terminal for cygwin
+  - scripts/
+      setup scripts

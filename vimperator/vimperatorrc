@@ -1,0 +1,37 @@
+" 1.1 (created: 2008/06/03 19:37:22)
+" Mappings
+" Last Modified: 2008/06/27.
+" 選択文字列ののコピーを <C-c> に割り当て
+map <C-c> :echo Yank!<CR>Y
+map j 3<C-e>
+map k 3<C-y>
+" Backspace に戻るを割り当て
+map <BS> <A-Left>
+" h/l に戻るや進むを割り当て
+map h <A-Left>
+map l <A-Right>
+" H/L や ← → でタブ移動
+map H gT
+map L gt
+map <Left> gT
+map <Right> gt
+" Shift + ← → で現在のタブの位置変更
+map <S-Right> :tabmove! +1<CR>
+map <S-Left> :tabmove! -1<CR>
+" vimperator + minibuffer
+map <C-:> :m<space>
+
+" Options
+set guioptions=mbT
+set titlestring=Firefox
+set verbose=9
+set complete=Ssfbh
+
+" Abbreviations
+
+source! ~/_vimperatorrc.local
+
+" 読み込んだ事を出力
+echo .vimperatorrc sourced
+
+" vim: set ft=vimperator:

@@ -1,0 +1,293 @@
+§%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+== comment.end-of-line-comment == append ==
+# <CURSOR>
+§%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+== comment.frame ==
+#---------------------------------------------------------------------------
+#  <CURSOR>
+#---------------------------------------------------------------------------
+§%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+== comment.function ==
+#===  FUNCTION  ================================================================
+#         NAME:  |?FUNCTION_NAME|
+#      PURPOSE:  <CURSOR>
+#   PARAMETERS:  ????
+#      RETURNS:  ????
+#  DESCRIPTION:  ????
+#       THROWS:  no exceptions
+#     COMMENTS:  none
+#     SEE ALSO:  n/a
+#===============================================================================
+§%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+== comment.method ==
+#===  CLASS METHOD  ============================================================
+#        CLASS:  |?CLASSNAME|
+#       METHOD:  |?METHODNAME|
+#   PARAMETERS:  ????
+#      RETURNS:  ????
+#  DESCRIPTION:  <CURSOR>
+#       THROWS:  no exceptions
+#     COMMENTS:  none
+#     SEE ALSO:  n/a
+#===============================================================================
+§%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+== comment.file-description-pl == start ==
+#!/usr/bin/env perl 
+#===============================================================================
+#
+#         FILE:  |FILENAME|
+#
+#        USAGE:  |FILENAME|  
+#
+#  DESCRIPTION:  <CURSOR>
+#
+#      OPTIONS:  ---
+# REQUIREMENTS:  ---
+#         BUGS:  ---
+#        NOTES:  ---
+#       AUTHOR:  |AUTHOR| (|AUTHORREF|), |EMAIL|
+#      COMPANY:  |COMPANY|
+#      VERSION:  1.0
+#      CREATED:  |DATE| |TIME|
+#     REVISION:  ---
+#Last Modified:  20xx/xx/xx.
+#===============================================================================
+use strict;
+use warnings;
+use FindBin;
+use File::Spec;
+
+use Getopt::Std;
+use Pod::Usage;
+use Data::Dumper;
+
+use constant DEBUG_LEVEL_USUAL   => 0;
+use constant DEBUG_LEVEL_MESSAGE => 1;
+use constant DEBUG_LEVEL_VERBOSE => 2;
+
+our $VERSION = 0.0;
+my $DEBUG   = DEBUG_LEVEL_USUAL;
+
+main();
+
+sub main {
+    my $rh_args = &_init_args('f:');
+}
+
+
+sub _init_args {
+    my $args_pattern = shift;
+    $args_pattern .= 'hvmDdV';
+
+    my %args = ();
+    if ( not getopts($args_pattern, \%args)) {pod2usage(2); exit 0; }
+    if (exists $args{h}) { pod2usage(1); exit 0; }
+    elsif (exists $args{m}) { pod2usage(-exitstatus => 0, -verbose => 2); exit 0;}
+    elsif (exists $args{v}) { version(); exit 0; }
+    if (exists $args{d}) { $DEBUG = DEBUG_LEVEL_VERBOSE}
+    if (exists $args{V}) { $DEBUG = DEBUG_LEVEL_MESSAGE}
+    if (exists $args{f})
+    {
+        if (not -e $args{f})
+        {
+            print "Can't access file: $args{f}\n";
+            exit 1;
+        }
+    }
+#  if (not @ARGV) 
+#  {
+#    print "You must input args\n";
+#    pod2usage(1);
+#    exit 1;
+#  }
+    return \%args;
+}
+
+sub version {
+    print <<EOS;
+VERSION: $VERSION
+EOS
+}
+  
+1;
+
+__END__
+
+=pod
+
+=head1 NAME
+
+|FILENAME| - Skeleton of Perl Script
+
+=head1 SYNOPSIS
+
+  |FILENAME| [options]
+
+=head1 OPTIONS
+
+=over 8
+
+=item B<-f> filename
+
+set filename
+
+=item B<-V>
+
+verbose mode
+
+=item B<-d>
+
+debug mode. more verbose.
+
+=item B<-h>
+
+show help
+
+=item B<-m>
+
+show manual
+
+=item B<-v>
+
+show version
+
+=back
+
+=head1 DESCRIPTION
+
+This is skelton of perl script.
+
+=head1 PREREQUISITES
+
+This script requires the C<Getopt::Std>, C<Pod::Usage>
+
+=head1 Methods
+
+=over 8
+
+=item method name
+
+subscribe
+
+=head1 Inner Methods
+
+=over 8
+
+=item B<_init_args> - initialize arguments
+
+		args($sc1)
+
+		  $sc1    : scaler (arguments pattern for Getopt::getopts)
+
+
+		return value
+
+			Success : hash reference of args (result of &_init_args)
+			Failure : exit(show manual, show help and so on)
+
+=item B<version> - show version
+
+		args(none)
+
+		return value
+
+			Success : 1
+			Failure : undef
+
+=back
+
+=head1 Author
+
+ |AUTHOR| <|EMAIL|>
+  
+=cut
+
+§%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+== comment.file-description-pm == start ==
+#
+#===============================================================================
+#
+#         FILE:  |FILENAME|
+#
+#  DESCRIPTION:  <CURSOR>
+#
+#        FILES:  ---
+#         BUGS:  ---
+#        NOTES:  ---
+#       AUTHOR:  |AUTHOR| (|AUTHORREF|), |EMAIL|
+#      COMPANY:  |COMPANY|
+#      VERSION:  1.0
+#      CREATED:  |DATE| |TIME|
+#     REVISION:  ---
+#Last Modified:  20xx/xx/xx.
+#===============================================================================
+package |PATH|::|BASENAME|;
+use base qw(Class::Accessor::Fast);
+__PACKAGE__->mk_accessors(qw());
+
+our $VERSION = 0.0;
+
+use strict;
+use warnings;
+
+
+§%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+== comment.file-description-t == start ==
+#!perl
+#===============================================================================
+#
+#         FILE:  |FILENAME|
+#
+#  DESCRIPTION:  <CURSOR>
+#
+#        FILES:  ---
+#         BUGS:  ---
+#        NOTES:  ---
+#       AUTHOR:  |AUTHOR| (|AUTHORREF|), |EMAIL|
+#      COMPANY:  |COMPANY|
+#      VERSION:  1.0
+#      CREATED:  |DATE| |TIME|
+#     REVISION:  ---
+#Last Modified:  2010/09/08.
+#===============================================================================
+
+use strict;
+use warnings;
+use Test::Requires {'File::Which' => 0};
+
+use Test::More qw(no_plan);                      # last test to print
+#use Test::More tests => 1;                      # last test to print
+BEGIN{
+    use_ok('|BASENAME|');
+}
+
+§%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+== comment.file-description-pod == start ==
+#
+#===============================================================================
+#
+#         FILE:  |FILENAME|
+#
+#  DESCRIPTION:  |CURSOR|
+#
+#       AUTHOR:  |AUTHOR| (|AUTHORREF|), <|EMAIL|>
+#      COMPANY:  |COMPANY|
+#      CREATED:  |DATE|
+#     REVISION:  ---
+#===============================================================================
+
+
+§%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+== comment.keyword-bug == append ==
+ # :BUG:|DATE| |TIME|:|AUTHORREF|: <CURSOR>
+== comment.keyword-todo == append ==
+ # :TODO:|DATE| |TIME|:|AUTHORREF|: <CURSOR>
+== comment.keyword-tricky == append ==
+ # :TRICKY:|DATE| |TIME|:|AUTHORREF|: <CURSOR>
+== comment.keyword-warning == append ==
+ # :WARNING:|DATE| |TIME|:|AUTHORREF|: <CURSOR>
+== comment.keyword-workaround == append ==
+ # :WORKAROUND:|DATE| |TIME|:|AUTHORREF|: <CURSOR>
+== comment.keyword-keyword == append ==
+ # :|?KEYWORD:u|:|DATE| |TIME|:|AUTHORREF|: <CURSOR>
+§%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

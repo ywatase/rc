@@ -1,0 +1,13 @@
+# perltidy
+-csc # Closing Side Comment for subroutine
+-nbl # no line break
+-nsbl
+--block-brace-vertical-tightness=0
+-ce
+-l=120
+-i=2
+-ci=2
+-et=2
+-pt=2
+-sbt=2
+-bt=2

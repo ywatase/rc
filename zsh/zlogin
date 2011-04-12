@@ -1,0 +1,20 @@
+# for windows
+if [ "$CYGWIN" ] ||  [ `hostname | awk -F. '{print $1}'` = 'pc-igademo' ] ; then
+	keychain ~/.ssh/id_dsa
+	source ~/.keychain/$HOST-sh
+else
+	agent="$HOME/tmp/ssh-agent-$USER"
+	if [ -S "$SSH_AUTH_SOCK" ] ; then
+		case $SSH_AUTH_SOCK in
+			/tmp/*/agent.[0-9]*)
+			if ! [ -e "$HOME/tmp" ] ; then
+				mkdir "$HOME/tmp"
+			fi
+			ln -snf "$SSH_AUTH_SOCK" $agent && export SSH_AUTH_SOCK=$agent
+		esac
+	elif [ -S $agent ]; then
+		export SSH_AUTH_SOCK=$agent
+	else
+		echo "no ssh-agent"
+	fi
+fi
