@@ -1,10 +1,12 @@
 ###
 # Set shell options
 ##
-setopt auto_menu auto_cd correct auto_name_dirs auto_remove_slash
+setopt auto_menu auto_cd auto_pushd correct auto_name_dirs auto_remove_slash
 setopt pushd_ignore_dups rm_star_silent sun_keyboard_hack
 setopt extended_glob list_types no_beep always_last_prompt
 setopt cdable_vars sh_word_split auto_param_keys
+
+autoload -Uz is-at-least
 
 ###
 # Alias
@@ -275,11 +277,24 @@ setopt prompt_subst # enable to set escape sequence
 autoload -Uz vcs_info
 zstyle ':vcs_info:*' formats '(%s)-[%b]'
 zstyle ':vcs_info:*' actionformats '(%s)-[%b|%a]'
+
+which vcs_info 2>/dev/null 1>/dev/null
+RET=$?
+if [[ "$RET" == 0  ]] ; then
+	call_vcs_info () {
+		LANG=C vcs_info
+		# バージョン管理下ならpsvar[1]に代入
+		[[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_" 
+	}
+else
+	call_vcs_info () {
+	}
+fi
+
+
 precmd () {
 	psvar=()
-	LANG=C vcs_info
-	# バージョン管理下ならpsvar[1]に代入
-	[[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_" 
+	call_vcs_info
 	# local::libを利用していたらpsvar[2]に代入
 	[[ -n "$PERL_LOCAL_LIB_ROOT" ]] && psvar[2]="$PERL_LOCAL_LIB_ROOT"
 }
