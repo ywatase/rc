@@ -15,9 +15,9 @@ alias l=ls
 alias ls="ls -F --show-control-chars --color=auto"
 alias la="ls -aF"
 alias ll="ls -l"
-alias rdesktop_full="rdesktop -fr clipboard -k en-us -zP"
+alias rdesk="rdesktop -r clipboard -zP -ken-us"
+alias rdesktop_full="rdesk -f"
 alias get_viplugin="lftp -u viplugin,667well www.satokar.com"
-alias rdesk="rdesktop -zPf -ken-us"
 alias start_selenium_server='java -jar /home/watase/selenium-server/selenium-server.jar'
 
 alias -g V='| vim -'
@@ -36,16 +36,15 @@ if [ "$CYGWIN" ] ; then
 	alias gvim=/usr/local/vim/gvim
 	alias traceroute="tracert"
 	alias svn="LANG=C LC_ALL=C svn"
-#	alias svn="env LC_CTYPE=ja_jP.UTF-8 svn"
 fi
 
-if [ "`echo $HOST | awk -F. '{print $1}'`" = "pc-igademo" ] ; then
+if [ "${${(A)${(s:.:)HOST}}[1]}" = "pc-igademo" ] ; then
 	export LANG=C
 	export GIT_PROXY_COMMAND=$HOME/bin/git-proxy
 fi
 
 # ssh agent
-if [ "$CYGWIN" ] ||  [ `hostname | awk -F. '{print $1}'` = 'pc-igademo' ] ; then
+if [ "$CYGWIN" ] ||  [ "${${(A)${(s:.:)HOST}}[1]}" = 'pc-igademo' ] ; then
 	keychain ~/.ssh/id_dsa
 	source ~/.keychain/$HOST-sh
 else
@@ -457,10 +456,6 @@ compctl -K cdmatch -S '/' -x 'S[/][~]' -g '*(-/)' -- cd pushd
 compctl -g "*(/)" -S / -x 'S[/][~]' -g '*(-/)' --  cd pushd chdir pu
 compctl -g "(|.)*(-/)" cd pushd chdir pu apath
 
-# For rcs users, co and rlog from the RCS directory.  We don't want to see
-# the RCS and ,v though.
-#compctl -g 'RCS/*(:t:s/\,v//)' co rlog rcs
-
 # Anything after nohup is a command by itself with its own completion
 # (the one for the trap builtin isn't perfect -- it does not complete
 # signal names)
@@ -515,9 +510,9 @@ compctl -g "(|.)*(-/)" cd pushd chdir pu apath
 #compctl -K man_glob man
 
 # Misc.
-compctl -s '$(groups)' newgrp
-compctl -f -x 'p[1]' -s '$(groups)' -- chgrp
-compctl -f -x 'p[1]' -u -- chown
+#compctl -s '$(groups)' newgrp
+#compctl -f -x 'p[1]' -s '$(groups)' -- chgrp
+#compctl -f -x 'p[1]' -u -- chown
 ## compctl -g '*.x' + -g '*(-/)' rpcgen
 ## compctl -u -x 's[+] c[-1,-f],s[-f+]' -g '~/Mail/*(:t)' - \
 ##   's[-f],c[-1,-f]' -f -- mail elm
@@ -607,9 +602,9 @@ compctl -l '' -x 'p[1]' -f -- . source
 ## compctl -K mhfseq -x 's[+][@]' -K mhcomp -S / -q - 's[-]' \
 ##   -k '(help)' -- rmm
 
-compctl -g "~/Mail/*(/)(:t)" 			   refn
-compctl -K "(all cur first last next prev unseen)" -S : -x \
-	's[+]' -g "~/Mail/*(/)(:t)" -- inc show scan
+## compctl -g "~/Mail/*(/)(:t)" 			   refn
+## compctl -K "(all cur first last next prev unseen)" -S : -x \
+## 	's[+]' -g "~/Mail/*(/)(:t)" -- inc show scan
 
 # End of MH completions
 
@@ -703,15 +698,15 @@ compctl -g "*.class(:r)" -x \
 # Miscellaneous
 ###
 # GNU Emacs
-compctl -g "^*[#~] .*" -x \
-	's[-]' -k "(user nw batch e insert kill load display geometry)" - \
-	's[+]' -X "Line number" - \
-	'c[-2,-batch] c[-1,-e]' -k "(batch-byte-compile)" - \
-	'c[-1,-batch]' -k "(-e)" -S ' batch-byte-compile ' - \
-	'c[-1,-e]' -k "(mh-rmail mh-smail resume-windows trr)" - \
-	'c[-1,-display]' -k hostnames -S ":0 " - \
-	'c[-1,-geometry]' -k "(+0+0 80x37+0+0 80x26+0+0)" - \
-	'c[-1,-user]' -u		-- mule $emacs m1 tamago canna emacs
+# compctl -g "^*[#~] .*" -x \
+#     's[-]' -k "(user nw batch e insert kill load display geometry)" - \
+#     's[+]' -X "Line number" - \
+#     'c[-2,-batch] c[-1,-e]' -k "(batch-byte-compile)" - \
+#     'c[-1,-batch]' -k "(-e)" -S ' batch-byte-compile ' - \
+#     'c[-1,-e]' -k "(mh-rmail mh-smail resume-windows trr)" - \
+#     'c[-1,-display]' -k hostnames -S ":0 " - \
+#     'c[-1,-geometry]' -k "(+0+0 80x37+0+0 80x26+0+0)" - \
+#     'c[-1,-user]' -u		-- mule $emacs m1 tamago canna emacs
 
 #compctl -g "*(-/)" -x \
 #	's[-]' -k (fstype name perm prune type user nouser group nogroup size \
