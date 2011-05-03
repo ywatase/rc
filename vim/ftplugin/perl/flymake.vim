@@ -1,6 +1,6 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "          FILE:  flymake.vim
-" Last Modified:  2010/12/14.
+" Last Modified:  2011/04/21.
 "        AUTHOR:  Yusuke Watase (ym), ywatase@gmail.com
 "       VERSION:  1.0
 "       CREATED:  2010/04/22 12:28:48
@@ -39,4 +39,4 @@ PYTHONEOF
 	make
 endfunction
 
-autocmd BufWritePost <buffer> :call RunMake()
+autocmd! BufWritePost <buffer> :call RunMake()
