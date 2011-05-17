@@ -123,6 +123,17 @@ cpan-uninstall-perlbrew () {
 	done
 }
 
+cpan-uninstall-locallib () {
+	for MODULE in $@
+	do
+		if [ "x${PERL_LOCAL_LIB_ROOT}" != "x"  -a -d  ${PERL_LOCAL_LIB_ROOT} ] ; then
+			perl -MConfig -MExtUtils::Install -e '($FULLEXT=shift)=~s{::}{/}g; uninstall "$ENV{PERL_LOCAL_LIB_ROOT}/lib/perl5/$Config{archname}/auto/$FULLEXT/.packlist",1' $MODULE
+		else
+			echo 'environtal variable "PERL_LOCAL_LIB_ROOT" is not correct'
+		fi
+	done
+}
+
 xml2yaml () {
 	for FILE in $@
 	do 
