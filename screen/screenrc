@@ -3,7 +3,6 @@ escape ^z^z
 # must make symbolic link
 bind . source $HOME/.screen_setting
 bufferfile $HOME/tmp/screen-excahng
-excahng
 
 ###
 # Status Line
