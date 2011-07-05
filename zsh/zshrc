@@ -70,8 +70,11 @@ fi
 alias perlsource="PAGER=vim perldoc -m "
 
 # perlbrew
-path=($HOME/perl5/perlbrew/bin(N-/) $HOME/perl5/perlbrew/perls/current/bin(N-/) $HOME/bin(N-/) $path)
+path=($HOME/perl5/perlbrew/bin(N-/) $HOME/perl5/perlbrew/perls/current/bin(N-/) $HOME/bin/*(N-/) $HOME/bin(N-/) $path)
 
+if [ -e $HOME/perl5/perlbrew/etc/bashrc ] ; then
+	source $HOME/perl5/perlbrew/etc/bashrc
+fi
 
 perlpath () {
 	for MODULE in $@
@@ -89,6 +92,11 @@ perlversion () {
 }
 perlsourcew () {
 	${_SUDO} vim $(perlpath $1)
+}
+perlmodulelist () {
+	local modulelist 
+	modulelist=(`find /usr/lib{,64}/perl{,5} /usr/share/perl{,5} /usr/local/{lib,share}/{,site_}perl -name .packlist | perl -lpe 'm{/auto/(.*)/.packlist}; (my $m = $1) =~ s{/}{::}g; $_ = $m;' | sort | uniq`)
+	perlversion $modulelist
 }
 perlmethod () {
 	PERLMETHOD_ALL=; PERLMETHOD_USAGE=
@@ -109,6 +117,15 @@ perlmethod () {
 	fi
 	PERLMETHOD_ALL=; PERLMETHOD_USAGE=
 }
+
+install-perlbrew () {
+	curl -L http://xrl.us/perlbrewinstall | bash
+}
+
+install-cpanm () {
+	curl -L http://cpanmin.us | perl - --self-upgrade
+}
+
 cpan-uninstall () {
 	for MODULE in $@
 	do

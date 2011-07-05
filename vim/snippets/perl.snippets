@@ -229,3 +229,32 @@ snippet redirect
 snippet param 
 	$c->req->param('${1:param}')
 	${2}
+snippet benchmark
+	use Benchmark qw/timethese cmpthese/;
+	my $count = ${1}
+	# À­Ç½¤ÎÈæ³Ó
+	my $result = timethese($count, {
+	    ${2:name}  => sub {
+	        ${3}
+	    },
+	});
+	cmpthese($result);
+snippet benchmark2
+	use strict;
+	use Time::HiRes;
+
+	my $start_time = currentTime ();
+	
+	&main();
+	
+	my $end_time = currentTime ();
+	my $computation_time = $end_time - $start_time;
+	print STDERR $computation_time;
+	
+	sub currentTime {
+	  return Time::HiRes::time;
+	}
+	
+	sub main {
+		${1}
+	}
