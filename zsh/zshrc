@@ -14,7 +14,7 @@ alias ls="ls -F --show-control-chars --color=auto"
 alias la="ls -aF"
 alias ll="ls -l"
 alias rdesk="rdesktop -r clipboard -zP -ken-us"
-alias rdesktop_full="rdesk -f"
+alias rdesk_full="rdesk -f"
 alias get_viplugin="lftp -u viplugin,667well www.satokar.com"
 alias start_selenium_server='java -jar /home/watase/selenium-server/selenium-server.jar'
 
