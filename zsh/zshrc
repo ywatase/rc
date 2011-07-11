@@ -1,10 +1,12 @@
 ###
 # Set shell options
 ##
-setopt auto_menu auto_cd correct auto_name_dirs auto_remove_slash
+setopt auto_menu auto_cd auto_pushd correct auto_name_dirs auto_remove_slash
 setopt pushd_ignore_dups rm_star_silent sun_keyboard_hack
 setopt extended_glob list_types no_beep always_last_prompt
 setopt cdable_vars sh_word_split auto_param_keys
+
+autoload -Uz is-at-least
 
 ###
 # Alias
@@ -68,8 +70,11 @@ fi
 alias perlsource="PAGER=vim perldoc -m "
 
 # perlbrew
-path=($HOME/perl5/perlbrew/bin(N-/) $HOME/perl5/perlbrew/perls/current/bin(N-/) $HOME/bin(N-/) $path)
+path=($HOME/perl5/perlbrew/bin(N-/) $HOME/perl5/perlbrew/perls/current/bin(N-/) $HOME/bin/*(N-/) $HOME/bin(N-/) $path)
 
+if [ -e $HOME/perl5/perlbrew/etc/bashrc ] ; then
+	source $HOME/perl5/perlbrew/etc/bashrc
+fi
 
 perlpath () {
 	for MODULE in $@
@@ -87,6 +92,11 @@ perlversion () {
 }
 perlsourcew () {
 	${_SUDO} vim $(perlpath $1)
+}
+perlmodulelist () {
+	local modulelist 
+	modulelist=(`find /usr/lib{,64}/perl{,5} /usr/share/perl{,5} /usr/local/{lib,share}/{,site_}perl -name .packlist | perl -lpe 'm{/auto/(.*)/.packlist}; (my $m = $1) =~ s{/}{::}g; $_ = $m;' | sort | uniq`)
+	perlversion $modulelist
 }
 perlmethod () {
 	PERLMETHOD_ALL=; PERLMETHOD_USAGE=
@@ -107,6 +117,15 @@ perlmethod () {
 	fi
 	PERLMETHOD_ALL=; PERLMETHOD_USAGE=
 }
+
+install-perlbrew () {
+	curl -L http://xrl.us/perlbrewinstall | bash
+}
+
+install-cpanm () {
+	curl -L http://cpanmin.us | perl - --self-upgrade
+}
+
 cpan-uninstall () {
 	for MODULE in $@
 	do
@@ -118,6 +137,17 @@ cpan-uninstall-perlbrew () {
 	for MODULE in $@
 	do
 		perl -MConfig -MExtUtils::Install -e '($FULLEXT=shift)=~s{::}{/}g;uninstall "$Config{sitearchexp}/auto/$FULLEXT/.packlist",1' $MODULE
+	done
+}
+
+cpan-uninstall-locallib () {
+	for MODULE in $@
+	do
+		if [ "x${PERL_LOCAL_LIB_ROOT}" != "x"  -a -d  ${PERL_LOCAL_LIB_ROOT} ] ; then
+			perl -MConfig -MExtUtils::Install -e '($FULLEXT=shift)=~s{::}{/}g; uninstall "$ENV{PERL_LOCAL_LIB_ROOT}/lib/perl5/$Config{archname}/auto/$FULLEXT/.packlist",1' $MODULE
+		else
+			echo 'environtal variable "PERL_LOCAL_LIB_ROOT" is not correct'
+		fi
 	done
 }
 
@@ -274,11 +304,24 @@ setopt prompt_subst # enable to set escape sequence
 autoload -Uz vcs_info
 zstyle ':vcs_info:*' formats '(%s)-[%b]'
 zstyle ':vcs_info:*' actionformats '(%s)-[%b|%a]'
+
+which vcs_info 2>/dev/null 1>/dev/null
+RET=$?
+if [[ "$RET" == 0  ]] ; then
+	call_vcs_info () {
+		LANG=C vcs_info
+		# バージョン管理下ならpsvar[1]に代入
+		[[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_" 
+	}
+else
+	call_vcs_info () {
+	}
+fi
+
+
 precmd () {
 	psvar=()
-	LANG=C vcs_info
-	# バージョン管理下ならpsvar[1]に代入
-	[[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_" 
+	call_vcs_info
 	# local::libを利用していたらpsvar[2]に代入
 	[[ -n "$PERL_LOCAL_LIB_ROOT" ]] && psvar[2]="$PERL_LOCAL_LIB_ROOT"
 }
