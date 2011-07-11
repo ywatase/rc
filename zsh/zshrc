@@ -123,7 +123,7 @@ install-perlbrew () {
 }
 
 install-cpanm () {
-	curl -L http://cpanmin.us | perl - --self-upgrade
+	curl -L http://cpanmin.us | perl - --self-upgrade $@
 }
 
 cpan-uninstall () {
