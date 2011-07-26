@@ -25,11 +25,14 @@ call vundle#rc()               " (3)
 " Bundle 'tpope/vim-fugitive'
 
 " " vim-scripts repos
-Bundle 'snipMate'
-Bundle 'nginx.vim'
-Bundle 'sudo.vim'
 Bundle 'Align'
+Bundle 'autodate.vim'
+Bundle 'BufOnly.vim'
+Bundle 'EnhCommentify.vim'
 Bundle 'neocomplcache'
+Bundle 'nginx.vim'
+Bundle 'snipMate'
+Bundle 'sudo.vim'
 
 " non github repos
 " Bundle 'git://git.wincent.com/command-t.git'
