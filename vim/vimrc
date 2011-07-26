@@ -31,6 +31,7 @@ Bundle 'BufOnly.vim'
 Bundle 'EnhCommentify.vim'
 Bundle 'neocomplcache'
 Bundle 'nginx.vim'
+Bundle 'perl-support.vim'
 Bundle 'snipMate'
 Bundle 'sudo.vim'
 
@@ -278,12 +279,13 @@ filetype plugin indent on
 """"""""""""""""""""""""""""""
 " Perl script 用の設定
 
-let g:Perl_AuthorName = 'Yusuke Wtase'
-let g:Perl_AuthorRef  = 'YW'
-let g:Perl_Company    = 'Adways Co., Ltd.'
-let g:Perl_Email      = 'ywatase@gmail.com'
-let g:Perl_FormatDate = '%Y/%m/%d'
-let g:Perl_MapLeader  = ','
+let g:Perl_AuthorName        = 'Yusuke Wtase'
+let g:Perl_AuthorRef         = 'YW'
+let g:Perl_Company           = 'Adways Co., Ltd.'
+let g:Perl_Email             = 'ywatase@gmail.com'
+let g:Perl_FormatDate        = '%Y/%m/%d'
+let g:Perl_LocalTemplateFile = $HOME . '/.vim/perl-support/templates/Templates'
+let g:Perl_MapLeader         = ','
 "let g:Perl_Dictionary_File = $HOME . '/.vim/dict/perl.dict'
 
 

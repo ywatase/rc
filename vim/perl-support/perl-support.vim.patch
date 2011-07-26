@@ -1,0 +1,17 @@
+--- perl-support.vim.orig	2011-07-26 14:16:27.686666840 +0900
++++ perl-support.vim	2011-07-26 14:15:20.511670363 +0900
+@@ -224,10 +224,14 @@
+ call Perl_SetLocalVariable("Perl_TemplateOverwrittenMsg ")
+ call Perl_SetLocalVariable("Perl_XtermDefaults          ")
+ call Perl_SetLocalVariable("Perl_GlobalTemplateFile     ")
++call Perl_SetLocalVariable("Perl_LocalTemplateFile      ")
+ 
+ if exists('g:Perl_GlobalTemplateFile') && g:Perl_GlobalTemplateFile != ''
+ 	let s:Perl_GlobalTemplateDir	= fnamemodify( s:Perl_GlobalTemplateFile, ":h" )
+ endif
++if exists('g:Perl_LocalTemplateFile') && g:Perl_LocalTemplateFile != ''
++	let s:Perl_LocalTemplateDir	= fnamemodify( s:Perl_LocalTemplateFile, ":h" )
++endif
+ "
+ "
+ " set default geometry if not specified
