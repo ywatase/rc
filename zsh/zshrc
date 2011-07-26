@@ -26,6 +26,7 @@ alias -g L='| less'
 alias -g T='| tail -f'
 alias -g SPLIT="| perl -le 'map{chomp;print+join\"\\n\",split/\$ARGV[0]/}<STDIN>'"
 alias -g JOIN="| perl -le 'print+join\"\$ARGV[0]\",(map{chomp;\$_}<STDIN>)'"
+alias -g C='| colorize-http-status.sed'
 
 
 _SUDO=sudo
@@ -38,7 +39,7 @@ if [ "$CYGWIN" ] ; then
 	alias svn="LANG=C LC_ALL=C svn"
 fi
 
-if [ "${${(A)${(s:.:)HOST}}[1]}" = "pc-igademo" ] ; then
+if [ ${${(A)${(s:.:)HOST}}[1]} = "pc-igademo" ] ; then
 	export LANG=C
 	export GIT_PROXY_COMMAND=$HOME/bin/git-proxy
 fi
