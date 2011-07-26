@@ -32,7 +32,7 @@ Bundle 'EnhCommentify.vim'
 Bundle 'neocomplcache'
 Bundle 'nginx.vim'
 Bundle 'perl-support.vim'
-Bundle 'snipMate'
+"Bundle 'snipMate'
 Bundle 'sudo.vim'
 
 " non github repos
@@ -284,7 +284,7 @@ let g:Perl_AuthorRef         = 'YW'
 let g:Perl_Company           = 'Adways Co., Ltd.'
 let g:Perl_Email             = 'ywatase@gmail.com'
 let g:Perl_FormatDate        = '%Y/%m/%d'
-let g:Perl_LocalTemplateFile = $HOME . '/.vim/perl-support/templates/Templates'
+let g:Perl_LocalTemplateFile = $HOME . '/.vim/bundle_local/perl-support/templates/Templates'
 let g:Perl_MapLeader         = ','
 "let g:Perl_Dictionary_File = $HOME . '/.vim/dict/perl.dict'
 
@@ -368,6 +368,7 @@ let g:neocomplcache_enable_underbar_completion = 1
 " Set minimum syntax keyword length. 
 let g:neocomplcache_min_syntax_length = 3 
 "let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*' 
+let g:neocomplcache_snippets_dir = $HOME . '/.vim/bundle_local/snipMate/snippets/'
 
 " Define dictionary. 
 let g:neocomplcache_dictionary_filetype_lists = {} 
@@ -393,7 +394,9 @@ inoremap <expr><C-l>     neocomplcache#complete_common_string()
 map ,nr <ESC>:NeoComplCacheCachingInclude<CR>
 
 " SuperTab like snippets behavior. 
-"imap <expr><TAB> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : pumvisible() ? "\<C-n>" : "\<TAB>" 
+imap <expr><c-b> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : pumvisible() ? "\<C-n>" : "\<c-b>"
+smap <expr><c-b> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : pumvisible() ? "\<C-n>" : "\<c-b>"
+
 
 " Recommended key-mappings. 
 " <CR>: close popup and save indent. 
@@ -432,11 +435,6 @@ let g:neocomplcache_omni_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
 let g:neocomplcache_omni_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
 let g:neocomplcache_omni_patterns.perl = '[^. \t]->\h\w*\|\h\w*::'
 
-""""""""""""""""""""""""""""""
-" snipMate.vim
-"
-""""""""""""""""""""""""""""""
-let snippets_dir = '~/.vim/snipMate/snippets/'
 """"""""""""""""""""""""""""""
 " Tohtml.vim
 "

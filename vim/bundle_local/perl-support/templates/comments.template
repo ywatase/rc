@@ -39,7 +39,7 @@
 #
 #        USAGE: |FILENAME|  
 #
-#  DESCRIPTION: |CURSOR|
+#  DESCRIPTION: <CURSOR>
 #
 #      OPTIONS: ---
 # REQUIREMENTS: ---
@@ -209,7 +209,7 @@ subscribe
 #
 #         FILE: |FILENAME|
 #
-#  DESCRIPTION: |CURSOR|
+#  DESCRIPTION: <CURSOR>
 #
 #        FILES: ---
 #         BUGS: ---
@@ -237,7 +237,7 @@ use warnings;
 #
 #         FILE: |FILENAME|
 #
-#  DESCRIPTION: |CURSOR|
+#  DESCRIPTION: <CURSOR>
 #
 #        FILES: ---
 #         BUGS: ---
@@ -267,7 +267,7 @@ BEGIN{
 #
 #         FILE: |FILENAME|
 #
-#  DESCRIPTION: |CURSOR|
+#  DESCRIPTION: <CURSOR>
 #
 #       AUTHOR: |AUTHOR| (|AUTHORREF|), <|EMAIL|>
 #      COMPANY: |COMPANY|
