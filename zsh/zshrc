@@ -19,6 +19,7 @@ alias rdesk="rdesktop -r clipboard -zP -ken-us"
 alias rdesk_full="rdesk -f"
 alias get_viplugin="lftp -u viplugin,667well www.satokar.com"
 alias start_selenium_server='java -jar /home/watase/selenium-server/selenium-server.jar'
+alias make_patch='diff -u --strip-trailing-cr -B -w'
 
 alias -g V='| vim -'
 alias -g G='| grep '
