@@ -29,6 +29,7 @@ Bundle 'snipMate'
 Bundle 'nginx.vim'
 Bundle 'sudo.vim'
 Bundle 'Align'
+Bundle 'neocomplcache'
 
 " non github repos
 " Bundle 'git://git.wincent.com/command-t.git'
