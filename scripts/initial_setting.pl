@@ -1,5 +1,5 @@
 #!/usr/bin/env perl 
-# Last Modified: 2011/04/12.
+# Last Modified: 2011/07/26.
 # Author: Y.Watase <ywatase@gmail.com>
 
 use strict;
@@ -9,7 +9,7 @@ use Pod::Usage;
 use Data::Dumper;
 use File::Spec;
 use FindBin;
-use Cwd qw(realpath);
+use Cwd qw(realpath getcwd);
 
 
 use constant DEBUG_LEVEL_USUAL   => 0;
@@ -93,6 +93,7 @@ sub main {
     while(my ($target, $src) = each %hash){
         _mk_symlink(realpath($src),File::Spec->catfile($ENV{HOME}, $target));
     }
+    _clone_submodules();
 }
 
 #################################################
@@ -104,6 +105,19 @@ sub main {
 =head1 Inner Methods
 
 =over 8
+
+
+=item B<_clone_submodules> - clone submodules
+
+=cut
+
+sub _clone_submodules {
+    my $dir = getcwd;
+    chdir File::Spec->catfile($FindBin::Bin, qw(..));
+    system 'git submodule init';
+    system 'git submodule update';
+    chdir $dir;
+}
 
 =item B<_mk_symlink> - make symbolic link
 
@@ -156,66 +170,8 @@ sub _init_args {
       exit 1;
     }
   }
-#  if (not @ARGV) 
-#  {
-#    print "You must input args\n";
-#    pod2usage(1);
-#    exit 1;
-#  }
 	return \%args;
 }
-
-=item B<_setup> - setup
-
-		args(none)
-
-		return value
-
-			Success : 
-			Failure : undef
-
-=cut
-
-sub _setup {
-}
-
-=item B<_debugMsg> - show message
-
-		args($ra1,$sc1)
-
-		  $ra1    : array reference of message
-			$sc1		: DEBUG LEVEL
-
-		return value
-
-			Success : 1
-			Failure : undef
-
-=cut
-
-sub _debugMsg {
-	my ($ra_msg, $level) = @_;
-	print join("\n", @$ra_msg), "\n" if ($DEBUG >= $level);
-}
-
-=item B<_errorMsg> - show error mesage and exit.
-
-		args($sc1)
-
-		  $ra1    : scaler of message
-
-		return value
-
-      exit anyway and exit code is 1
-
-=cut
-
-sub _errorMsg {
-	my $msg = shift;
-	print STDERR $msg, "\n";
-	pod2usage(1);
-	exit 1;
-} ## end sub _errorMsg
 
 =item B<version> - show version
 
@@ -243,5 +199,3 @@ EOS
 =cut
   
 1;
-
-
