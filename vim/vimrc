@@ -1,5 +1,5 @@
 " vimrc for Y.Watase
-" Last Modified:  2011/07/13.
+" Last Modified:  2011/07/26.
 
 
 """"""""""""""""""""""""""""""
@@ -9,6 +9,28 @@
 set nocompatible          " We're running Vim, not Vi!
 
 set scrolloff=5
+
+
+""""""""""""""""""""""""""""""
+" vundle
+"
+""""""""""""""""""""""""""""""
+
+filetype off
+
+set rtp+=~/.vim/vundle.git/    " (2)
+call vundle#rc()               " (3)
+
+" original repos on github
+" Bundle 'tpope/vim-fugitive'
+
+" " vim-scripts repos
+Bundle 'snipMate'
+
+" non github repos
+" Bundle 'git://git.wincent.com/command-t.git'
+
+filetype plugin indent on
  
 """"""""""""""""""""""""""""""
 " keybind
@@ -263,7 +285,7 @@ let g:Perl_MapLeader  = ','
 autocmd BufRead,BufNewFile *.pl,*.pm,*.cgi,*.t :set filetype=perl 
 autocmd Filetype perl call MyPerlSettings()
 "autocmd BufWritePost *.pl,*.pm,*.cgi,*.t make
-function MyPerlSettings()
+function! MyPerlSettings()
    call PerlSyntaxCheck()
    call PerlCritic()
    set smartindent expandtab
@@ -289,7 +311,7 @@ endfunction
 runtime! macros/matchit.vim
 " Ruby scriptの場合、:make したとき、rubyを実行する
 autocmd FileType ruby,eruby call MyRubySettings()
-function MyRubySettings()
+function! MyRubySettings()
     compiler ruby
     set autoindent expandtab
 endfunction
