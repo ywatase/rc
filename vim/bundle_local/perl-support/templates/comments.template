@@ -54,43 +54,36 @@
 #===============================================================================
 use strict;
 use warnings;
-use FindBin;
-use File::Spec;
 
-use Getopt::Std;
 use Pod::Usage;
-use Data::Dumper;
-
-use constant DEBUG_LEVEL_USUAL   => 0;
-use constant DEBUG_LEVEL_MESSAGE => 1;
-use constant DEBUG_LEVEL_VERBOSE => 2;
+use Getopt::Long;
+Getopt::Long::Configure ("bundling");
 
 our $VERSION = 0.0;
-my $DEBUG   = DEBUG_LEVEL_USUAL;
 
 main();
 
 sub main {
-    my $rh_args = &_init_args('f:');
+    my $rh_args = &_init_args('file|f=s');
 }
 
 
 sub _init_args {
-    my $args_pattern = shift;
-    $args_pattern .= 'hvmDdV';
+    my @args_pattern = @_;
+    push @args_pattern, ( 'help|?', 'version', 'manual', 'verbose' );
 
-    my %args = ();
-    if ( not getopts($args_pattern, \%args)) {pod2usage(2); exit 0; }
-    if (exists $args{h}) { pod2usage(1); exit 0; }
-    elsif (exists $args{m}) { pod2usage(-exitstatus => 0, -verbose => 2); exit 0;}
-    elsif (exists $args{v}) { version(); exit 0; }
-    if (exists $args{d}) { $DEBUG = DEBUG_LEVEL_VERBOSE}
-    if (exists $args{V}) { $DEBUG = DEBUG_LEVEL_MESSAGE}
-    if (exists $args{f})
+    my %args = (
+        # argname => 'default value'
+    );
+    if ( not GetOptions ( \%args, @args_pattern )) {pod2usage(2); exit 0; }
+    if (exists $args{help}) { pod2usage(1); exit 0; }
+    elsif (exists $args{manual}) { pod2usage(-exitstatus => 0, -verbose => 2); exit 0;}
+    elsif (exists $args{version}) { version(); exit 0; }
+    if (exists $args{file})
     {
-        if (not -e $args{f})
+        if (not -e $args{file})
         {
-            print "Can't access file: $args{f}\n";
+            print "Can't access file: $args{file}\n";
             exit 1;
         }
     }
@@ -127,27 +120,23 @@ __END__
 
 =over 8
 
-=item B<-f> filename
+=item B<--file|-f> filename
 
 set filename
 
-=item B<-V>
-
-verbose mode
-
-=item B<-d>
-
-debug mode. more verbose.
-
-=item B<-h>
+=item B<--help|?>
 
 show help
 
-=item B<-m>
+=item B<--verbose>
+
+verbose mode
+
+=item B<--manual>
 
 show manual
 
-=item B<-v>
+=item B<--version>
 
 show version
 
@@ -159,7 +148,7 @@ This is skelton of perl script.
 
 =head1 PREREQUISITES
 
-This script requires the C<Getopt::Std>, C<Pod::Usage>
+This script requires the C<Getopt::Long>, C<Pod::Usage>
 
 =head1 Methods
 
