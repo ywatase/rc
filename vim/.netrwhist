@@ -1,9 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =7
-let g:netrw_dirhist_1='/home/watase/201012xx/tong/quick_sort2'
-let g:netrw_dirhist_2='/home/watase/201012xx/tong/quick_sort2/src'
-let g:netrw_dirhist_3='/var/work/svn/adways/user/watase_yusuke/setting/dsh/group'
-let g:netrw_dirhist_4='/home/watase/git/recruit/lib/Recruit/Base/Web'
-let g:netrw_dirhist_5='/home/watase/git/recruit/lib/Recruit/Base'
-let g:netrw_dirhist_6='/home/watase/git/recruit/lib/Recruit'
-let g:netrw_dirhist_7='/home/watase/git/recruit/lib'
