@@ -307,7 +307,7 @@ autoload -Uz vcs_info
 zstyle ':vcs_info:*' formats '(%s)-[%b]'
 zstyle ':vcs_info:*' actionformats '(%s)-[%b|%a]'
 
-which vcs_info 2>/dev/null 1>/dev/null
+vcs_info 2>/dev/null 1>/dev/null
 RET=$?
 if [[ "$RET" == 0  ]] ; then
 	call_vcs_info () {
