@@ -12,33 +12,33 @@ autoload -Uz is-at-least
 # OS CHeck
 ###
 is_linux () {
-	if [ `uname` = "Linux" ] ; then
-		true
-	else
-		false
-	fi
+  if [ `uname` = "Linux" ] ; then
+    true
+  else
+    false
+  fi
 }
 is_mac () {
-	if [ `uname` = "Darwin" ] ; then
-		true
-	else
-		false
-	fi
+  if [ `uname` = "Darwin" ] ; then
+    true
+  else
+    false
+  fi
 }
 
 is_debian () {
-	if [ -e '/etc/debian-release' ] ; then
-		true
-	else
-		false
-	fi
+  if [ -e '/etc/debian-release' ] ; then
+    true
+  else
+    false
+  fi
 }
 is_redhat () {
-	if [ -e '/etc/redhat-release' ] ; then
-		true
-	else
-		false
-	fi
+  if [ -e '/etc/redhat-release' ] ; then
+    true
+  else
+    false
+  fi
 }
 
 ###
@@ -46,9 +46,9 @@ is_redhat () {
 ###
 alias l=ls
 if is_mac ; then
-	alias ls="ls -G"
+  alias ls="ls -G"
 else
-	alias ls="ls --color=auto --show-control-chars"
+  alias ls="ls --color=auto --show-control-chars"
 fi
 alias la="ls -aF"
 alias ll="ls -l"
@@ -70,37 +70,37 @@ alias -g C='| colorize-http-status.sed'
 _SUDO=sudo
 # for windows
 if [ "$CYGWIN" ] ; then
-	_SUDO=''
-	alias vi=vim
-	alias gvim=/usr/local/vim/gvim
-	alias traceroute="tracert"
-	alias svn="LANG=C LC_ALL=C svn"
+  _SUDO=''
+  alias vi=vim
+  alias gvim=/usr/local/vim/gvim
+  alias traceroute="tracert"
+  alias svn="LANG=C LC_ALL=C svn"
 fi
 
 if [ ${${(A)${(s:.:)HOST}}[1]} = "pc-igademo" ] ; then
-	export LANG=C
-	export GIT_PROXY_COMMAND=$HOME/bin/git-proxy
+  export LANG=C
+  export GIT_PROXY_COMMAND=$HOME/bin/git-proxy
 fi
 
 # ssh agent
 if [ "$CYGWIN" ] ||  [ "${${(A)${(s:.:)HOST}}[1]}" = 'pc-igademo' ] ; then
-	keychain ~/.ssh/id_dsa
-	source ~/.keychain/$HOST-sh
+  keychain ~/.ssh/id_dsa
+  source ~/.keychain/$HOST-sh
 else
-	agent="$HOME/tmp/ssh-agent-$USER"
-	if [ -S "$SSH_AUTH_SOCK" ] ; then
-		case $SSH_AUTH_SOCK in
-			/tmp/*/agent.[0-9]*)
-			if ! [ -e "$HOME/tmp" ] ; then
-				mkdir "$HOME/tmp"
-			fi
-			ln -snf "$SSH_AUTH_SOCK" $agent && export SSH_AUTH_SOCK=$agent
-		esac
-	elif [ -S $agent ]; then
-		export SSH_AUTH_SOCK=$agent
-	else
-		echo "no ssh-agent"
-	fi
+  agent="$HOME/tmp/ssh-agent-$USER"
+  if [ -S "$SSH_AUTH_SOCK" ] ; then
+    case $SSH_AUTH_SOCK in
+      /tmp/*/agent.[0-9]*)
+      if ! [ -e "$HOME/tmp" ] ; then
+        mkdir "$HOME/tmp"
+      fi
+      ln -snf "$SSH_AUTH_SOCK" $agent && export SSH_AUTH_SOCK=$agent
+    esac
+  elif [ -S $agent ]; then
+    export SSH_AUTH_SOCK=$agent
+  else
+    echo "no ssh-agent"
+  fi
 fi
 
 ###
@@ -112,141 +112,141 @@ alias perlsource="PAGER=vim perldoc -m "
 path=($HOME/perl5/perlbrew/bin(N-/) $HOME/perl5/perlbrew/perls/current/bin(N-/) $HOME/bin/*(N-/) $HOME/bin(N-/) $path)
 
 if [ -e $HOME/perl5/perlbrew/etc/bashrc ] ; then
-	source $HOME/perl5/perlbrew/etc/bashrc
+  source $HOME/perl5/perlbrew/etc/bashrc
 fi
 
 perlpath () {
-	for MODULE in $@
-	do
-		perl -MClass::Inspector -le "print Class::Inspector->resolved_filename(qq{$MODULE})"
-	done
-	MODULE=
+  for MODULE in $@
+  do
+    perl -MClass::Inspector -le "print Class::Inspector->resolved_filename(qq{$MODULE})"
+  done
+  MODULE=
 }
 perlversion () {
-	for MODULE in $@
-	do
-		perl -le "eval { require $MODULE}; print qq{${MODULE}: \$${MODULE}::VERSION}"
-	done
-	MODULE=
+  for MODULE in $@
+  do
+    perl -le "eval { require $MODULE}; print qq{${MODULE}: \$${MODULE}::VERSION}"
+  done
+  MODULE=
 }
 perlsourcew () {
-	${_SUDO} vim $(perlpath $1)
+  ${_SUDO} vim $(perlpath $1)
 }
 perlmodulelist () {
-	local modulelist 
-	modulelist=(`find /usr/lib{,64}/perl{,5} /usr/share/perl{,5} /usr/local/{lib,share}/{,site_}perl -name .packlist | perl -lpe 'm{/auto/(.*)/.packlist}; (my $m = $1) =~ s{/}{::}g; $_ = $m;' | sort | uniq`)
-	perlversion $modulelist
+  local modulelist 
+  modulelist=(`find /usr/lib{,64}/perl{,5} /usr/share/perl{,5} /usr/local/{lib,share}/{,site_}perl -name .packlist | perl -lpe 'm{/auto/(.*)/.packlist}; (my $m = $1) =~ s{/}{::}g; $_ = $m;' | sort | uniq`)
+  perlversion $modulelist
 }
 perlmethod () {
-	PERLMETHOD_ALL=; PERLMETHOD_USAGE=
-	while getopts a PERLMETHOD_OPT
-	do
-		case $PERLMETHOD_OPT in
-			a) PERLMETHOD_ALL=1;;
-			*) PERLMETHOD_USAGE=1;;
-		esac
-	done
-	shift `expr $OPTIND - 1`
-	if [ "$PERLMETHOD_USAGE" ] || ! [ "$1" ] ||  [ "$2" ] ; then
-		echo -e "perlmethod [-a] Some::Perl::Module -- show methods of Perl Module\n\ta:\tshow private method"
-	elif [ "$PERLMETHOD_ALL" ] ; then 
-		perl -M$1 -le"map{print}sort+grep{defined&{\"$1::\$_\"}}keys%{$1::}"
-	else
-		perl -M$1 -le"map{print}sort+grep{defined&{\"$1::\$_\"}&&m{^[^_]}}keys%{$1::}"
-	fi
-	PERLMETHOD_ALL=; PERLMETHOD_USAGE=
+  PERLMETHOD_ALL=; PERLMETHOD_USAGE=
+  while getopts a PERLMETHOD_OPT
+  do
+    case $PERLMETHOD_OPT in
+      a) PERLMETHOD_ALL=1;;
+      *) PERLMETHOD_USAGE=1;;
+    esac
+  done
+  shift `expr $OPTIND - 1`
+  if [ "$PERLMETHOD_USAGE" ] || ! [ "$1" ] ||  [ "$2" ] ; then
+    echo -e "perlmethod [-a] Some::Perl::Module -- show methods of Perl Module\n\ta:\tshow private method"
+  elif [ "$PERLMETHOD_ALL" ] ; then 
+    perl -M$1 -le"map{print}sort+grep{defined&{\"$1::\$_\"}}keys%{$1::}"
+  else
+    perl -M$1 -le"map{print}sort+grep{defined&{\"$1::\$_\"}&&m{^[^_]}}keys%{$1::}"
+  fi
+  PERLMETHOD_ALL=; PERLMETHOD_USAGE=
 }
 
 install-perlbrew () {
-	curl -L http://xrl.us/perlbrewinstall | bash
+  curl -L http://xrl.us/perlbrewinstall | bash
 }
 
 install-cpanm () {
-	curl -L http://cpanmin.us | perl - --self-upgrade $@
+  curl -L http://cpanmin.us | perl - --self-upgrade $@
 }
 
 install-module-install () {
-	cpanm Module::Setup \
-		Module::Install \
-		Module::Install::TestTarget \
-		Module::Install::GithubMeta \
-		Module::Install::ReadmePodFromPod \
-		Module::Install::ReadmeFromPod \
-		Module::Install::ReadmeMarkdownFromPod \
-		Module::Install::TestBase \
-		Test::Requires
+  cpanm Module::Setup \
+    Module::Install \
+    Module::Install::TestTarget \
+    Module::Install::GithubMeta \
+    Module::Install::ReadmePodFromPod \
+    Module::Install::ReadmeFromPod \
+    Module::Install::ReadmeMarkdownFromPod \
+    Module::Install::TestBase \
+    Test::Requires
 }
 
 install-amon2flavor () {
-	local path_rcfile
-	local cwd
-	cwd=`pwd`
-	path_rcfile=$(dirname  $(perl -le 'use Cwd; print Cwd::abs_path($ARGV[0])' ~/.vim))
-	cd $path_rcfile/perl
-	tar czf Amon2-Setup-Flavor-Teng.tar.gz Amon2-Setup-Flavor-Teng
-	cpanm ./Amon2-Setup-Flavor-Teng.tar.gz
-	rm Amon2-Setup-Flavor-Teng.tar.gz
-	cd $cwd
+  local path_rcfile
+  local cwd
+  cwd=`pwd`
+  path_rcfile=$(dirname  $(perl -le 'use Cwd; print Cwd::abs_path($ARGV[0])' ~/.vim))
+  cd $path_rcfile/perl
+  tar czf Amon2-Setup-Flavor-Teng.tar.gz Amon2-Setup-Flavor-Teng
+  cpanm ./Amon2-Setup-Flavor-Teng.tar.gz
+  rm Amon2-Setup-Flavor-Teng.tar.gz
+  cd $cwd
 }
 
 cpan-uninstall () {
-	for MODULE in $@
-	do
-		${_SUDO} perl -MConfig -MExtUtils::Install -e '($FULLEXT=shift)=~s{::}{/}g;uninstall "$Config{sitearchexp}/auto/$FULLEXT/.packlist",1' $MODULE
-	done
+  for MODULE in $@
+  do
+    ${_SUDO} perl -MConfig -MExtUtils::Install -e '($FULLEXT=shift)=~s{::}{/}g;uninstall "$Config{sitearchexp}/auto/$FULLEXT/.packlist",1' $MODULE
+  done
 }
 
 cpan-uninstall-perlbrew () {
-	for MODULE in $@
-	do
-		perl -MConfig -MExtUtils::Install -e '($FULLEXT=shift)=~s{::}{/}g;uninstall "$Config{sitearchexp}/auto/$FULLEXT/.packlist",1' $MODULE
-	done
+  for MODULE in $@
+  do
+    perl -MConfig -MExtUtils::Install -e '($FULLEXT=shift)=~s{::}{/}g;uninstall "$Config{sitearchexp}/auto/$FULLEXT/.packlist",1' $MODULE
+  done
 }
 
 cpan-uninstall-locallib () {
-	for MODULE in $@
-	do
-		if [ "x${PERL_LOCAL_LIB_ROOT}" != "x"  -a -d  ${PERL_LOCAL_LIB_ROOT} ] ; then
-			perl -MConfig -MExtUtils::Install -e '($FULLEXT=shift)=~s{::}{/}g; uninstall "$ENV{PERL_LOCAL_LIB_ROOT}/lib/perl5/$Config{archname}/auto/$FULLEXT/.packlist",1' $MODULE
-		else
-			echo 'environtal variable "PERL_LOCAL_LIB_ROOT" is not correct'
-		fi
-	done
+  for MODULE in $@
+  do
+    if [ "x${PERL_LOCAL_LIB_ROOT}" != "x"  -a -d  ${PERL_LOCAL_LIB_ROOT} ] ; then
+      perl -MConfig -MExtUtils::Install -e '($FULLEXT=shift)=~s{::}{/}g; uninstall "$ENV{PERL_LOCAL_LIB_ROOT}/lib/perl5/$Config{archname}/auto/$FULLEXT/.packlist",1' $MODULE
+    else
+      echo 'environtal variable "PERL_LOCAL_LIB_ROOT" is not correct'
+    fi
+  done
 }
 
 xml2yaml () {
-	for FILE in $@
-	do 
-		BASENAME=$(basename $FILE .xml)
-		perl -MYAML -MXML::Simple -e 'print Dump XMLin "$ARGV[0]"' $FILE > $BASENAME.yaml
-	done
+  for FILE in $@
+  do 
+    BASENAME=$(basename $FILE .xml)
+    perl -MYAML -MXML::Simple -e 'print Dump XMLin "$ARGV[0]"' $FILE > $BASENAME.yaml
+  done
 }
 
 json2yaml () {
-	for FILE in $@
-	do 
-		BASENAME=$(basename $FILE .json)
-		perl -MYAML -MJSON -e 'open my $fh, "<", $ARGV[0] or die $!; print Dump JSON::decode_json(join(q{}, $fh));close $fh;' $FILE > $BASENAME.yaml
-	done
+  for FILE in $@
+  do 
+    BASENAME=$(basename $FILE .json)
+    perl -MYAML -MJSON -e 'open my $fh, "<", $ARGV[0] or die $!; print Dump JSON::decode_json(join(q{}, $fh));close $fh;' $FILE > $BASENAME.yaml
+  done
 }
 
 locallib () {
-	echo "OLD PATH: $PATH"
-	if [ "$1" = "" ] ; then
-		echo 'usage: locallib [locallib path]'
-	elif [ -d $1 ] ; then
-		if [ "x$PERL_LOCAL_LIB_ROOT" != "x" ] ; then
-			PATH=$(echo $PATH | sed "s#\(^\|:\)$PERL_LOCAL_LIB_ROOT\/bin:##")
-		fi
-		eval $(perl -Mlocal::lib=$1)
-	else
-		echo "$1 doen't exit"
-	fi
-	echo "NEW PATH: $PATH"
+  echo "OLD PATH: $PATH"
+  if [ "$1" = "" ] ; then
+    echo 'usage: locallib [locallib path]'
+  elif [ -d $1 ] ; then
+    if [ "x$PERL_LOCAL_LIB_ROOT" != "x" ] ; then
+      PATH=$(echo $PATH | sed "s#\(^\|:\)$PERL_LOCAL_LIB_ROOT\/bin:##")
+    fi
+    eval $(perl -Mlocal::lib=$1)
+  else
+    echo "$1 doen't exit"
+  fi
+  echo "NEW PATH: $PATH"
 }
 
 locallib_delete () {
-	unset PERL_LOCAL_LIB_ROOT PERL_MB_OPT PERL_MM_OPT PERL5LIB
+  unset PERL_LOCAL_LIB_ROOT PERL_MB_OPT PERL_MM_OPT PERL5LIB
 }
 
 
@@ -254,19 +254,23 @@ locallib_delete () {
 # rpm
 ###
 rpm_list () {
-	rpm2cpio $1 | cpio --list
+  rpm2cpio $1 | cpio --list
 }
 rpm_extract () {
-	rpm2cpio $1 | cpio -id
+  rpm2cpio $1 | cpio -id
 }
 
 ###
 # mac
 ###
 if is_mac ; then
-	install-homebrew () {
-		ruby -e "$(curl -LfsS http://gist.github.com/raw/323731/install_homebrew.rb)"
-	}
+  install-homebrew () {
+    /usr/bin/ruby -e "$(curl -LfsS https://raw.github.com/gist/323731)"
+  }
+  install-vim () {
+    brew install https://raw.github.com/AndrewVos/homebrew-alt/master/duplicates/vim.rb
+    mv /usr/bin/vim /usr/bin/vim72
+  }
 fi
 
 
@@ -341,21 +345,21 @@ fi
 
 function ssh_resolve_cname () {
     TARGET=`host $1 | perl -e '$a=join q{},<>;$a=~m/is an alias for ([^\s]+)/; print $1'`
-	if [ x$TARGET = x ] ; then
-		ssh $@
-	else
-		shift
-		echo $TARGET
-		ssh $@ $TARGET
-	fi
+  if [ x$TARGET = x ] ; then
+    ssh $@
+  else
+    shift
+    echo $TARGET
+    ssh $@ $TARGET
+  fi
 }
 
 r() {
-	local f
-	f=(~/.zsh/functions/*(.))
-	unfunction $f:t 2> /dev/null
-	autoload -U $f:t
-	compinit -u
+  local f
+  f=(~/.zsh/functions/*(.))
+  unfunction $f:t 2> /dev/null
+  autoload -U $f:t
+  compinit -u
 }
 
 
@@ -379,22 +383,22 @@ zstyle ':vcs_info:*' actionformats '(%s)-[%b|%a]'
 vcs_info 2>/dev/null 1>/dev/null
 RET=$?
 if [[ "$RET" == 0  ]] ; then
-	call_vcs_info () {
-		LANG=C vcs_info
-		# バージョン管理下ならpsvar[1]に代入
-		[[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_" 
-	}
+  call_vcs_info () {
+    LANG=C vcs_info
+    # バージョン管理下ならpsvar[1]に代入
+    [[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_" 
+  }
 else
-	call_vcs_info () {
-	}
+  call_vcs_info () {
+  }
 fi
 
 
 precmd () {
-	psvar=()
-	call_vcs_info
-	# local::libを利用していたらpsvar[2]に代入
-	[[ -n "$PERL_LOCAL_LIB_ROOT" ]] && psvar[2]="$PERL_LOCAL_LIB_ROOT"
+  psvar=()
+  call_vcs_info
+  # local::libを利用していたらpsvar[2]に代入
+  [[ -n "$PERL_LOCAL_LIB_ROOT" ]] && psvar[2]="$PERL_LOCAL_LIB_ROOT"
 }
 
 
@@ -411,13 +415,16 @@ RPROMPT='%{[33m%}[%~]%{[m%}%1(v|%F{green}%1v%f|)%2(v|%F{magenta}(locallib:%2v%
 ###
 # Environment variable
 ###
-if ! is_mac  ; then
+if is_mac  ; then
+  export EDITOR=/usr/bin/vim
+else
   eval `dircolors -b` # set LS_COLORS
+  export EDITOR=vi
+
 fi
 path=(/usr/local/ec2-api-tools/bin(N-/) $HOME/eclipse(N-/) $HOME/android-sdk(N-/) $HOME/bin(N-/) $path)
 typeset -U path
 export PAGER=less
-export EDITOR=vi
 export TZ=JST-9
 export SHELL=/bin/zsh
 export CVS_RSH=ssh
@@ -460,9 +467,9 @@ bindkey "^N" history-beginning-search-forward-end
 ###
 autoload -U compinit
 if [ "$CYGWIN" ] ; then
-	compinit -u
+  compinit -u
 else
-	compinit
+  compinit
 fi
 
 zstyle ':completion:*' verbose yes
@@ -500,7 +507,7 @@ make_p () {
     [ -f $t ] || return 0
 
     for s; do
-	[ $s -nt $t ] && return 0
+  [ $s -nt $t ] && return 0
     done
 
     return 1
@@ -511,19 +518,19 @@ known_hosts_file="$HOME/.ssh/known_hosts"
 
 print_cache_hosts () {
     if [ -f $known_hosts_file ]; then
-	awk '{ if (split($1, a, ",") > 1) for (i in a) { if (a[i] ~ /^[a-z]/) print a[i] } else print $1 }' $known_hosts_file
+  awk '{ if (split($1, a, ",") > 1) for (i in a) { if (a[i] ~ /^[a-z]/) print a[i] } else print $1 }' $known_hosts_file
     fi
 }
 
 update_cache_hosts () {
     print_cache_hosts | sort -u > $cache_hosts_file
-	if [ -f $known_hosts_file ]; then
-		hostnames=(`perl -ne  'if (/^([a-zA-Z0-9.-]+)/) { print "$1\n";}' $known_hosts_file`) 
-	elif [ -f /etc/hosts ]; then                 
-		hostnames=(`awk '{print $2}' /etc/hosts`)
-	else
-		hostnames=(localhost)
-	fi
+  if [ -f $known_hosts_file ]; then
+    hostnames=(`perl -ne  'if (/^([a-zA-Z0-9.-]+)/) { print "$1\n";}' $known_hosts_file`) 
+  elif [ -f /etc/hosts ]; then                 
+    hostnames=(`awk '{print $2}' /etc/hosts`)
+  else
+    hostnames=(localhost)
+  fi
 }
 
 make_p $cache_hosts_file $known_hosts_file && update_cache_hosts
@@ -703,9 +710,9 @@ compctl -l '' -x 'p[1]' -f -- . source
 ## compctl -K mhfseq -x 's[+][@]' -K mhcomp -S / -q - 's[-]' \
 ##   -k '(help)' -- rmm
 
-## compctl -g "~/Mail/*(/)(:t)" 			   refn
+## compctl -g "~/Mail/*(/)(:t)"          refn
 ## compctl -K "(all cur first last next prev unseen)" -S : -x \
-## 	's[+]' -g "~/Mail/*(/)(:t)" -- inc show scan
+##   's[+]' -g "~/Mail/*(/)(:t)" -- inc show scan
 
 # End of MH completions
 
@@ -714,86 +721,86 @@ compctl -l '' -x 'p[1]' -f -- . source
 ##
 compctl -f -x 'C[-1,*f*] p[2]' -g "(|.)*.tar (|.)*(-/)" -- tar
 compctl -f -x \
-	's[--]' -k "(atime-preserve remove-files exclude help)" - \
-	'C[-1,*z*] p[2]' -g "*.tar.(Z|z|gz) *.taz *.tgz (|.)*(-/)" - \
-	'C[-1,*f*] p[2]' -g "*.tar (|.)*(-/)"		-- gtar
+  's[--]' -k "(atime-preserve remove-files exclude help)" - \
+  'C[-1,*z*] p[2]' -g "*.tar.(Z|z|gz) *.taz *.tgz (|.)*(-/)" - \
+  'C[-1,*f*] p[2]' -g "*.tar (|.)*(-/)"    -- gtar
 ###
 # for directory operators
 ###
 # Rmdir only real directories
 compctl -g '(|.)*(-/)' rmdir dircmp rd mdcd mkdir
-compctl -x 'p[2]' -k "(wheel staff ftpadmin okoma)"	-- pubmd
+compctl -x 'p[2]' -k "(wheel staff ftpadmin okoma)"  -- pubmd
 
 ###
 # for hostname-sensitive commands
 ###
 compctl -u -S @ -x \
-	'n[5,,]' -k hostnames -S '' - \
-	'n[4,,]' -k hostnames -S '' - \
-	'n[3,,]' -k hostnames -S '' - \
-	'n[2,,]' -k hostnames -S '' - \
-	'n[1,,]' -k hostnames -S '' - \
-	'n[*,{]' -k hostnames -S , - \
-	'n[1,@]' -k hostnames - \
-	'S[.]' -k '(.local)' -S @ - \
-	's[-]' -k'(m l s q i b f w h p)'		-- finger
-compctl -u -S @ -x 'n[1,@]' -k hostnames		-- talk phone
-compctl -k hostnames + -k ftpsites	ping {,nc}ftp telnet traceroute spray
+  'n[5,,]' -k hostnames -S '' - \
+  'n[4,,]' -k hostnames -S '' - \
+  'n[3,,]' -k hostnames -S '' - \
+  'n[2,,]' -k hostnames -S '' - \
+  'n[1,,]' -k hostnames -S '' - \
+  'n[*,{]' -k hostnames -S , - \
+  'n[1,@]' -k hostnames - \
+  'S[.]' -k '(.local)' -S @ - \
+  's[-]' -k'(m l s q i b f w h p)'    -- finger
+compctl -u -S @ -x 'n[1,@]' -k hostnames    -- talk phone
+compctl -k hostnames + -k ftpsites  ping {,nc}ftp telnet traceroute spray
 
 ###
 # for variable-aware commands
 ###
 # Default completion at argc[0]
 #compctl -C -c -x \
-#	's[DISPLAY=]' -k hostnames -S ":0" - \
-#	's[LANG=]' -k (japanese C) - \
-#	's[TERM=]' -k (vt100 kterm xterm news screen pc3 cons25) - \
-#	's[LESSCHARSET=]' -k (japanese jis sjis ujis) - \
-##	'C[0,[A-Z][A-Z][A-Z]*]' -v -k (LANG JAPANESE LESSCHARSET DISPLAY) \
-#		-S = - \
-#	'n[1,=]' -f
+#  's[DISPLAY=]' -k hostnames -S ":0" - \
+#  's[LANG=]' -k (japanese C) - \
+#  's[TERM=]' -k (vt100 kterm xterm news screen pc3 cons25) - \
+#  's[LESSCHARSET=]' -k (japanese jis sjis ujis) - \
+##  'C[0,[A-Z][A-Z][A-Z]*]' -v -k (LANG JAPANESE LESSCHARSET DISPLAY) \
+#    -S = - \
+#  'n[1,=]' -f
 # Default completion maybe right of parameter assignment
 compctl -D -f -x \
-	'C[-1,DISPLAY=*]' -k hostnames -S ":0" - \
-	'C[-1,LANG=*]' -k "(japanese C)" - \
-	'C[-1,PAGER=*]' -k "(less more)" - \
-	'C[-1,TERM=*]' -k "(vt100 kterm xterm news screen)" - \
-	'C[-1,LESSCHARSET=*]' -k "(japanese jis sjis ujis)"
-	
+  'C[-1,DISPLAY=*]' -k hostnames -S ":0" - \
+  'C[-1,LANG=*]' -k "(japanese C)" - \
+  'C[-1,PAGER=*]' -k "(less more)" - \
+  'C[-1,TERM=*]' -k "(vt100 kterm xterm news screen)" - \
+  'C[-1,LESSCHARSET=*]' -k "(japanese jis sjis ujis)"
+  
 # setenv (personal function)
 compctl -f -x \
-	'p[1]' -v -k "(LANG DISPLAY TERM LESSCHARSET)" - \
-	'c[-1,DISPLAY]' -k hostnames -S ":0" - \
-	'c[-1,LANG]' -k "(japanese C)" - \
-	'c[-1,PAGER]' -k "(less more)" - \
-	'c[-1,TERM]' -k "(vt100 kterm xterm news screen)" - \
-	'c[-1,LESSCHARSET]' -k "(japanese jis sjis ujis)" 	-- setenv
+  'p[1]' -v -k "(LANG DISPLAY TERM LESSCHARSET)" - \
+  'c[-1,DISPLAY]' -k hostnames -S ":0" - \
+  'c[-1,LANG]' -k "(japanese C)" - \
+  'c[-1,PAGER]' -k "(less more)" - \
+  'c[-1,TERM]' -k "(vt100 kterm xterm news screen)" - \
+  'c[-1,LESSCHARSET]' -k "(japanese jis sjis ujis)"   -- setenv
 
 # Similar things for tex, texinfo and dvi files.
 compctl -g '*.tex*' + -g '*(-/)' {big,}{J,j,}latex {big,}{J,j,}tex
 #compctl -g '*.dvi' + -g '*(-/)' -x \
-#	'c[-1,-o]' -k (landscape a5 b4 b4landscape)	-- dvi2ps jdvi2kps
+#  'c[-1,-o]' -k (landscape a5 b4 b4landscape)  -- dvi2ps jdvi2kps
 
 ###
 # for archivers and compression tools
 ###
 compctl -f -x 'p[1,2]' \
-	-g "*(-/) *.[Ll][Zz][Hh] *.[Ee][Xx][Ee]"	-- lha lhp
-compctl -f -x 'p[1]' -g "*(-/) *.[Aa][Rr][Cc]"		-- arc
-compctl -f -x 'p[1,2]' -g "*(-/) *.[Zz][Ii][Pp]"	-- zip unzip
-compctl -f -x 'p[1,2]' -g "*(-/) *.[Aa][Rr][Jj]"	-- unarj
-compctl -g "*(-/) *.(Z|z|gz)"				zmore zless zgrep zcmp
+  -g "*(-/) *.[Ll][Zz][Hh] *.[Ee][Xx][Ee]"  -- lha lhp
+compctl -f -x 'p[1]' -g "*(-/) *.[Aa][Rr][Cc]"    -- arc
+compctl -f -x 'p[1,2]' -g "*(-/) *.[Zz][Ii][Pp]"  -- zip unzip
+compctl -f -x 'p[1,2]' -g "*(-/) *.[Aa][Rr][Jj]"  -- unarj
+compctl -g "*(-/) *.(Z|z|gz)"        zmore zless zgrep zcmp
 
 # C compilers
 compctl -g "*.[cCoa]" -x 's[-I][-L]' -g "*(/)" - \
-	'C[-1,-o]' -g "*.c(:r)" - \
-	's[-l]' -s '${(s.:.)^LD_LIBRARY_PATH}/lib*.a(:t:r:s/lib//) \
-		/usr/{,*/}lib/lib*.a(:t:r:s/lib//)'	-- cc gcc
+  'C[-1,-o]' -g "*.c(:r)" - \
+  's[-l]' -s '${(s.:.)^LD_LIBRARY_PATH}/lib*.a(:t:r:s/lib//) \
+    /usr/{,*/}lib/lib*.a(:t:r:s/lib//)'  -- cc gcc
 
 # Java compiler and interpreter
-compctl -g "*(-/) *.java"				javac
+compctl -g "*(-/) *.java"        javac
 compctl -g "*.class(:r)" -x \
-	'p[2,-1]' -f					-- java kaffe
+  'p[2,-1]' -f          -- java kaffe
 
 ###
 # Miscellaneous
@@ -807,29 +814,31 @@ compctl -g "*.class(:r)" -x \
 #     'c[-1,-e]' -k "(mh-rmail mh-smail resume-windows trr)" - \
 #     'c[-1,-display]' -k hostnames -S ":0 " - \
 #     'c[-1,-geometry]' -k "(+0+0 80x37+0+0 80x26+0+0)" - \
-#     'c[-1,-user]' -u		-- mule $emacs m1 tamago canna emacs
+#     'c[-1,-user]' -u    -- mule $emacs m1 tamago canna emacs
 
 #compctl -g "*(-/)" -x \
-#	's[-]' -k (fstype name perm prune type user nouser group nogroup size \
-#		inum atime mtime ctime exec ok print ls cpio ncpio newer \
-#		xdev depth) - \
-#	'c[-1,-type]' -k (c b d f p l s) - 'c[-1,-user]' -u - \
-#	'r[-exec,;][-ok,;]' -l ''			-- find
+#  's[-]' -k (fstype name perm prune type user nouser group nogroup size \
+#    inum atime mtime ctime exec ok print ls cpio ncpio newer \
+#    xdev depth) - \
+#  'c[-1,-type]' -k (c b d f p l s) - 'c[-1,-user]' -u - \
+#  'r[-exec,;][-ok,;]' -l ''      -- find
 
 #compctl -x \
-#	'c[-1,-f]' -g "[Mm]ake* *.[Mm]*[Kk] *(-/)" - \
-#	's[CC]' -P "='" -k (gcc cc) -S " -pipe" - \
-#	'S[CF]' -S "='" -k (CFLAGS) - \
-#	's[-I],s[-L]' -g "*(-/)"			-- make gmake
+#  'c[-1,-f]' -g "[Mm]ake* *.[Mm]*[Kk] *(-/)" - \
+#  's[CC]' -P "='" -k (gcc cc) -S " -pipe" - \
+#  'S[CF]' -S "='" -k (CFLAGS) - \
+#  's[-I],s[-L]' -g "*(-/)"      -- make gmake
 
-compctl -g "(|.)*~*.[ch] *(-/)"				rm
+compctl -g "(|.)*~*.[ch] *(-/)"        rm
 
 #compctl -f -x \
 #       'c[-1,-man]' -g "*.[0-9] *.man *(-/)"           -- nroff
 
-#compctl -g "(|*).obj *(-/)"				tgif prtgif
+#compctl -g "(|*).obj *(-/)"        tgif prtgif
 #
 ##compctl -f -x \
-#	's[-]' -k (s R mv rm mkindex refresh pick flush perf \
-#		   delete reclassify) - \
-#							-- ftpurl
+#  's[-]' -k (s R mv rm mkindex refresh pick flush perf \
+#       delete reclassify) - \
+#              -- ftpurl
+
+# vim:set ts=2 sw=2 et si:
