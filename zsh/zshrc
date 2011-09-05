@@ -9,10 +9,47 @@ setopt cdable_vars sh_word_split auto_param_keys
 autoload -Uz is-at-least
 
 ###
+# OS CHeck
+###
+is_linux () {
+	if [ `uname` = "Linux" ] ; then
+		true
+	else
+		false
+	fi
+}
+is_mac () {
+	if [ `uname` = "Darwin" ] ; then
+		true
+	else
+		false
+	fi
+}
+
+is_debian () {
+	if [ -e '/etc/debian-release' ] ; then
+		true
+	else
+		false
+	fi
+}
+is_redhat () {
+	if [ -e '/etc/redhat-release' ] ; then
+		true
+	else
+		false
+	fi
+}
+
+###
 # Alias
 ###
 alias l=ls
-alias ls="ls -F --show-control-chars --color=auto"
+if is_mac ; then
+	alias ls="ls -G"
+else
+	alias ls="ls --color=auto --show-control-chars"
+fi
 alias la="ls -aF"
 alias ll="ls -l"
 alias rdesk="rdesktop -r clipboard -zP -ken-us"
@@ -128,6 +165,18 @@ install-cpanm () {
 	curl -L http://cpanmin.us | perl - --self-upgrade $@
 }
 
+install-module-install () {
+	cpanm Module::Setup \
+		Module::Install \
+		Module::Install::TestTarget \
+		Module::Install::GithubMeta \
+		Module::Install::ReadmePodFromPod \
+		Module::Install::ReadmeFromPod \
+		Module::Install::ReadmeMarkdownFromPod \
+		Module::Install::TestBase \
+		Test::Requires
+}
+
 install-amon2flavor () {
 	local path_rcfile
 	local cwd
@@ -211,6 +260,14 @@ rpm_extract () {
 	rpm2cpio $1 | cpio -id
 }
 
+###
+# mac
+###
+if is_mac ; then
+	install-homebrew () {
+		ruby -e "$(curl -LfsS http://gist.github.com/raw/323731/install_homebrew.rb)"
+	}
+fi
 
 
 ###
@@ -354,7 +411,9 @@ RPROMPT='%{[33m%}[%~]%{[m%}%1(v|%F{green}%1v%f|)%2(v|%F{magenta}(locallib:%2v%
 ###
 # Environment variable
 ###
-eval `dircolors -b` # set LS_COLORS
+if ! is_mac  ; then
+  eval `dircolors -b` # set LS_COLORS
+fi
 path=(/usr/local/ec2-api-tools/bin(N-/) $HOME/eclipse(N-/) $HOME/android-sdk(N-/) $HOME/bin(N-/) $path)
 typeset -U path
 export PAGER=less
