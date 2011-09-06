@@ -1,5 +1,5 @@
 #!/usr/bin/env perl 
-# Last Modified: 2011/07/26.
+# Last Modified: 2011/09/06.
 # Author: Y.Watase <ywatase@gmail.com>
 
 use strict;
@@ -93,6 +93,7 @@ sub main {
     while(my ($target, $src) = each %hash){
         _mk_symlink(realpath($src),File::Spec->catfile($ENV{HOME}, $target));
     }
+    _add_zshenv($hash{'.zsh'});
     _clone_submodules();
 }
 
@@ -106,6 +107,22 @@ sub main {
 
 =over 8
 
+
+=item B<_add_zshenv> - add to zshenv
+
+=cut
+
+sub _add_zshenv {
+    my $zsh = shift;
+    my $str = <<END;
+if [ -e $zsh/zshenv ] ; then
+    source $zsh/zshenv
+fi
+END
+    open my $fh, '>>', "$ENV{HOME}/.zshenv" or die $!;
+    print $fh $str;
+    close $fh;
+}
 
 =item B<_clone_submodules> - clone submodules
 
