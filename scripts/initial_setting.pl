@@ -1,5 +1,5 @@
 #!/usr/bin/env perl 
-# Last Modified: 2011/09/06.
+# Last Modified: 2011/09/07.
 # Author: Y.Watase <ywatase@gmail.com>
 
 use strict;
@@ -78,23 +78,27 @@ C<Getopt::Std>, C<Pod::Usage>
 my %hash = (
     '.vim'            => File::Spec->catfile($FindBin::Bin, qw(.. vim)),
     '.vimrc'          => File::Spec->catfile($FindBin::Bin, qw(.. vim vimrc)),
-    '.zshrc'          => File::Spec->catfile($FindBin::Bin, qw(.. zsh zshrc)),
     '.zsh'            => File::Spec->catfile($FindBin::Bin, qw(.. zsh)),
+    '.zshrc'          => File::Spec->catfile($FindBin::Bin, qw(.. zsh zshrc)),
     '.screenrc'       => File::Spec->catfile($FindBin::Bin, qw(.. screen screenrc)),
     '.screen_setting' => File::Spec->catfile($FindBin::Bin, qw(.. screen screen_setting.linux_utf8)),
     '.perltidyrc'     => File::Spec->catfile($FindBin::Bin, qw(.. perl perltidyrc_critic)),
     '.perlcritic'     => File::Spec->catfile($FindBin::Bin, qw(.. perl perlcritic)),
+    File::Spec->catfile(qw(.zsh functions _cpanm))
+        => File::Spec->catfile($FindBin::Bin, qw(.. zsh function-871500.git _cpanm)),
+    File::Spec->catfile(qw(.zsh functions _plackup))
+        => File::Spec->catfile($FindBin::Bin, qw(.. zsh function-871500.git _plackup)),
 );
 
 main();
 
 sub main {
     my $rh_args = &_init_args('f:');
+    _clone_submodules();
     while(my ($target, $src) = each %hash){
         _mk_symlink(realpath($src),File::Spec->catfile($ENV{HOME}, $target));
     }
     _add_zshenv($hash{'.zsh'});
-    _clone_submodules();
 }
 
 #################################################

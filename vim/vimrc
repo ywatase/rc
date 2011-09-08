@@ -1,5 +1,5 @@
 " vimrc for Y.Watase
-" Last Modified:  2011/08/03.
+" Last Modified:  2011/09/07.
 
 
 """"""""""""""""""""""""""""""
@@ -38,8 +38,10 @@ Bundle 'ack.vim'
 "Bundle 'snipMate'
 Bundle 'sudo.vim'
 
+
 " non github repos
 " Bundle 'git://git.wincent.com/command-t.git'
+Bundle 'git://github.com/motemen/git-vim.git'
 
 filetype plugin indent on
  
