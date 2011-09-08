@@ -1,3 +1,6 @@
 [submodule "vim/vundle.git"]
 	path = vim/vundle.git
 	url = https://github.com/gmarik/vundle.git
+[submodule "zsh/function-871500.git"]
+	path = zsh/function-871500.git
+	url = git://gist.github.com/871500.git
