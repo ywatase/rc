@@ -43,6 +43,7 @@ fi
 if [ ${${(A)${(s:.:)HOST}}[1]} = "pc-igademo" ] ; then
 	export LANG=C
 	export GIT_PROXY_COMMAND=$HOME/bin/git-proxy
+	alias svn="LANG=ja_JP.UTF-8 LC_ALL=ja_JP.UTF-8 svn"
 fi
 
 # ssh agent

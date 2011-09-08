@@ -1,5 +1,5 @@
 " vimrc for Y.Watase
-" Last Modified:  2011/08/03.
+" Last Modified:  2011/08/24.
 
 
 """"""""""""""""""""""""""""""
@@ -392,7 +392,7 @@ smap <C-k>     <Plug>(neocomplcache_snippets_expand)
 inoremap <expr><C-l>     neocomplcache#complete_common_string() 
 
 
-map cr <ESC>:NeoComplCacheCachingInclude<CR>
+map cr <ESC>:NeoComplCacheCachingInclude<CR><ESC>:NeoComplCacheCachingBuffer<CR>
 noremap es :<C-u>NeoComplCacheEditSnippets<CR>
 
 " SuperTab like snippets behavior. 

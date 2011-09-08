@@ -1,6 +1,6 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "          FILE:  flymake.vim
-" Last Modified:  2011/07/26.
+" Last Modified:  2011/09/01.
 "        AUTHOR:  Yusuke Watase (ym), ywatase@gmail.com
 "       VERSION:  1.0
 "       CREATED:  2010/04/22 12:28:48
@@ -24,7 +24,7 @@ m = re.compile("^(.*/(?:ext)?lib/)").match(filepath)
 if m is not None:
 	cmd += r'\ -I' + m.group(1)
 else:
-	m = re.compile("^(.*)/(?:t|scripts?|root)/").match(filepath)
+	m = re.compile("^(.*)/(?:t|bin|scripts?|root)/").match(filepath)
 	if m is not None:
 		path = os.path.join(m.group(1), "lib")
 		if os.path.isdir(path):
