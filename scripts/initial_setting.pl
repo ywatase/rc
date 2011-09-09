@@ -1,5 +1,5 @@
 #!/usr/bin/env perl 
-# Last Modified: 2011/09/07.
+# Last Modified: 2011/09/09.
 # Author: Y.Watase <ywatase@gmail.com>
 
 use strict;
@@ -95,9 +95,7 @@ main();
 sub main {
     my $rh_args = &_init_args('f:');
     _clone_submodules();
-    while(my ($target, $src) = each %hash){
-        _mk_symlink(realpath($src),File::Spec->catfile($ENV{HOME}, $target));
-    }
+    _symlink_dot_files();
     _add_zshenv($hash{'.zsh'});
 }
 
@@ -110,7 +108,6 @@ sub main {
 =head1 Inner Methods
 
 =over 8
-
 
 =item B<_add_zshenv> - add to zshenv
 
@@ -156,6 +153,15 @@ sub _mk_symlink {
     return;
 }
 
+=item B<_symlink_dot_files> - make dot files symbolic link
+
+=cut
+
+sub _symlink_dot_files {
+    while(my ($target, $src) = each %hash){
+        _mk_symlink(realpath($src),File::Spec->catfile($ENV{HOME}, $target));
+    }
+}
 
 =item B<_init_args> - initialize arguments
 
