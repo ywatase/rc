@@ -9,8 +9,9 @@ setopt cdable_vars sh_word_split auto_param_keys
 autoload -Uz is-at-least
 
 ###
-# OS CHeck
+# Check Command
 ###
+can ()           { where "$1" >/dev/null 2>&1 }
 is_linux ()      { [ `uname` = "Linux" ]        }
 is_mac ()        { [ `uname` = "Darwin" ]       }
 is_debian ()     { [ -e '/etc/debian-release' ] }
@@ -388,11 +389,12 @@ RPROMPT='%{[33m%}[%~]%{[m%}%1(v|%F{green}%1v%f|)%2(v|%F{magenta}(locallib:%2v%
 # Environment variable
 ###
 if is_mac  ; then
+# avoid "/usr/bin/vim" exit code bug.
+# if setting EDITOR=vim, /usr/bin/vim sometimes return 1 and fail to edit cron, commit log and so on
   export EDITOR=/usr/bin/vim
 else
   eval `dircolors -b` # set LS_COLORS
-  export EDITOR=vi
-
+  export EDITOR=vim
 fi
 export PAGER=less
 export TZ=JST-9
