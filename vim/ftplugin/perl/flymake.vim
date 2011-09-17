@@ -1,6 +1,6 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "          FILE:  flymake.vim
-" Last Modified:  2011/09/01.
+" Last Modified:  2011/09/12.
 "        AUTHOR:  Yusuke Watase (ym), ywatase@gmail.com
 "       VERSION:  1.0
 "       CREATED:  2010/04/22 12:28:48
@@ -20,11 +20,16 @@ import os
 import re
 filepath = vim.current.buffer.name
 cmd = r'setlocal makeprg=perl'
-m = re.compile("^(.*/(?:ext)?lib/)").match(filepath)
+m = re.compile("^(.*)/t/").match(filepath)
 if m is not None:
-	cmd += r'\ -I' + m.group(1)
+	path = os.path.join(m.group(1), "lib")
+	if os.path.isdir(path):
+			cmd += r'\ -I' + path
+	path = os.path.join(m.group(1), "t", "lib")
+	if os.path.isdir(path):
+		cmd += r'\ -I' + path
 else:
-	m = re.compile("^(.*)/(?:t|bin|scripts?|root)/").match(filepath)
+	m = re.compile("^(.*)/(?:(?:ext)?lib|bin|scripts?|root)/").match(filepath)
 	if m is not None:
 		path = os.path.join(m.group(1), "lib")
 		if os.path.isdir(path):

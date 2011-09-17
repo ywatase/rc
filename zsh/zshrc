@@ -187,11 +187,21 @@ cpan-uninstall-locallib () {
   done
 }
 
+yaml2pl () {
+  for FILE in $@
+  do 
+    BASENAME=$(basename $FILE .yaml)
+    BASENAME=$(basename $BASENAME .yml)
+    perl -MYAML::Any -e 'use Data::Dumper; { package Data::Dumper; sub qquote{shift}; }
+      use Encode; $Data::Dumper::Useperl=1; $Data::Dumper::Terse=1; print "+" . encode(q{utf8}, Dumper YAML::Any::LoadFile("$ARGV[0]"))' $FILE > $BASENAME.pl
+  done
+}
+
 xml2yaml () {
   for FILE in $@
   do 
     BASENAME=$(basename $FILE .xml)
-    perl -MYAML -MXML::Simple -e 'print Dump XMLin "$ARGV[0]"' $FILE > $BASENAME.yaml
+    perl -MYAML::Any -MXML::Simple -e 'print Dump XMLin "$ARGV[0]"' $FILE > $BASENAME.yaml
   done
 }
 
@@ -199,7 +209,7 @@ json2yaml () {
   for FILE in $@
   do 
     BASENAME=$(basename $FILE .json)
-    perl -MYAML -MJSON -e 'open my $fh, "<", $ARGV[0] or die $!; print Dump JSON::decode_json(join(q{}, $fh));close $fh;' $FILE > $BASENAME.yaml
+    perl -MYAML::Any -MJSON -e 'open my $fh, "<", $ARGV[0] or die $!; print Dump JSON::decode_json(join(q{}, $fh));close $fh;' $FILE > $BASENAME.yaml
   done
 }
 
