@@ -1,6 +1,6 @@
 # #!/usr/bin/perl
 snippet #!
-	#!/usr/bin/perl
+	#!/usr/bin/env perl
 	
 # Hash Pointer
 snippet .
@@ -78,7 +78,7 @@ snippet xfore
 snippet cl
 	package ${1:ClassName};
 	
-	use base qw(${2:ParentClass});
+	use parent qw(${2:ParentClass});
 	
 	sub new {
 		my $class = shift;
@@ -87,11 +87,11 @@ snippet cl
 		$self;
 	}
 	
-	1;${3}
+	1;
 # Read File
 snippet slurp
 	my $${1:var};
-	{ local $/ = undef; local *FILE; open FILE, "<${2:file}"; $$1 = <FILE>; close FILE }${3}
+	{ local $/ = undef; local *FILE; open FILE, '<', "${2:file}"; $$1 = <FILE>; close FILE }${3}
 
 snippet slurpf
 	use File::Slurp qw/slurp/;
