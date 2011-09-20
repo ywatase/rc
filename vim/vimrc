@@ -1,5 +1,5 @@
 " vimrc for Y.Watase
-" Last Modified:  2011/09/09.
+" Last Modified:  2011/09/20.
 
 """"""""""""""""""""""""""""""
 " gerenal
@@ -295,7 +295,6 @@ let g:Perl_MapLeader         = ','
 "let g:Perl_Dictionary_File = $HOME . '/.vim/dict/perl.dict'
 
 
-
 " set the new fold function, etc
 autocmd BufRead,BufNewFile *.pl,*.pm,*.cgi,*.t :set filetype=perl 
 autocmd Filetype perl call MyPerlSettings()
@@ -304,6 +303,7 @@ function! MyPerlSettings()
    call PerlSyntaxCheck()
    call PerlCritic()
    set smartindent expandtab
+   noremap    <buffer>  <silent>  ,rs         :call Perl_Source()<CR>
 endfunction
 
 
@@ -317,6 +317,19 @@ endfunction
 function! PerlCritic()
     set grepformat=%f:%l:%c:m
     set grepprg=perlcritic\ -2\ -verbose\ 1\ %
+endfunction
+
+" like EDITOR=vim perldoc -m modules
+function! Perl_Source ()
+	let l:item=expand("<cword>")
+	let l:command="perl -MClass::Inspector -e 'print Class::Inspector->resolved_filename(qq{" . l:item . "});'" 
+	echo l:command
+	let l:path = system(l:command)
+	if filereadable(l:path)
+		execute "split" fnameescape(l:path)
+	else
+		echo l:path . " is not readable"
+	endif
 endfunction
 
 """"""""""""""""""""""""""""""
