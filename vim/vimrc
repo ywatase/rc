@@ -1,5 +1,5 @@
 " vimrc for Y.Watase
-" Last Modified:  2011/09/20.
+" Last Modified:  2011/09/21.
 
 """"""""""""""""""""""""""""""
 " gerenal
@@ -82,6 +82,31 @@ set hlsearch
 "
 """"""""""""""""""""""""""""""
 set showtabline=2
+set tabline=%!MyTabLine()
+function MyTabLine()
+	let s = ''
+	for i in range(tabpagenr('$'))
+		if i + 1 == tabpagenr()
+			let s .= '%#TabLineSel#'
+		else
+			let s .= '%#TabLine#'
+		endif
+		let s .= '%' . (i+1) . 'T' 
+		let s .= ' ' . (i+1) . (1==getwinvar(i+1,'&modified')?'[+]':'') . ' %{MyTabLabel(' . (i+1) . ')} '
+	endfor
+	let s .= '%#TabLineFill#%T'
+	if tabpagenr('$') > 1 
+		let s .= '%=%#TabLine#%999Xclose'
+	endif
+	return s
+endfunction
+
+function MyTabLabel(n)
+	let buflist = tabpagebuflist(a:n)
+	let winnr = tabpagewinnr(a:n)
+	return bufname(buflist[winnr - 1]) 
+endfunction
+
 " Pattern A map t & f
 "nnoremap <Space>t t
 "nnoremap <Space>T T
