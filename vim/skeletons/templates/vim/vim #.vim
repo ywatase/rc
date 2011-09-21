@@ -1,16 +1,16 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"          FILE:  flymake.vim
-" Last Modified:  2011/09/17.
-"        AUTHOR:  Yusuke Watase (ym), ywatase@gmail.com
+"          FILE:  <+FILE NAME+>
+" Last Modified:  2011/09/18.
+"        AUTHOR:  <+AUTHOR+> <<+EMAIL+>>
 "       VERSION:  1.0
-"       CREATED:  2010/04/22 12:28:48
-"   DESCRIPTION:  flymake for perl. put this file to .vim/ftplugin/perl
+"       CREATED:  <+DATE+>
+"   DESCRIPTION:  
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Only do this when not done yet for this buffer
-if exists("b:did_flymake_ftplugin")
+if exists("b:did_<+FILE NAME+>_ftplugin")
 	finish
 endif
-let b:did_flymake_ftplugin = 1
+let b:did_<+FILE NAME+>_ftplugin = 1
 
 function! RunMake ()
 	if has('python')
@@ -20,7 +20,7 @@ import os
 import re
 filepath = vim.current.buffer.name
 cmd = r'setlocal makeprg=perl'
-m = re.compile("^(.*)/t/(?<!lib/t/)").match(filepath)
+m = re.compile("^(.*)/t/").match(filepath)
 if m is not None:
 	path = os.path.join(m.group(1), "lib")
 	if os.path.isdir(path):

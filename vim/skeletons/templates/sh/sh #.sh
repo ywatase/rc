@@ -5,13 +5,13 @@
 #
 #   Author: <+AUTHOR+> <<+EMAIL+>>
 #   Create Date:   <+DATE+>
-#   Last Modified: 2011/04/12.
+#   Last Modified: 2011/09/18.
 
 VERSION=0.1
 
 # initialize
 
-function usage () {
+usage () {
 	/bin/cat <<END
 usage: `basename $0` [-m mail_address] [-v]
   m mail_adderss : send to mail_address
@@ -21,13 +21,13 @@ END
 	exit 0
 }
 
-function _send_mail () {
+_send_mail () {
   /bin/cat <<END | $MAIL -s "`/bin/hostname`: `basename $0`" $MAILTO
 Hoge
 END
 }
 
-function show_version () {
+show_version () {
 	echo -e `basename $0` Version: $VERSION
 }
 

@@ -34,32 +34,15 @@
 == comment.file-description-pl == start == noindent ==
 #!/usr/bin/env perl 
 #===============================================================================
-#
-#         FILE: |FILENAME|
-#
-#        USAGE: |FILENAME|  
-#
-#  DESCRIPTION: <CURSOR>
-#
-#      OPTIONS: ---
-# REQUIREMENTS: ---
-#         BUGS: ---
-#        NOTES: ---
-#       AUTHOR: |AUTHOR| (|AUTHORREF|), |EMAIL|
-#      COMPANY: |COMPANY|
-#      VERSION: 1.0
-#      CREATED: |DATE| |TIME|
-#     REVISION: ---
-#Last Modified:  20xx/xx/xx.
+#Last Modified:  2011/09/18.
 #===============================================================================
 use strict;
 use warnings;
 
 use Pod::Usage;
-use Getopt::Long;
-Getopt::Long::Configure ("bundling");
+use Getopt::Long qw(:conifg bundling auto_version);
 
-our $VERSION = 0.0;
+our $VERSION = "0.01";
 
 main();
 
@@ -67,10 +50,9 @@ sub main {
     my $rh_args = &_init_args('file|f=s');
 }
 
-
 sub _init_args {
     my @args_pattern = @_;
-    push @args_pattern, ( 'help|?', 'version', 'manual', 'verbose' );
+    push @args_pattern, ( 'help|h', 'manual', 'verbose' );
 
     my %args = (
         # argname => 'default value'
@@ -78,7 +60,6 @@ sub _init_args {
     if ( not GetOptions ( \%args, @args_pattern )) {pod2usage(2); exit 0; }
     if (exists $args{help}) { pod2usage(1); exit 0; }
     elsif (exists $args{manual}) { pod2usage(-exitstatus => 0, -verbose => 2); exit 0;}
-    elsif (exists $args{version}) { version(); exit 0; }
     if (exists $args{file})
     {
         if (not -e $args{file})
@@ -94,12 +75,6 @@ sub _init_args {
 #    exit 1;
 #  }
     return \%args;
-}
-
-sub version {
-    print <<EOS;
-VERSION: $VERSION
-EOS
 }
   
 1;
@@ -150,41 +125,6 @@ This is skelton of perl script.
 
 This script requires the C<Getopt::Long>, C<Pod::Usage>
 
-=head1 Methods
-
-=over 8
-
-=item method name
-
-subscribe
-
-=head1 Inner Methods
-
-=over 8
-
-=item B<_init_args> - initialize arguments
-
-		args($sc1)
-
-		  $sc1    : scaler (arguments pattern for Getopt::getopts)
-
-
-		return value
-
-			Success : hash reference of args (result of &_init_args)
-			Failure : exit(show manual, show help and so on)
-
-=item B<version> - show version
-
-		args(none)
-
-		return value
-
-			Success : 1
-			Failure : undef
-
-=back
-
 =head1 Author
 
  |AUTHOR| <|EMAIL|>
@@ -193,61 +133,73 @@ subscribe
 
 §%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 == comment.file-description-pm == start == noindent ==
-#
 #===============================================================================
-#
-#         FILE: |FILENAME|
-#
-#  DESCRIPTION: <CURSOR>
-#
-#        FILES: ---
-#         BUGS: ---
-#        NOTES: ---
-#       AUTHOR: |AUTHOR| (|AUTHORREF|), |EMAIL|
-#      COMPANY: |COMPANY|
-#      VERSION: 1.0
-#      CREATED: |DATE| |TIME|
-#     REVISION: ---
 #Last Modified:  20xx/xx/xx.
 #===============================================================================
 package |PATH|::|BASENAME|;
-use base qw(Class::Accessor::Fast);
-__PACKAGE__->mk_accessors(qw());
-
-our $VERSION = 0.0;
-
 use strict;
 use warnings;
+use Class::Accessor::Lite (
+    new => 1,
+    rw  => [qw()],
+);
+
+our $VERSION = "0.01";
+
+1;
+
+__END__
+
+=pod
+
+=head1 NAME
+
+|PATH|::|BASENAME| - 
+
+=head1 SYNOPSIS
+
+  |FILENAME| 
+
+=head1 DESCRIPTION
+
+=head1 Method
+
+=head2 new
+
+=over 4
+
+=item B<arg>
+
+hoge
+
+=back
+
+=head1 PREREQUISITES
+
+C<Class::Accessor::Lite>
+
+=head1 Author
+
+ |AUTHOR| <|EMAIL|>
+  
+=cut
 
 §%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 == comment.file-description-t == start == noindent ==
-#
+#/usr/bin/env perl
 #===============================================================================
-#
-#         FILE: |FILENAME|
-#
-#  DESCRIPTION: <CURSOR>
-#
-#        FILES: ---
-#         BUGS: ---
-#        NOTES: ---
-#       AUTHOR: |AUTHOR| (|AUTHORREF|), |EMAIL|
-#      COMPANY: |COMPANY|
-#      VERSION: 1.0
-#      CREATED: |DATE| |TIME|
-#     REVISION: ---
 #Last Modified:  2010/09/08.
 #===============================================================================
-
 use strict;
 use warnings;
 use Test::Requires {'File::Which' => 0};
 
-use Test::More qw(no_plan);                      # last test to print
-#use Test::More tests => 1;                      # last test to print
+use Test::More 0.96;
 BEGIN{
     use_ok('|BASENAME|');
 }
+
+done_testing;
 
 §%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 == comment.file-description-pod == start ==
