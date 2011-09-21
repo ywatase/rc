@@ -17,7 +17,7 @@ is_mac ()        { [ `uname` = "Darwin" ]       }
 is_debian ()     { [ -e '/etc/debian-release' ] }
 is_redhat ()     { [ -e '/etc/redhat-release' ] }
 is_cygwin ()     { [ "$CYGWIN" ]                }
-is_host ()       { [ ${(A)${(s:.:)HOST}} = "$1" ] || [ ${${(A)${(s:.:)HOST}}[0] = "$1" ] || }
+is_host ()       { [ ${(A)${(s:.:)HOST}} = "$1" ] || [ ${${(A)${(s:.:)HOST}}[1]} = "$1" ] }
 is_ssh_client () { is_cygwin || is_host "pc-igademo" || is_host "mutter" }
 
 ###
