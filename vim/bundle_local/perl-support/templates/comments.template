@@ -34,13 +34,13 @@
 == comment.file-description-pl == start == noindent ==
 #!/usr/bin/env perl 
 #===============================================================================
-#Last Modified:  2011/09/18.
+#Last Modified:  2011/09/29.
 #===============================================================================
 use strict;
 use warnings;
 
 use Pod::Usage;
-use Getopt::Long qw(:conifg bundling auto_version);
+use Getopt::Long qw(:config bundling auto_version);
 
 our $VERSION = "0.01";
 
