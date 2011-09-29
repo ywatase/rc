@@ -1,5 +1,5 @@
 " vimrc for Y.Watase
-" Last Modified:  2011/09/21.
+" Last Modified:  2011/09/27.
 
 """"""""""""""""""""""""""""""
 " gerenal
@@ -83,7 +83,7 @@ set hlsearch
 """"""""""""""""""""""""""""""
 set showtabline=2
 set tabline=%!MyTabLine()
-function MyTabLine()
+function! MyTabLine()
 	let s = ''
 	for i in range(tabpagenr('$'))
 		if i + 1 == tabpagenr()
@@ -101,7 +101,7 @@ function MyTabLine()
 	return s
 endfunction
 
-function MyTabLabel(n)
+function! MyTabLabel(n)
 	let buflist = tabpagebuflist(a:n)
 	let winnr = tabpagewinnr(a:n)
 	return bufname(buflist[winnr - 1]) 
