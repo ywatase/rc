@@ -5,11 +5,43 @@
 #
 #   Author: <+AUTHOR+> <<+EMAIL+>>
 #   Create Date:   <+DATE+>
-#   Last Modified: 2011/09/18.
+#   Last Modified: 2011/09/29.
+
+FLAG_DEBUG=
+MAILTO=
 
 VERSION=0.1
 
-# initialize
+main () {
+  init $@
+
+  # write here
+}
+
+init () {
+  while getopts 'Dm:v' opt
+  do
+    case $opt in
+      D) FLAG_DEBUG=1
+        ;;
+      m) MAILTO=$OPTARG 
+        ;;
+      v) show_version; usage 
+        ;;
+      *) usage 
+        ;;
+    esac
+  done
+  shift `expr $OPTIND - 1`
+
+  if [ "$MAILTO" == "" ] ; then
+    usage
+  fi
+
+  if [ "$MAILTO" != "" ] ; then 
+    _send_mail
+  fi
+}
 
 usage () {
 	/bin/cat <<END
@@ -31,22 +63,6 @@ show_version () {
 	echo -e `basename $0` Version: $VERSION
 }
 
-while getopts 'c:dDm:t:v' opt
-do
-case $opt in
-  D) FLAG_DEBUG=1;;
-  m) MAILTO=$OPTARG ;;
-  v) show_version; usage ;;
-  *) usage ;;
-esac
-done
-shift `expr $OPTIND - 1`
+main $@
 
-if [ "$MAILTO" == "" ] ; then
-  usage
-fi
-
-if [ "$MAILTO" != "" ] ; then 
-	  _send_mail
-fi
-
+# vim:set ts=2 et sw=2 si:
