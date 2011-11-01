@@ -131,11 +131,11 @@ perlmethod () {
 }
 
 install-perlbrew () {
-  curl -L http://xrl.us/perlbrewinstall | bash
+  curl -kL http://xrl.us/perlbrewinstall | bash
 }
 
 install-cpanm () {
-  curl -L http://cpanmin.us | perl - --self-upgrade $@
+  curl -kL http://cpanmin.us | perl - --self-upgrade $@
 }
 
 install-module-install () {
