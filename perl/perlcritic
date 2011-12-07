@@ -14,3 +14,10 @@
 [-References::ProhibitDoubleSigils]
 [-Variables::ProhibitPunctuationVars]
 [-TestingAndDebugging::RequirePackageWarnings]
+[Subroutines::ProhibitExcessComplexity]
+severity = 5
+max_mccabe = 30
+
+[Modules::ProhibitExcessMainComplexity]
+severity = 5
+max_mccabe = 30
