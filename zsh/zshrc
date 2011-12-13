@@ -255,6 +255,9 @@ if is_mac ; then
     brew install https://raw.github.com/AndrewVos/homebrew-alt/master/duplicates/vim.rb
     mv /usr/bin/vim /usr/bin/vim72
   }
+  install-q4m-dev () {
+    zsh -c "$(curl -fsSL https://raw.github.com/gist/1426403)"
+  }
 fi
 
 
