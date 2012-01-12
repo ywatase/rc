@@ -3,13 +3,31 @@
 typeset -A opt_args
 local context state line
 
+# cache policy
+#(Nmw+2)   # 2week
+#(Nmh+5)   # 5hour
+#(Nms+100) # 100sec
+_xs_tool_caching_policy () {
+	local -a oldp
+	oldp=( "$1"(Nmw+1) ) # 1 week
+	(( $#oldp ))
+}
+
 
 _list_templates () {
     local host res old_ifs cache_store
     typeset -a _templates
     (($+opt_args[-h])) && host=$opt_args[-h]
     (($+opt_args[--host])) && host=$opt_args[--host]
+
 	cache_store=XS_TOOL_${host}_templates
+
+	local cache_policy
+	zstyle -s ":completion:${curcontext}:" cache-policy cache_policy
+	if [[ -z "$cache_policy" ]]; then
+		zstyle ":completion:${curcontext}:" cache-policy _xs_tool_caching_policy
+	fi
+
     if ( [[ $#_templates -eq 0 ]] || _cache_invalid $cache_store ) && ! _retrieve_cache $cache_store
     then
         res=$(_call_program commands xs_tool list_templates --host=$host 2>/dev/null)
@@ -22,8 +40,16 @@ _list_templates () {
     compadd "$@" -a _templates
 }
 
+
 _list_profiles () {
     local -a _profiles
+	local cache_policy
+
+	zstyle -s ":completion:${curcontext}:" cache-policy cache_policy
+	if [[ -z "$cache_policy" ]]; then
+		zstyle ":completion:${curcontext}:" cache-policy _xs_tool_caching_policy
+	fi
+
     if ( [[ $#_profiles -eq 0 ]] || _cache_invalid XS_TOOL_profiles ) && ! _retrieve_cache XS_TOOL_profiles
     then
         _profiles=($(_call_program commands xs_tool list_profiles 2>/dev/null | perl -pe 's/\n/ /;'))
