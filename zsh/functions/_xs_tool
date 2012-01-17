@@ -1,0 +1,107 @@
+#compdef xs_tool
+
+typeset -A opt_args
+local context state line
+
+# cache policy
+#(Nmw+2)   # 2week
+#(Nmh+5)   # 5hour
+#(Nms+100) # 100sec
+_xs_tool_caching_policy () {
+	local -a oldp
+	oldp=( "$1"(Nmw+1) ) # 1 week
+	(( $#oldp ))
+}
+
+
+_list_templates () {
+    local host res old_ifs cache_store
+    typeset -a _templates
+    (($+opt_args[-h])) && host=$opt_args[-h]
+    (($+opt_args[--host])) && host=$opt_args[--host]
+
+	cache_store=XS_TOOL_${host}_templates
+
+	local cache_policy
+	zstyle -s ":completion:${curcontext}:" cache-policy cache_policy
+	if [[ -z "$cache_policy" ]]; then
+		zstyle ":completion:${curcontext}:" cache-policy _xs_tool_caching_policy
+	fi
+
+    if ( [[ $#_templates -eq 0 ]] || _cache_invalid $cache_store ) && ! _retrieve_cache $cache_store
+    then
+        res=$(_call_program commands xs_tool list_templates --host=$host 2>/dev/null)
+        old_ifs=$IFS
+        IFS=:
+        _templates=($(echo $res | perl -pe 's/\n/:/'))
+        IFS=$old_ifs
+        _store_cache $cache_store _templates
+    fi
+    compadd "$@" -a _templates
+}
+
+
+_list_profiles () {
+    local -a _profiles
+	local cache_policy
+
+	zstyle -s ":completion:${curcontext}:" cache-policy cache_policy
+	if [[ -z "$cache_policy" ]]; then
+		zstyle ":completion:${curcontext}:" cache-policy _xs_tool_caching_policy
+	fi
+
+    if ( [[ $#_profiles -eq 0 ]] || _cache_invalid XS_TOOL_profiles ) && ! _retrieve_cache XS_TOOL_profiles
+    then
+        _profiles=($(_call_program commands xs_tool list_profiles 2>/dev/null | perl -pe 's/\n/ /;'))
+        _store_cache XS_TOOL_profiles _profiles
+    fi
+    compadd "$@" -a _profiles
+}
+
+_arguments -s -C : \
+    '*::commands:->cmds' && return 0 
+
+local -a cmds opts_cobbler opts_xenserver
+cmds=( init install list_profiles list_templates )
+opts_xenserver=( '(-h --host)'{-h,--host}'[XenServer host]:XenServer host:_hosts' \
+    '(-u --user)'{-u,--user}'[XenServer user]:XenServer user:_users' \
+    '(-p --password)'{-p,--password}'[XenServer password]:XenServer password:' )
+opts_cobbler=( '(--cobbler_server)--cobbler_server[cobbler server]:cobbler server:' '(--cobbler_port)--cobbler_port[cobbler API port]:cobbler API port:' )
+
+case $state in
+    cmds)
+        if (( CURRENT == 1 )) ; then
+            local -a cmd_all
+            cmd_all=(help $cmds)
+            _describe -t commands 'xs_tool options' cmd_all && ret=0
+        else 
+            local -a opts
+            case $line[1] in
+                help)
+                    if (( CURRENT == 2 )) ; then
+                        _wanted cmds expl 'xs_tool commands' compadd $cmds && ret=0
+                    else 
+                        (( ret )) && _message 'no more arguments'
+                    fi
+                    ;;
+                install)
+                    opts=("$opts_cobbler[@]" "$opts_xenserver[@]" \
+                        '(-t --template)'{-t,--template}'[template name]:template name:_list_templates' \
+                        '(-p --profile)'{-p,--profile}'[cobbler profile]:cobbler profile name:_list_profiles')
+                    ;;
+                list_profiles)
+                    opts=("$opts_cobbler[@]")
+                    ;;
+                list_templates)
+                    opts=("$opts_xenserver[@]")
+                    ;;
+                *)
+                    (( ret )) && _message 'no more arguments'
+                    ;;
+            esac
+            _arguments -s : "$opts[@]" && ret=0
+        fi
+        ;;
+esac
+
+return ret
