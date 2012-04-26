@@ -5,4 +5,3 @@ vim/bundle_local/perl-support/templates/idioms.template
 vim/cache/
 vim/.netrwhist
 zsh/functions/_cpanm
-zsh/functions/_plackup
