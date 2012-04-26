@@ -102,18 +102,18 @@ develcover () {
 }
 
 perlpath () {
+  local MODULE
   for MODULE in $@
   do
     perl -MClass::Inspector -le "print Class::Inspector->resolved_filename(qq{$MODULE})"
   done
-  MODULE=
 }
 perlversion () {
+  local MODULE
   for MODULE in $@
   do
     perl -le "eval { require $MODULE}; print qq{${MODULE}: \$${MODULE}::VERSION}"
   done
-  MODULE=
 }
 perlsourcew () {
   ${_SUDO} vim $(perlpath $1)
@@ -176,6 +176,7 @@ install-amon2flavor () {
 }
 
 cpan-uninstall () {
+  local MODULE
   for MODULE in $@
   do
     ${_SUDO} perl -MConfig -MExtUtils::Install -e '($FULLEXT=shift)=~s{::}{/}g;uninstall "$Config{sitearchexp}/auto/$FULLEXT/.packlist",1' $MODULE
@@ -183,6 +184,7 @@ cpan-uninstall () {
 }
 
 cpan-uninstall-perlbrew () {
+  local MODULE
   for MODULE in $@
   do
     perl -MConfig -MExtUtils::Install -e '($FULLEXT=shift)=~s{::}{/}g;uninstall "$Config{sitearchexp}/auto/$FULLEXT/.packlist",1' $MODULE
@@ -190,6 +192,7 @@ cpan-uninstall-perlbrew () {
 }
 
 cpan-uninstall-locallib () {
+  local MODULE
   for MODULE in $@
   do
     if [ "x${PERL_LOCAL_LIB_ROOT}" != "x"  -a -d  ${PERL_LOCAL_LIB_ROOT} ] ; then
@@ -201,6 +204,8 @@ cpan-uninstall-locallib () {
 }
 
 yaml2pl () {
+  local FILE
+  local BASENAME
   for FILE in $@
   do 
     BASENAME=$(basename $FILE .yaml)
@@ -211,6 +216,8 @@ yaml2pl () {
 }
 
 xml2yaml () {
+  local FILE
+  local BASENAME
   for FILE in $@
   do 
     BASENAME=$(basename $FILE .xml)
@@ -219,6 +226,8 @@ xml2yaml () {
 }
 
 json2yaml () {
+  local FILE
+  local BASENAME
   for FILE in $@
   do 
     BASENAME=$(basename $FILE .json)
