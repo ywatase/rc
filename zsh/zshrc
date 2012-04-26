@@ -69,6 +69,13 @@ if is_host "pc-igademo" ; then
   alias svn="LANG=ja_JP.UTF-8 LC_ALL=ja_JP.UTF-8 svn"
 fi
 
+# gist
+# gem install gisty
+# git config --global github.user your_id
+# git config --global github.token your_token
+#
+export GISTY_DIR="$HOME/dev/gists"
+
 # ssh agent
 if is_ssh_client && ! is_screen ; then
   keychain ~/.ssh/id_dsa
@@ -259,6 +266,16 @@ locallib_delete () {
 ###
 install-rvm () {
   bash < <(curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer )
+}
+
+install-rbenv () {
+  git clone git://github.com/sstephenson/rbenv.git $HOME/.rbenv
+  echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> .zshenv
+  echo 'eval "$(rbenv init -)"' >> .zshenv
+  exec
+  git clone git://github.com/sstephenson/ruby-build.git
+  cd ruby-build
+  sudo ./install.sh
 }
 
 
