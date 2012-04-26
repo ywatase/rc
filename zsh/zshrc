@@ -270,12 +270,14 @@ install-rvm () {
 
 install-rbenv () {
   git clone git://github.com/sstephenson/rbenv.git $HOME/.rbenv
-  echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> .zshenv
+  echo 'path=($HOME/.rbenv/bin(N-/) $path)' >> .zshenv
   echo 'eval "$(rbenv init -)"' >> .zshenv
-  exec
+  cd $HOME/.rbenv
+  mkdir plugins
+  cd plugins
   git clone git://github.com/sstephenson/ruby-build.git
-  cd ruby-build
-  sudo ./install.sh
+  exec
+  rbenv rehash
 }
 
 
