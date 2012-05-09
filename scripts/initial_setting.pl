@@ -86,10 +86,6 @@ my %hash = (
     '.screen_setting' => File::Spec->catfile($FindBin::Bin, qw(.. screen screen_setting.linux_utf8)),
     '.perltidyrc'     => File::Spec->catfile($FindBin::Bin, qw(.. perl perltidyrc_critic)),
     '.perlcritic'     => File::Spec->catfile($FindBin::Bin, qw(.. perl perlcritic)),
-    File::Spec->catfile(qw(.zsh functions _cpanm))
-        => File::Spec->catfile($FindBin::Bin, qw(.. zsh function-871500.git _cpanm)),
-    File::Spec->catfile(qw(.zsh functions _plackup))
-        => File::Spec->catfile($FindBin::Bin, qw(.. zsh function-871500.git _plackup)),
 );
 
 main();
