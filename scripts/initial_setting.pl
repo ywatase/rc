@@ -78,6 +78,7 @@ C<Getopt::Std>, C<Pod::Usage>
 my %hash = (
     '.vim'            => File::Spec->catfile($FindBin::Bin, qw(.. vim)),
     '.vimrc'          => File::Spec->catfile($FindBin::Bin, qw(.. vim vimrc)),
+    '.gitconfig'      => File::Spec->catfile($FindBin::Bin, qw(.. gitconfig)),
     '.zsh'            => File::Spec->catfile($FindBin::Bin, qw(.. zsh)),
     '.zshrc'          => File::Spec->catfile($FindBin::Bin, qw(.. zsh zshrc)),
     '.screenrc'       => File::Spec->catfile($FindBin::Bin, qw(.. screen screenrc)),
