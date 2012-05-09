@@ -1,9 +1,13 @@
 # perlbrew
-path=($HOME/perl5/perlbrew/bin(N-/) $HOME/perl5/perlbrew/perls/current/bin(N-/) $HOME/bin/*(N-/) $HOME/bin(N-/) $path)
+path=($HOME/perl5/perlbrew/bin(N-/) $HOME/perl5/perlbrew/perls/current/bin(N-/) $HOME/bin/*(N-/) $path)
 
 if [ -e $HOME/perl5/perlbrew/etc/bashrc ] ; then
   source $HOME/perl5/perlbrew/etc/bashrc
 fi
 
 # android sdk
-path=(/usr/local/ec2-api-tools/bin(N-/) $HOME/eclipse(N-/) $HOME/android-sdk(N-/) $HOME/bin(N-/) $path)
+path=(/usr/local/ec2-api-tools/bin(N-/) $HOME/eclipse(N-/) $HOME/android-sdk(N-/) $path)
+# git-tasukete
+path=($HOME/.zsh/git-tasukete(N-/) $HOME/android-sdk(N-/) $path)
+# rbenv
+path=($HOME/.rbenv(N-/) $path)

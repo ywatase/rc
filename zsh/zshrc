@@ -47,6 +47,11 @@ alias -g SPLIT="| perl -le 'map{chomp;print+join\"\\n\",split/\$ARGV[0]/}<STDIN>
 alias -g JOIN="| perl -le 'print+join\"\$ARGV[0]\",(map{chomp;\$_}<STDIN>)'"
 alias -g C='| colorize-http-status.sed'
 
+alias dstat-full='dstat -Tclmdrn'
+alias dstat-mem='dstat -Tclm'
+alias dstat-cpu='dstat -Tclr'
+alias dstat-net='dstat -Tclnd'
+alias dstat-disk='dstat -Tcldr'
 
 _SUDO=sudo
 # for windows
@@ -63,6 +68,15 @@ if is_host "pc-igademo" ; then
   export GIT_PROXY_COMMAND=$HOME/bin/git-proxy
   alias svn="LANG=ja_JP.UTF-8 LC_ALL=ja_JP.UTF-8 svn"
 fi
+
+# gist
+# gem install gisty
+# git config --global github.user your_id
+# git config --global github.token your_token
+#
+export GISTY_DIR="$HOME/dev/gists"
+export GISTY_ACCESS_TOKEN=2f59072d3a498ecc8799176ee657fd2805acc6e9
+
 
 # ssh agent
 if is_ssh_client && ! is_screen ; then
@@ -97,18 +111,18 @@ develcover () {
 }
 
 perlpath () {
+  local MODULE
   for MODULE in $@
   do
     perl -MClass::Inspector -le "print Class::Inspector->resolved_filename(qq{$MODULE})"
   done
-  MODULE=
 }
 perlversion () {
+  local MODULE
   for MODULE in $@
   do
     perl -le "eval { require $MODULE}; print qq{${MODULE}: \$${MODULE}::VERSION}"
   done
-  MODULE=
 }
 perlsourcew () {
   ${_SUDO} vim $(perlpath $1)
@@ -171,6 +185,7 @@ install-amon2flavor () {
 }
 
 cpan-uninstall () {
+  local MODULE
   for MODULE in $@
   do
     ${_SUDO} perl -MConfig -MExtUtils::Install -e '($FULLEXT=shift)=~s{::}{/}g;uninstall "$Config{sitearchexp}/auto/$FULLEXT/.packlist",1' $MODULE
@@ -178,6 +193,7 @@ cpan-uninstall () {
 }
 
 cpan-uninstall-perlbrew () {
+  local MODULE
   for MODULE in $@
   do
     perl -MConfig -MExtUtils::Install -e '($FULLEXT=shift)=~s{::}{/}g;uninstall "$Config{sitearchexp}/auto/$FULLEXT/.packlist",1' $MODULE
@@ -185,6 +201,7 @@ cpan-uninstall-perlbrew () {
 }
 
 cpan-uninstall-locallib () {
+  local MODULE
   for MODULE in $@
   do
     if [ "x${PERL_LOCAL_LIB_ROOT}" != "x"  -a -d  ${PERL_LOCAL_LIB_ROOT} ] ; then
@@ -196,6 +213,8 @@ cpan-uninstall-locallib () {
 }
 
 yaml2pl () {
+  local FILE
+  local BASENAME
   for FILE in $@
   do 
     BASENAME=$(basename $FILE .yaml)
@@ -206,6 +225,8 @@ yaml2pl () {
 }
 
 xml2yaml () {
+  local FILE
+  local BASENAME
   for FILE in $@
   do 
     BASENAME=$(basename $FILE .xml)
@@ -214,6 +235,8 @@ xml2yaml () {
 }
 
 json2yaml () {
+  local FILE
+  local BASENAME
   for FILE in $@
   do 
     BASENAME=$(basename $FILE .json)
@@ -245,6 +268,18 @@ locallib_delete () {
 ###
 install-rvm () {
   bash < <(curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer )
+}
+
+install-rbenv () {
+  git clone git://github.com/sstephenson/rbenv.git $HOME/.rbenv
+  echo 'path=($HOME/.rbenv/bin(N-/) $path)' >> .zshenv
+  echo 'eval "$(rbenv init -)"' >> .zshenv
+  cd $HOME/.rbenv
+  mkdir plugins
+  cd plugins
+  git clone git://github.com/sstephenson/ruby-build.git
+  exec
+  rbenv rehash
 }
 
 
