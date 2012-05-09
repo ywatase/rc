@@ -303,7 +303,7 @@ rpm_extract () {
 ###
 if is_mac ; then
   install-homebrew () {
-    /usr/bin/ruby -e "$(curl -LfsS https://raw.github.com/gist/323731)"
+    /usr/bin/ruby -e "$(curl -LfsS https://raw.github.com/mxcl/homebrew/master/Library/Contributions/install_homebrew.rb)"
   }
   install-vim () {
     brew install https://raw.github.com/AndrewVos/homebrew-alt/master/duplicates/vim.rb
