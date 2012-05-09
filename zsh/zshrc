@@ -5,6 +5,9 @@ setopt auto_menu auto_cd auto_pushd correct auto_name_dirs auto_remove_slash
 setopt pushd_ignore_dups rm_star_silent sun_keyboard_hack
 setopt extended_glob list_types no_beep always_last_prompt
 setopt cdable_vars sh_word_split auto_param_keys
+# 補完リストその他でもASCII(7ビット)以上の文字(8ビット)文字を表示 
+# # (マルチバイト文字補完)
+setopt PRINT_EIGHT_BIT
 
 autoload -Uz is-at-least
 
@@ -308,7 +311,7 @@ fi
 ###
 # screen
 ###
-if [ "$TERM" = "screen" ]; then
+if is_screen ; then
     preexec() {
         # see [zsh-workers:13180]
         # http://www.zsh.org/mla/workers/2000/msg03993.html
@@ -370,7 +373,7 @@ function ssh_screen(){
  eval server=\${$#}
  screen -t $server ssh "$@"
 }
-if [ x$TERM = xscreen ]; then
+if is_screen ; then
   alias ssh=ssh_screen
 fi
 
