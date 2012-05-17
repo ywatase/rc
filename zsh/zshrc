@@ -510,6 +510,13 @@ else
   compinit
 fi
 
+# cdd
+source $HOME/.zsh/cdd
+function chpwd() {
+  _reg_pwd_screennum
+}
+# //cdd
+
 zstyle ':completion:*:default' menu select=1
 zstyle ':completion:*' verbose yes
 zstyle ':completion:*:descriptions' format '%B%d%b'
