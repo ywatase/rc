@@ -14,16 +14,16 @@ autoload -Uz is-at-least
 ###
 # Check Command
 ###
-can ()           { where "$1" >/dev/null 2>&1 }
-is_linux ()      { [ `uname` = "Linux" ]        }
-is_mac ()        { [ `uname` = "Darwin" ]       }
-is_debian ()     { [ -e '/etc/debian-release' ] }
-is_redhat ()     { [ -e '/etc/redhat-release' ] }
-is_cygwin ()     { [ "$CYGWIN" ]                }
-is_screen ()     { [ "$TERM" = "screen" ]       }
-is_tmux ()       { [ "$TMUX" != "" ]            }
+can ()           { where "$1" >/dev/null 2>&1              }
+is_linux ()      { [ `uname` = "Linux" ]                   }
+is_mac ()        { [ `uname` = "Darwin" ]                  }
+is_debian ()     { [ -e '/etc/debian-release' ]            }
+is_redhat ()     { [ -e '/etc/redhat-release' ]            }
+is_cygwin ()     { [ "$CYGWIN" ]                           }
+is_screen ()     { [ "$TERM" = "screen" ] && ! is_tmux     }
+is_tmux ()       { [ "$TMUX" != "" ]                       }
 is_host ()       { [ ${${(A)${(s:.:)HOST}}[(w)1]} = "$1" ] }
-is_ssh_client () { ! [ "$SSH_TTY" ]             }
+is_ssh_client () { ! [ "$SSH_TTY" ]                        }
 #is_ssh_client () { is_cygwin || is_host "pc-igademo" || is_host "mutter" || is_host "vostro200" }
 
 ###
@@ -149,7 +149,7 @@ perlmethod () {
   shift `expr $OPTIND - 1`
   if [ "$PERLMETHOD_USAGE" ] || ! [ "$1" ] ||  [ "$2" ] ; then
     echo -e "perlmethod [-a] Some::Perl::Module -- show methods of Perl Module\n\ta:\tshow private method"
-  elif [ "$PERLMETHOD_ALL" ] ; then 
+  elif [ "$PERLMETHOD_ALL" ] ; then
     perl -M$1 -le"map{print}sort+grep{defined&{\"$1::\$_\"}}keys%{$1::}"
   else
     perl -M$1 -le"map{print}sort+grep{defined&{\"$1::\$_\"}&&m{^[^_]}}keys%{$1::}"
@@ -373,13 +373,38 @@ if is_screen || is_tmux ; then
     }
 fi 
 
-function ssh_screen(){
- eval server=\${$#}
- screen -t $server ssh "$@"
-}
+
 if is_screen ; then
+  function ssh_screen(){
+    eval server=\${$#}
+    screen -t $server ssh "$@"
+  }
   alias ssh=ssh_screen
+elif is_tmux ; then
+  function ssh_tmux() {
+    eval server=\${$#}
+    tmux neww -n $server "exec ssh $@"
+  }
+  function man_tmux() {
+    tmux split-window "exec man $@"
+  }
+  alias ssh=ssh_tmux
+  alias man=man_tmux
 fi
+
+# cdd
+source $HOME/.zsh/cdd
+function chpwd() {
+  if is_tmux ; then
+    _reg_pwd_screennum
+    tmux setenv TMUXPWD_$(tmux display -p "#I") $PWD
+  elif is_screen ; then
+    _reg_pwd_screennum
+  fi
+}
+# //cdd
+
+
 
 function ssh_resolve_cname () {
     TARGET=`host $1 | perl -e '$a=join q{},<>;$a=~m/is an alias for ([^\s]+)/; print $1'`
@@ -510,13 +535,6 @@ else
   compinit
 fi
 
-# cdd
-source $HOME/.zsh/cdd
-function chpwd() {
-  _reg_pwd_screennum
-}
-# //cdd
-
 zstyle ':completion:*:default' menu select=1
 zstyle ':completion:*' verbose yes
 zstyle ':completion:*:descriptions' format '%B%d%b'
@@ -572,7 +590,7 @@ update_cache_hosts () {
     print_cache_hosts | sort -u > $cache_hosts_file
   if [ -f $known_hosts_file ]; then
     hostnames=(`perl -ne  'if (/^([a-zA-Z0-9.-]+)/) { print "$1\n";}' $known_hosts_file`) 
-  elif [ -f /etc/hosts ]; then                 
+  elif [ -f /etc/hosts ]; then
     hostnames=(`awk '{print $2}' /etc/hosts`)
   else
     hostnames=(localhost)
