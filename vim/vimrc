@@ -37,7 +37,8 @@ Bundle 'ack.vim'
 "Bundle 'snipMate'
 Bundle 'sudo.vim'
 Bundle 'vcscommand.vim'
-Bundle 'L9'              " L9 is required by FuzzyFinder
+Bundle 'L9'
+" L9 is required by FuzzyFinder
 Bundle 'FuzzyFinder'
 
 
