@@ -1,5 +1,5 @@
 " vimrc for Y.Watase
-" Last Modified:  2011/12/06.
+" Last Modified:  2012/06/01.
 
 """"""""""""""""""""""""""""""
 " gerenal
@@ -37,6 +37,9 @@ Bundle 'ack.vim'
 "Bundle 'snipMate'
 Bundle 'sudo.vim'
 Bundle 'vcscommand.vim'
+Bundle 'L9'
+" L9 is required by FuzzyFinder
+Bundle 'FuzzyFinder'
 
 
 " non github repos

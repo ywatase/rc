@@ -1,5 +1,5 @@
 # perlbrew
-path=($HOME/perl5/perlbrew/bin(N-/) $HOME/perl5/perlbrew/perls/current/bin(N-/) $HOME/bin/*(N-/) $path)
+path=($HOME/perl5/perlbrew/bin(N-/) $HOME/perl5/perlbrew/perls/current/bin(N-/) $HOME/bin/*(N-/) $HOME/bin(N-/) $path)
 
 if [ -e $HOME/perl5/perlbrew/etc/bashrc ] ; then
   source $HOME/perl5/perlbrew/etc/bashrc
