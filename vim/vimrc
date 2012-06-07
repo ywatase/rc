@@ -1,5 +1,5 @@
 " vimrc for Y.Watase
-" Last Modified:  2012/06/01.
+" Last Modified:  2012/06/06.
 
 """"""""""""""""""""""""""""""
 " gerenal
@@ -10,7 +10,6 @@ set modeline
 set modelines=5
 
 set scrolloff=5
-
 
 """"""""""""""""""""""""""""""
 " vundle
@@ -32,7 +31,7 @@ Bundle 'BufOnly.vim'
 Bundle 'EnhCommentify.vim'
 Bundle 'neocomplcache'
 Bundle 'nginx.vim'
-Bundle 'perl-support.vim'
+"Bundle 'perl-support.vim'
 Bundle 'ack.vim'
 "Bundle 'snipMate'
 Bundle 'sudo.vim'
@@ -44,11 +43,17 @@ Bundle 'FuzzyFinder'
 
 " non github repos
 " Bundle 'git://git.wincent.com/command-t.git'
+Bundle 'git://github.com/mattn/benchvimrc-vim.git'
+" reference viewer
+Bundle 'git://github.com/thinca/vim-ref.git'
+Bundle 'git://github.com/c9s/perlomni.vim.git'
+Bundle 'git://github.com/ywatase/perldoc-vim.git'
 Bundle 'git://github.com/thinca/vim-quickrun.git'
 Bundle 'git://github.com/jondistad/vimclojure.git'
 Bundle 'git://github.com/motemen/git-vim.git'
 Bundle 'git://github.com/Shougo/vimproc.git'
 Bundle 'git://github.com/Shougo/vimshell.git'
+Bundle 'git://github.com/Shougo/neocomplcache-snippets-complete.git'
 Bundle 'git://github.com/ywatase/flymake-perl.vim.git'
 
 filetype plugin indent on
@@ -316,6 +321,17 @@ set laststatus=2
 set statusline=%y%{GetStatusEx()}\ 0x%B(%b)%F%m%r%=<%c:%l>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" 改行コードと文字コードを取得
+function! GetStatusEx()
+let str = ''
+let str = str . '' . &fileformat . ']'
+if has('multi_byte') && &fileencoding != ''
+let str = '[' . &fileencoding . ':' . str
+endif
+return str
+endfunction
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " filetype setting
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -330,53 +346,10 @@ let g:clj_highlight_builtins = 1
 let g:clj_paren_rainbow = 1
 """"""""""""""""""""""""""""""
 " Perl script 用の設定
+" 他の設定は ~/.vim/ftplugin/perl/init.vim
 
-let g:Perl_AuthorName        = 'Yusuke Wtase'
-let g:Perl_AuthorRef         = 'YW'
-let g:Perl_Company           = 'Adways Co., Ltd.'
-let g:Perl_Email             = 'ywatase@gmail.com'
-let g:Perl_FormatDate        = '%Y/%m/%d'
-let g:Perl_LocalTemplateFile = $HOME . '/.vim/bundle_local/perl-support/templates/Templates'
-let g:Perl_MapLeader         = ','
-"let g:Perl_Dictionary_File = $HOME . '/.vim/dict/perl.dict'
-
-
-" set the new fold function, etc
 autocmd BufRead,BufNewFile *.pl,*.pm,*.cgi,*.t,*psgi :set filetype=perl 
-autocmd Filetype perl call MyPerlSettings()
 "autocmd BufWritePost *.pl,*.pm,*.cgi,*.t make
-function! MyPerlSettings()
-   call PerlSyntaxCheck()
-   call PerlCritic()
-   set smartindent expandtab
-   noremap    <buffer>  <silent>  ,rs         :call Perl_Source()<CR>
-endfunction
-
-
-function! PerlSyntaxCheck()
-	set makeprg=perl\ -cw\ %\ 2>&1\ \\\|\ perl\ -pe\ \'/at\\s\(\\S\+\)\\sline\\s\(\\d+\)\/\;print\ \"\$1:\$2:\"\;'
-	set efm=%f:%l:%m
-endfunction
-
-
-" 'perl -cw' current buffer into a new window
-function! PerlCritic()
-    set grepformat=%f:%l:%c:m
-    set grepprg=perlcritic\ -2\ -verbose\ 1\ %
-endfunction
-
-" like EDITOR=vim perldoc -m modules
-function! Perl_Source ()
-	let l:item=expand("<cword>")
-	let l:command="perl -MClass::Inspector -e 'print Class::Inspector->resolved_filename(qq{" . l:item . "});'" 
-	echo l:command
-	let l:path = system(l:command)
-	if filereadable(l:path)
-		execute "split" fnameescape(l:path)
-	else
-		echo l:path . " is not readable"
-	endif
-endfunction
 
 """"""""""""""""""""""""""""""
 " Ruby script 用の設定
@@ -393,9 +366,9 @@ endfunction
 """"""""""""""""""""""""""""""
 " TSkelton
 
-let g:tskelDateFormat = g:Perl_FormatDate
-let g:tskelUserName   = g:Perl_AuthorName
-let g:tskelUserEmail  = g:Perl_Email
+let g:tskelDateFormat = '%Y/%m/%d'
+let g:tskelUserName   = 'Yusuke Wtase'
+let g:tskelUserEmail  = 'ywatase@gmail.com'
 let g:tskelUserWWW    = 'http://u-suke.org/'
 let g:tskelLicense    = 'apache'
 
@@ -537,15 +510,36 @@ inoremap <silent> <F11>  <C-C>:Tlist<CR>
 
 let tlist_perl_settings  = 'perl;c:constants;l:labels;p:package;s:subroutines;d:POD'
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" ユーザー定義関数
-" 
-" 改行コードと文字コードを取得
-function! GetStatusEx()
-let str = ''
-let str = str . '' . &fileformat . ']'
-if has('multi_byte') && &fileencoding != ''
-let str = '[' . &fileencoding . ':' . str
-endif
-return str
+""""""""""""""""""""""""""""""
+" ref.vim
+"
+""""""""""""""""""""""""""""""
+let g:ref_source_webdict_sites = {
+\ 'wiktionary': {
+\ 'url': 'http://ja.wiktionary.org/wiki/%s',
+\ 'keyword_encoding': 'utf-8',
+\ 'cache': 1,
+\ },
+\ 'wikipedia:ja':{
+\ 'url': 'http://ja.wikipedia.org/wiki/%s',
+\ 'keyword_encoding': 'utf-8',
+\ 'cache': 1,
+\ },
+\ 'alc':{
+\ 'url': 'http://eow.alc.co.jp/%s/UTF-8/',
+\ 'keyword_encoding': 'utf-8',
+\ 'cache': 1,
+\ }
+\ }
+
+" 出力に対するフィルタ。最初の数行を削除している。
+function! g:ref_source_webdict_sites.wiktionary.filter(output)
+return join(split(a:output, "\n")[18 :], "\n")
 endfunction
+function! g:ref_source_webdict_sites.alc.filter(output)
+return join(split(a:output, "\n")[34 :], "\n")
+endfunction
+
+let g:ref_source_webdict_sites.default = 'alc'
+
+nmap <F11> :Ref webdict<space>
