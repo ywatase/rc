@@ -231,6 +231,16 @@ snippet redirect
 snippet param 
 	$c->request->param('${1:param}')
 	${2}
+# Moose & Mouse
+snippet has
+    has '${1}' => (is => 'rw', isa => '${2}', lazy_build => 1);
+    sub _build_${1} {
+        my ($self) = @_;
+        return;
+    }
+snippet immutable
+    __PACKAGE__->meta->make_immutable();
+
 snippet benchmark
 	use Benchmark qw/timethese cmpthese/;
 	my $count = ${1}
