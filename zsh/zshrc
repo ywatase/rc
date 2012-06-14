@@ -85,21 +85,20 @@ export GISTY_DIR="$HOME/dev/gists"
 if is_ssh_client && ! is_screen && ! is_tmux ; then
   keychain ~/.ssh/id_dsa
   source ~/.keychain/$HOST-sh
+fi
+agent="$HOME/tmp/ssh-agent-$USER"
+if [ -S "$SSH_AUTH_SOCK" ] ; then
+  case $SSH_AUTH_SOCK in
+    /tmp/*/agent.[0-9]*)
+      if ! [ -e "$HOME/tmp" ] ; then
+        mkdir "$HOME/tmp"
+      fi
+      ln -snf "$SSH_AUTH_SOCK" $agent && export SSH_AUTH_SOCK=$agent
+  esac
+elif [ -S $agent ]; then
+  export SSH_AUTH_SOCK=$agent
 else
-  agent="$HOME/tmp/ssh-agent-$USER"
-  if [ -S "$SSH_AUTH_SOCK" ] ; then
-    case $SSH_AUTH_SOCK in
-      /tmp/*/agent.[0-9]*)
-        if ! [ -e "$HOME/tmp" ] ; then
-          mkdir "$HOME/tmp"
-        fi
-        ln -snf "$SSH_AUTH_SOCK" $agent && export SSH_AUTH_SOCK=$agent
-    esac
-  elif [ -S $agent ]; then
-    export SSH_AUTH_SOCK=$agent
-  else
-    echo "no ssh-agent"
-  fi
+  echo "no ssh-agent"
 fi
 
 ###
@@ -375,7 +374,7 @@ fi
 if is_screen ; then
   function ssh_screen(){
     eval server=\${$#}
-    screen -t $server ssh "$@"
+    screen -t $server env SSH_AUTH_SOCK="$SSH_AUTH_SOCK" ssh "$@"
   }
   alias ssh=ssh_screen
 elif is_tmux ; then
