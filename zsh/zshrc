@@ -27,6 +27,16 @@ is_ssh_client () { ! [ "$SSH_TTY" ]                        }
 #is_ssh_client () { is_cygwin || is_host "pc-igademo" || is_host "mutter" || is_host "vostro200" }
 
 ###
+# enable auto complete 
+###
+autoload -U compinit
+if is_cygwin ; then
+  compinit -u
+else
+  compinit
+fi
+
+###
 # Alias
 ###
 alias l=ls
@@ -100,6 +110,22 @@ elif [ -S $agent ]; then
 else
   echo "no ssh-agent"
 fi
+
+recovery_ssh_auth_sock_if_lost_sock () {
+  if [ -S $SSH_AUTH_SOCK ] ; then
+    return
+  fi
+  netstat -lnx | perl -ne 'print "$1\n" if m|(/tmp/ssh-.+/agent.+)|' | while read agent
+  do
+    if [ -r $agent ] ; then
+      echo "link: '$agent' to '$SSH_AUTH_SOCK'"
+      ln -fs $agent $SSH_AUTH_SOCK
+      export SSH_AUTH_SOCK
+      break
+    fi
+  done
+  echo "Error: agent socket is not found."
+}
 
 ###
 # Perl
@@ -374,19 +400,23 @@ fi
 if is_screen ; then
   function ssh_screen(){
     eval server=\${$#}
+    recovery_ssh_auth_sock_if_lost_sock
     screen -t $server env SSH_AUTH_SOCK="$SSH_AUTH_SOCK" ssh "$@"
   }
   alias ssh=ssh_screen
+  compdef _ssh ssh_screen=ssh
 elif is_tmux ; then
   function ssh_tmux() {
     eval server=\${$#}
+    recovery_ssh_auth_sock_if_lost_sock
     tmux neww -n $server "exec ssh $@"
   }
   function man_tmux() {
     tmux split-window "exec man $@"
   }
   alias ssh=ssh_tmux
-  alias man=man_tmux
+  compdef _ssh ssh_tmux=ssh
+  compdef _man man_tmux=man
 fi
 
 # cdd
@@ -525,13 +555,6 @@ bindkey "^N" history-beginning-search-forward-end
 ###
 # command auto complete
 ###
-autoload -U compinit
-if is_cygwin ; then
-  compinit -u
-else
-  compinit
-fi
-
 zstyle ':completion:*:default' menu select=1
 zstyle ':completion:*' verbose yes
 zstyle ':completion:*:descriptions' format '%B%d%b'
