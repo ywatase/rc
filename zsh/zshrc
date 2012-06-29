@@ -29,6 +29,9 @@ is_ssh_client () { ! [ "$SSH_TTY" ]                        }
 ###
 # enable auto complete 
 ###
+fpath=($HOME/.zsh/functions(N-/) $fpath)
+typeset -U fpath
+typeset -U path
 autoload -U compinit
 if is_cygwin ; then
   compinit -u
@@ -524,9 +527,6 @@ export SHELL=/bin/zsh
 export CVS_RSH=ssh
 export SVN_SSH=ssh
 export WORDCHARS='i*?_-.[]~=&;!#$%^(){}<>'
-fpath=($HOME/.zsh/functions(N-/) $fpath)
-typeset -U fpath
-typeset -U path
 umask 022
 
 bindkey -e             # emacs key bindings
