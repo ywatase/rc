@@ -4,6 +4,9 @@
 [submodule "zsh/function-871500.git"]
 	path = zsh/function-871500.git
 	url = git://gist.github.com/871500.git
+[submodule "Anyone/kazeburo-mysetup"]
+	path = Anyone/kazeburo-mysetup
+	url = git://github.com/kazeburo/mysetup.git
 [submodule "zsh/git-tasukete"]
 	path = zsh/git-tasukete
 	url = git://github.com/rosylilly/git-tasukete.git

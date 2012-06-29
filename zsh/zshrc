@@ -44,7 +44,12 @@ fi
 ###
 alias l=ls
 if is_mac ; then
-  alias ls="ls -G"
+  if [ which gls >/dev/null 2>&1 ] ; then
+    alias ls="ls -G"
+  else
+    alias ls="gls --color=auto --show-control-chars"
+  fi
+
 else
   alias ls="ls --color=auto --show-control-chars"
 fi
@@ -336,9 +341,15 @@ if is_mac ; then
   install-homebrew () {
     /usr/bin/ruby -e "$(curl -LfsS https://raw.github.com/mxcl/homebrew/master/Library/Contributions/install_homebrew.rb)"
   }
+  brew-make-alias-of-coreutils () {
+    brew ls coreutils 2>&1| grep /bin/g | perl -lne 'chomp; m{/bin/g(\w+)$} and print sprintf q{alias %s=g%s}, $1, $1 ' >> ~/.zsh/zshenv_coreutils_alias
+  }
   install-vim () {
     brew install https://raw.github.com/AndrewVos/homebrew-alt/master/duplicates/vim.rb
     mv /usr/bin/vim /usr/bin/vim72
+  }
+  install-q4m-dev () {
+    zsh -c "$(curl -fsSL https://raw.github.com/gist/1426403)"
   }
 fi
 

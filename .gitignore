@@ -4,6 +4,7 @@ vim/bundle/
 vim/bundle_local/perl-support/templates/idioms.template
 vim/cache/
 vim/.netrwhist
+zsh/zshenv_coreutils_alias
 zsh/functions/_cpanm
 zsh/cdd_pwd_list
 zsh/cdd_pwd_list.t
