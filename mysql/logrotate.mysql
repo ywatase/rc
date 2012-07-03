@@ -6,6 +6,8 @@
   compress
   delaycompress
   postrotate
-     /usr/local/mysql/bin/mysqladmin flush-logs
+    if /usr/local/mysql/bin/mysqladmin ping &>/dev/null ; then
+       /usr/local/mysql/bin/mysqladmin flush-logs
+    fi
   endscript
 }
