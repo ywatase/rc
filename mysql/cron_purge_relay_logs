@@ -1,0 +1,1 @@
+13 5 * * * /usr/bin/purge_relay_logs --user=root --disable_relay_log_purge 2>&1 | logger -t mha -p local0.info
