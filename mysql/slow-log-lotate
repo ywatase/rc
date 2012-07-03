@@ -1,0 +1,11 @@
+/var/lib/mysql/mysql-slow.log{
+  notifempty
+  weekly
+  rotate 9
+  missingok
+  compress
+  delaycompress
+  postrotate
+     /usr/local/mysql/bin/mysqladmin flush-logs
+  endscript
+}
