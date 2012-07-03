@@ -1,0 +1,19 @@
+#!/bin/bash
+
+usage () {
+	cat <<END
+pbenv perl_version comand [args...]
+END
+}
+
+if [ "$1" = "" ] ; then
+	usage
+	exit
+fi
+export HOME=/home/watase
+source ~/perl5/perlbrew/etc/bashrc
+perlbrew use $1
+
+shift 1
+
+exec "$@"
