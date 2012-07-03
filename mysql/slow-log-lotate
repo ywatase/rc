@@ -1,4 +1,4 @@
-/var/lib/mysql/mysql-slow.log{
+/var/lib/mysql/mysql-slow.log /var/lib/mysql/mysql.err {
   notifempty
   weekly
   rotate 9
