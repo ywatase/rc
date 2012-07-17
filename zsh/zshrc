@@ -281,7 +281,7 @@ json2yaml () {
   for FILE in $@
   do 
     BASENAME=$(basename $FILE .json)
-    perl -MYAML::Any -MJSON -e 'open my $fh, "<", $ARGV[0] or die $!; print Dump JSON::decode_json(join(q{}, $fh));close $fh;' $FILE > $BASENAME.yaml
+    perl -MYAML::Any -MJSON -e 'open my $fh, "<", $ARGV[0] or die $!; print Dump JSON::decode_json(join(q{}, <$fh>));close $fh;' $FILE > $BASENAME.yml
   done
 }
 
