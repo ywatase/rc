@@ -49,7 +49,9 @@ if is_mac ; then
   else
     alias ls="gls --color=auto --show-control-chars"
   fi
-
+  alias netstat_osx='lsof -i -P'
+  alias dot_files_visible="defaults write com.apple.finder AppleShowAllFiles -bool YES;killall Finder"
+  alias dot_files_invisible="defaults write com.apple.finder AppleShowAllFiles -bool NO;killall Finder"
 else
   alias ls="ls --color=auto --show-control-chars"
 fi
@@ -323,6 +325,12 @@ install-rbenv () {
   rbenv rehash
 }
 
+###
+# python
+###
+install-pythonbrew () {
+  curl -kL http://github.com/utahta/pythonbrew/raw/master/pythonbrew-install | bash
+}
 
 ###
 # rpm
