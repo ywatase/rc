@@ -1,5 +1,5 @@
 " vimrc for Y.Watase
-" Last Modified:  2012/06/18.
+" Last Modified:  2012/07/19.
 
 """"""""""""""""""""""""""""""
 " gerenal
@@ -59,6 +59,9 @@ Bundle 'bartekd/vim-dart'
 Bundle 'basyura/jslint.vim'
 Bundle 'mattn/zencoding-vim'
 Bundle 'ywatase/flymake-perl.vim.git'
+" for markdown
+Bundle 'hallison/vim-markdown.git'
+Bundle 'tyru/open-browser.vim.git'
 
 filetype plugin indent on
 
@@ -394,6 +397,15 @@ endfunction
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugin setting
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""
+" quickrun
+""""""""""""""""""""""""""""""
+let g:quickrun_config = {}
+let g:quickrun_config['markdown'] = {
+      \ 'type': 'markdown/pandoc',
+      \ 'outputter': 'browser',
+      \ 'cmdopt': '-s'
+      \ }
 """"""""""""""""""""""""""""""
 " neocomplcache.vim
 """"""""""""""""""""""""""""""
