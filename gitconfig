@@ -1,9 +1,10 @@
+[include]
+	path = .gitconfig.local
+[github]
+	user = ywatase
 [user]
 	name = Yusuke Watase
 	email = ywatase@gmail.com
-[github]
-	user = ywatase
-	token = afb30010e12b5006a48994a2be210096
 [core]
 	excludesfile = ~/.gitignore
 	autocrlf = input                 # CRLFを自動変換
