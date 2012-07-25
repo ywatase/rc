@@ -113,7 +113,7 @@ snippet open2
     my ($wtr, $rdr);
     my @cmd = (qw(${1:command}));
     my $pid = open2($wtr, $rdr, @cmd);
-	close $wdr;
+	close $wtr;
 	while (my $line = <$rdr>){
 		chomp $line;
 		${2:#body...}
@@ -126,7 +126,7 @@ snippet open3
     my ($wtr, $rdr);
     my @cmd = (qw(${1:command}));
     my $pid = open3($wtr, $rdr, 0, @cmd);
-	close $wdr;
+	close $wtr;
 	while (my $line = <$rdr>){
 		chomp $line;
 		${2:#body...}
