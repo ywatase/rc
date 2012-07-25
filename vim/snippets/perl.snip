@@ -108,6 +108,32 @@ snippet open
 	}
 	close $fh or die "Can't close file: $1";
 
+snippet open2
+    use IPC::Open2;
+    my ($wtr, $rdr);
+    my @cmd = (qw(${1:command}));
+    my $pid = open2($wtr, $rdr, @cmd);
+	close $wdr;
+	while (my $line = <$rdr>){
+		chomp $line;
+		${2:#body...}
+    }
+    waitpid($pid, 0);
+	close $rdr;
+
+snippet open3
+    use IPC::Open3;
+    my ($wtr, $rdr);
+    my @cmd = (qw(${1:command}));
+    my $pid = open3($wtr, $rdr, 0, @cmd);
+	close $wdr;
+	while (my $line = <$rdr>){
+		chomp $line;
+		${2:#body...}
+    }
+    waitpid($pid, 0);
+	close $rdr;
+
 snippet dump 
 	use Data::Dumper; warn Dumper ${1:$var};
 	${2}
