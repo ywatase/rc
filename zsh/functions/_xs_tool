@@ -1,7 +1,7 @@
 #compdef xs_tool
 
 typeset -A opt_args
-local context state line
+local context state line host
 
 # cache policy
 #(Nmw+2)   # 2week
@@ -13,48 +13,78 @@ _xs_tool_caching_policy () {
 	(( $#oldp ))
 }
 
-
-_list_templates () {
-    local host res old_ifs cache_store
-    typeset -a _templates
-    (($+opt_args[-h])) && host=$opt_args[-h]
-    (($+opt_args[--host])) && host=$opt_args[--host]
-
-	cache_store=XS_TOOL_${host}_templates
+_find_or_store_cache () {
+	local cache_store var_name
+	local -a list
+	cache_store=$1
+	varname=$2
+	getter_function=$3
 
 	local cache_policy
 	zstyle -s ":completion:${curcontext}:" cache-policy cache_policy
 	if [[ -z "$cache_policy" ]]; then
 		zstyle ":completion:${curcontext}:" cache-policy _xs_tool_caching_policy
 	fi
-
-    if ( [[ $#_templates -eq 0 ]] || _cache_invalid $cache_store ) && ! _retrieve_cache $cache_store
+	list=(${(P)varname})
+    if ( [[ $#list -eq 0 ]] || _cache_invalid $cache_store ) && ! _retrieve_cache $cache_store
     then
-        res=$(_call_program commands xs_tool list_templates --host=$host 2>/dev/null)
-        old_ifs=$IFS
-        IFS=:
-        _templates=($(echo $res | perl -pe 's/\n/:/'))
-        IFS=$old_ifs
-        _store_cache $cache_store _templates
-    fi
+		eval $getter_function
+		_store_cache $cache_store $varname
+	fi
+}
+
+_get_host_from_opt_args () {
+    (($+opt_args[-h])) && host=$opt_args[-h]
+    (($+opt_args[--host])) && host=$opt_args[--host]
+}
+
+_get_templates_from_xenserver () {
+	_templates=(${(@f)"$(_call_program commands xs_tool list_templates --host=$host 2>/dev/null)"})
+}
+
+_get_nw_uuids_from_xenserver () {
+	_nw_uuids=(${(@f)"$(_call_program commands xs_tool list_nw_uuids --host=$host 2>/dev/null | awk '{print $1}')"})
+}
+
+_get_sr_uuids_from_xenserver () {
+	_sr_uuids=(${(@f)"$(_call_program commands xs_tool list_sr_uuids --host=$host 2>/dev/null | awk '{print $1}')"})
+}
+
+_get_profiles_from_cobbler () {
+	_profiles=(${(@f)"$( _call_program commands xs_tool list_profiles 2>/dev/null )"})
+}
+
+_list_templates () {
+    local cache_store
+	local -a _templates
+	_get_host_from_opt_args
+	cache_store=XS_TOOL_${host}_tmeplates
+	_find_or_store_cache $cache_store '_templates' '_get_templates_from_xenserver'
     compadd "$@" -a _templates
 }
 
+_list_nw_uuids () {
+	local cache_policy
+    local -a _nw_uuids
+	_get_host_from_opt_args
+	cache_store=XS_TOOL_${host}_nw_uuids
+	_find_or_store_cache $cache_store '_nw_uuids' '_get_nw_uuids_from_xenserver'
+    compadd "$@" -a _nw_uuids
+}
+_list_sr_uuids () {
+	local cache_policy
+    local -a _sr_uuids
+	_get_host_from_opt_args
+	cache_store=XS_TOOL_${host}_sr_uuids
+	_find_or_store_cache $cache_store '_sr_uuids' '_get_sr_uuids_from_xenserver'
+    compadd "$@" -a _sr_uuids
+}
 
 _list_profiles () {
-    local -a _profiles
-	local cache_policy
-
-	zstyle -s ":completion:${curcontext}:" cache-policy cache_policy
-	if [[ -z "$cache_policy" ]]; then
-		zstyle ":completion:${curcontext}:" cache-policy _xs_tool_caching_policy
-	fi
-
-    if ( [[ $#_profiles -eq 0 ]] || _cache_invalid XS_TOOL_profiles ) && ! _retrieve_cache XS_TOOL_profiles
-    then
-        _profiles=($(_call_program commands xs_tool list_profiles 2>/dev/null | perl -pe 's/\n/ /;'))
-        _store_cache XS_TOOL_profiles _profiles
-    fi
+	local cache_store
+	local -a _profiles
+	cache_store=XS_TOOL_profiles
+	_find_or_store_cache $cache_store '_profiles' '_get_profiles_from_cobbler'
     compadd "$@" -a _profiles
 }
 
@@ -62,7 +92,7 @@ _arguments -s -C : \
     '*::commands:->cmds' && return 0 
 
 local -a cmds opts_cobbler opts_xenserver
-cmds=( init install list_profiles list_templates )
+cmds=( init install list_profiles list_templates list_sr_uuids list_nw_uuids )
 opts_xenserver=( '(-h --host)'{-h,--host}'[XenServer host]:XenServer host:_hosts' \
     '(-u --user)'{-u,--user}'[XenServer user]:XenServer user:_users' \
     '(-p --password)'{-p,--password}'[XenServer password]:XenServer password:' )
@@ -86,13 +116,16 @@ case $state in
                     ;;
                 install)
                     opts=("$opts_cobbler[@]" "$opts_xenserver[@]" \
-                        '(-t --template)'{-t,--template}'[template name]:template name:_list_templates' \
-                        '(-p --profile)'{-p,--profile}'[cobbler profile]:cobbler profile name:_list_profiles')
+                        '(-p --profile)'{-p,--profile}'[cobbler profile]:cobbler profile name:_list_profiles' \
+                        '(-t --template)'{-t,--template}'[template name]:xenserver template name:_list_templates' \
+						'(--nw_uuid)--nw_uuid[nw uuid used by kickstart]:xenserver network uuid by kickstart: _list_nw_uuids' \
+						'(--sr_uuid)--sr_uuid[sr uuid to install vm]:xenserver sr uuid to install vm: _list_sr_uuids' \
+						)
                     ;;
                 list_profiles)
                     opts=("$opts_cobbler[@]")
                     ;;
-                list_templates)
+                list_templates | list_nw_uuids | list_sr_uuids)
                     opts=("$opts_xenserver[@]")
                     ;;
                 *)
