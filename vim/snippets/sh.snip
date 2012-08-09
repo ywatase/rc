@@ -13,6 +13,11 @@ snippet for
 	for (( ${2:i} = 0; $2 < ${1:count}; $2++ )); do
 		${3:#statements}
 	done
+snippet forarry
+    for (( ${2:i} = 0; $2 < ${#${1:array}[@]}; ++$2 ))
+    do
+        ${$1[$$2]}
+    done
 snippet wh
 	while [[ ${1:condition} ]]; do
 		${2:#statements}

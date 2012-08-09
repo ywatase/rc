@@ -23,6 +23,11 @@ snippet fore
 	for ${1:item} in ${2:list}; do
 		${3:# statements}
 	done
+snippet fora
+    for (( ${2:i} = 1; $2 <= ${#${1:array}[@]}; $2++ ))
+    do
+        ${$1[$$2]}
+    done
 snippet wh
 	while ${1:condition}; do
 		${2:# statements}
