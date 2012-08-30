@@ -30,6 +30,9 @@ is_ssh_client () { ! [ "$SSH_TTY" ]                        }
 # enable auto complete 
 ###
 fpath=($HOME/.zsh/functions(N-/) $fpath)
+if is_mac ; then
+  path=($HOME/bin(N-/) $HOME/bin/*(N-/) /usr/local/bin $path)
+fi
 typeset -U fpath
 typeset -U path
 autoload -U compinit
@@ -49,7 +52,7 @@ if is_mac ; then
   else
     alias ls="gls --color=auto --show-control-chars"
   fi
-  alias netstat_osx='lsof -i -P'
+  alias netstat_osx='sudo lsof -i -P'
   alias dot_files_visible="defaults write com.apple.finder AppleShowAllFiles -bool YES;killall Finder"
   alias dot_files_invisible="defaults write com.apple.finder AppleShowAllFiles -bool NO;killall Finder"
 else
