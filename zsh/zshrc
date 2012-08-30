@@ -587,6 +587,8 @@ zstyle ':completion:*:warnings' format 'No matches for: %d'
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}  # color 
 zstyle ':completion:*' use-cache true
+# add knows_host to hosts completion (sneed HashHostKey no at .ssh/config)
+zstyle -e ':completion::*:*:*:hosts' hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) /dev/null)"}%%[# ]*}//,/ })'
 
 # This file gives some examples of compctl commands.
 # You can either put the compctl commands in your .zshrc
@@ -604,46 +606,6 @@ _git-svn () {
 }
 compdef _git-svn git-svn
 
-###
-# hostname completion 
-###
-
-make_p () {
-    local t s
-    t="$1"; shift
-
-    [ -f $t ] || return 0
-
-    for s; do
-  [ $s -nt $t ] && return 0
-    done
-
-    return 1
-}
-
-cache_hosts_file="$HOME/.cache_hosts"
-known_hosts_file="$HOME/.ssh/known_hosts"
-
-print_cache_hosts () {
-    if [ -f $known_hosts_file ]; then
-  awk '{ if (split($1, a, ",") > 1) for (i in a) { if (a[i] ~ /^[a-z]/) print a[i] } else print $1 }' $known_hosts_file
-    fi
-}
-
-update_cache_hosts () {
-    print_cache_hosts | sort -u > $cache_hosts_file
-  if [ -f $known_hosts_file ]; then
-    hostnames=(`perl -ne  'if (/^([a-zA-Z0-9.-]+)/) { print "$1\n";}' $known_hosts_file`) 
-  elif [ -f /etc/hosts ]; then
-    hostnames=(`awk '{print $2}' /etc/hosts`)
-  else
-    hostnames=(localhost)
-  fi
-}
-
-make_p $cache_hosts_file $known_hosts_file && update_cache_hosts
-
-_cache_hosts=( $(< $cache_hosts_file) )
 
 # Some builtins.
 compctl -j -P % fg bg wait jobs disown
