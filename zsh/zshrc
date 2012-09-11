@@ -60,6 +60,7 @@ else
 fi
 alias la="ls -aF"
 alias ll="ls -l"
+alias psn="ps auxf | perl -pe 's/^\\s*(\\d+)/sprintf qq{%-10s}, substr(scalar(getpwuid(\$1)), 0, 10)/e;'"
 alias rdesk="rdesktop -r clipboard -zP -ken-us"
 alias rdesk_full="rdesk -f"
 alias git-submodule-pull="git submodule foreach 'git checkout master; git pull'"
