@@ -1,0 +1,94 @@
+#compdef pythonbrew
+
+typeset -A opt_args
+local context state line
+
+_arguments -C \
+  '(- 1 *)--version[show program\'s version number and exit]' \
+  '(- 1 *){-h,--help}[Show help]' \
+  '-D=-[pass through switches to the perl Configure script]' \
+  '(-as)'-as+'[Install a given perl under an alias.]:alias name' \
+  '1: :->cmds' \
+  ': :->args' \
+  ': :->args2' && return 0
+
+case $state in
+  cmds)
+    local -a cmds
+    cmds=( init install uninstall switch switch-off list use available off help mirror version install-cpanm self-upgrade env lib)
+
+    _describe -t commands 'perlbrew command' cmds && ret=0
+    ;;
+  args)
+    case $line[1] in
+      switch | use)
+        local -a versions
+        versions=($(perlbrew list | perl -pe 's/^\*//m;s/\n/ /m'))
+        _wanted versions expl 'perl version' compadd $versions && ret=0 
+        ;;
+      install)
+        local -a perl_versions
+        perl_versions=($(perlbrew available|perl -pe 's/^i//m;s/\n/ /m') perl-blead )
+        _wanted perl_versions expl 'perl-<version-number>' compadd $perl_versions && ret=0 
+        ;;
+      uninstall)
+        local -a versions
+        versions=($(ls $PERLBREW_ROOT/perls/ | perl -pe 's/\n/ /m'))
+        _wanted versions expl 'perl version' compadd $versions && ret=0 
+        ;;
+      lib)
+        local -a lib_cmds 
+        lib_cmds=(create list delete)
+        _wanted lib_cmds expl 'lib command' compadd $lib_cmds && ret=0
+        ;;
+      *)
+        (( ret )) && _message 'no more arguments'
+        ;;
+    esac
+    ;;
+  args2)
+    case $line[1] in
+      lib)
+        case $line[2] in
+          create)
+            ;;
+          delete)
+            local -a locallibs
+            locallibs=($(perlbrew lib list | perl -pe 's/\n/ /m'))
+            _wanted locallibs expl 'libs' compadd $locallibs && ret=0
+            ;;
+          *)
+            (( ret )) && _message 'no more arguments'
+            ;;
+        esac
+        ;;
+      *)
+        ret=0
+        ;;
+    esac
+    ;;
+esac
+
+return ret
+
+
+Commands available:
+  buildout: Runs the buildout with specified or current using python
+  cleanup: Remove stale source folders and archives
+  help: Show available commands
+  install: Build and install the given version of python
+  list: List the installed all pythons
+  off: Disable pythonbrew
+  py: Runs a named python file against specified and/or all pythons
+  switch: Permanently use the specified python as default
+  symlink: Create/Remove a symbolic link on your $PATH
+  uninstall: Uninstall the given version of python
+  update: Update the pythonbrew to the latest version
+  use: Use the specified python in current shell
+  venv: Create isolated python environments
+  version: Show version
+
+Further Instructions:
+  https://github.com/utahta/pythonbrew
+
+# vim: et sw=2 ts=2 si
