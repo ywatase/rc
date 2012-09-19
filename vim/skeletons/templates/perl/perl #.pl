@@ -6,7 +6,7 @@ use strict;
 use warnings;
 
 use Pod::Usage;
-use Getopt::Long qw(:config bundling auto_version);
+use Getopt::Long qw(:config posix_default no_ignore_case gnu_compat bundling auto_version);
 
 our $VERSION = "0.01";
 
