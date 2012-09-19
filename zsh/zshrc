@@ -29,7 +29,7 @@ is_ssh_client () { ! [ "$SSH_TTY" ]                        }
 ###
 # enable auto complete 
 ###
-fpath=($HOME/.zsh/functions(N-/) $fpath)
+fpath=($HOME/.zsh/functions(N-/) $HOME/.autojump/functions(N-/) $fpath)
 if is_mac ; then
   path=($HOME/bin(N-/) $HOME/bin/*(N-/) /usr/local/bin $path)
 fi
@@ -73,7 +73,7 @@ oppai () {
   perl -le 'use Acme::Oppai;eval q{print "Acme::Oppai"}."->oppai"x(shift||4);' $1
 }
 # autojump
-[[ -s /etc/profile.d/autojump.zsh ]] && source /etc/profile.d/autojump.zsh
+[[ -s ~/.autojump/etc/profile.d/autojump.zsh ]] && source ~/.autojump/etc/profile.d/autojump.zsh
 
 alias -g V='| vim -'
 alias -g G='| grep '
