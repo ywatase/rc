@@ -10,3 +10,6 @@
 [submodule "zsh/git-tasukete"]
 	path = zsh/git-tasukete
 	url = git://github.com/rosylilly/git-tasukete.git
+[submodule "zsh/autojump.git"]
+	path = zsh/autojump.git
+	url = git://github.com/joelthelion/autojump.git

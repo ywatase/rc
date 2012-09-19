@@ -1,5 +1,5 @@
 #!/usr/bin/env perl 
-# Last Modified: 2012/05/09.
+# Last Modified: 2012/09/19.
 # Author: Y.Watase <ywatase@gmail.com>
 
 use strict;
@@ -95,6 +95,7 @@ sub main {
     _clone_submodules();
     _symlink_dot_files();
     _add_zshenv($hash{'.zsh'});
+    _setup_autojump();
 }
 
 #################################################
@@ -159,6 +160,17 @@ sub _symlink_dot_files {
     while(my ($target, $src) = each %hash){
         _mk_symlink(realpath($src),File::Spec->catfile($ENV{HOME}, $target));
     }
+}
+
+=item B<_setup_autojump> - install autojump
+
+=cut 
+
+sub _setup_autojump {
+    my $dir = getcwd;
+    chdir File::Spec->catfile($FindBin::Bin, qw(.. autojump.git));
+    system('sudo', './install.sh', '--zsh');
+    chdir $dir;
 }
 
 =item B<_init_args> - initialize arguments

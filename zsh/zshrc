@@ -60,10 +60,6 @@ else
 fi
 alias la="ls -aF"
 alias ll="ls -l"
-alias j=autojump
-if [ which brew >/dev/null 2>&1 ] && [ -f `brew --prefix`/etc/autojump ]; then
-  . `brew --prefix`/etc/autojump
-fi
 alias psn="ps auxf | perl -pe 's/^\\s*(\\d+)/sprintf qq{%-10s}, substr(scalar(getpwuid(\$1)), 0, 10)/e;'"
 alias rdesk="rdesktop -r clipboard -zP -ken-us"
 alias rdesk_full="rdesk -f"
@@ -76,6 +72,8 @@ alias get_myip='curl ifconfig.me'
 oppai () {
   perl -le 'use Acme::Oppai;eval q{print "Acme::Oppai"}."->oppai"x(shift||4);' $1
 }
+# autojump
+[[ -s /etc/profile.d/autojump.zsh ]] && source /etc/profile.d/autojump.zsh
 
 alias -g V='| vim -'
 alias -g G='| grep '
