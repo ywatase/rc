@@ -170,7 +170,7 @@ sub _symlink_dot_files {
 sub _setup_autojump {
     my $dir = getcwd;
     chdir File::Spec->catfile($FindBin::Bin, qw(.. zsh autojump.git));
-    system('sudo', './install.sh', '--zsh', '--local');
+    system('./install.sh', '--zsh', '--local');
     make_path(File::Spec->catfile($ENV{HOME}, qw(.local share autojump)));
     chdir $dir;
 }
