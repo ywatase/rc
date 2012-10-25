@@ -88,6 +88,11 @@ snippet cl
 	}
 	
 	1;
+snippet accessor
+    sub ${1:subname} {
+        $_[0]->{_${1:subname}} = $_[1] if $_[1];
+        return $_[0]->{_${1:subname}}
+    }
 # Read File
 snippet slurp
 	my $${1:var};
