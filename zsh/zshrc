@@ -171,6 +171,8 @@ git-delete-merged-branch () {
 # Perl
 ###
 alias perlsource="PAGER=vim perldoc -m "
+alias plackup_indexes="plackup -MPlack::App::Directory::Markdown \
+       -e 'Plack::App::Directory::Markdown->new(visible_all_files =>1, markdown_class =>q{Text::Markdown::Discount})->to_app'"
 
 develcover () {
   cover -delete
@@ -565,7 +567,7 @@ else
   eval `dircolors -b` # set LS_COLORS
   export EDITOR=vim
 fi
-export PAGER=less
+export PAGER='less -R'
 export TZ=JST-9
 export SHELL=/bin/zsh
 export CVS_RSH=ssh
