@@ -151,6 +151,25 @@ recovery_ssh_auth_sock_if_lost_sock () {
 ###
 # Perl
 ###
+git-delete-merged-branch () {
+  local reply
+  if [[ $(git branch --merged | grep -v '*' | wc -l) -eq 0 ]] ; then
+    echo no merged branch. exit
+    return
+  fi
+  echo 'Merged branches'
+  git branch --merged | grep -v '*'
+  echo 'Delete them? [y/N]'
+  read reply
+  if [[ "$reply" == [yY] ]] ; then
+    echo "run: git branch --merged | grep -v '*' | xargs -I % git branch -d %"
+    git branch --merged | grep -v '*' | xargs -I % git branch -d %
+  fi
+}
+
+###
+# Perl
+###
 alias perlsource="PAGER=vim perldoc -m "
 
 develcover () {
