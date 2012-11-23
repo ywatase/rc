@@ -17,7 +17,7 @@ _arguments -C \
 case $state in
   cmds)
     local -a cmds
-    cmds=( init install uninstall switch switch-off list use available off help mirror version install-cpanm self-upgrade env lib)
+    cmds=( init install uninstall switch switch-off list use available off help mirror version install-cpanm install-ack install-patchperl self-upgrade env lib)
 
     _describe -t commands 'perlbrew command' cmds && ret=0
     ;;
@@ -53,6 +53,9 @@ case $state in
       lib)
         case $line[2] in
           create)
+            local -a localperls
+            localperls=($(perlbrew -q list  | grep -v @ | sed -e 's/\*/ /' | perl -pe 's/\n/ /m'))
+            _wanted locallibs expl 'perls' compadd $localperls && ret=0
             ;;
           delete)
             local -a locallibs
