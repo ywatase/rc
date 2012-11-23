@@ -1,4 +1,4 @@
-#compdef cpan-uninstall perlsourcew perlpath perlversion perlmethod
+#compdef cpan-uninstall perlsourcew perlsource perlpath perlversion perlmethod
 
 local curcontext="$curcontext" state line expl args ret=1
 typeset -A opt_args
