@@ -33,6 +33,7 @@ fpath=($HOME/.zsh/functions(N-/) $HOME/.autojump/functions(N-/) $fpath)
 if is_mac ; then
   path=($HOME/bin(N-/) $HOME/bin/*(N-/) /usr/local/bin $path)
 fi
+
 typeset -U fpath
 typeset -U path
 autoload -U compinit
@@ -105,15 +106,6 @@ if is_host "pc-igademo" ; then
   alias svn="LANG=ja_JP.UTF-8 LC_ALL=ja_JP.UTF-8 svn"
 fi
 
-# gist
-# gem install gisty
-# git config --global github.user your_id
-# git config --global github.token your_token
-#
-export GISTY_DIR="$HOME/dev/gists"
-export GISTY_ACCESS_TOKEN=2f59072d3a498ecc8799176ee657fd2805acc6e9
-
-
 # ssh agent
 if is_ssh_client && ! is_screen && ! is_tmux ; then
   keychain ~/.ssh/id_dsa
@@ -172,32 +164,27 @@ git-delete-merged-branch () {
 ###
 # Perl
 ###
-alias perlsource="PAGER=vim perldoc -m "
+alias perlpath="perldoc -l"
 alias plackup_indexes="plackup -MPlack::App::Directory::Markdown \
        -e 'Plack::App::Directory::Markdown->new(visible_all_files =>1, markdown_class =>q{Text::Markdown::Discount})->to_app'"
-
+perlsource () {
+  vim -R $(perlpath $1 )
+}
+perlsourcew () {
+  ${_SUDO} vim $(perlpath $1)
+}
 develcover () {
   cover -delete
   HARNESS_PERL_SWITCHES=-MDevel::Cover make test
   cover
 }
 
-perlpath () {
-  local MODULE
-  for MODULE in $@
-  do
-    perl -MClass::Inspector -le "print Class::Inspector->resolved_filename(qq{$MODULE})"
-  done
-}
 perlversion () {
   local MODULE
   for MODULE in $@
   do
     perl -le "eval { require $MODULE}; print qq{${MODULE}: \$${MODULE}::VERSION}"
   done
-}
-perlsourcew () {
-  ${_SUDO} vim $(perlpath $1)
 }
 perlmodulelist () {
   local modulelist 
