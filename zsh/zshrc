@@ -398,7 +398,7 @@ if is_screen || is_tmux ; then
             %*)
                 cmd=(builtin jobs -l $cmd[1])
                 ;;
-            ls)
+            ls|gls)
                 return
                 ;; 
             cd)
