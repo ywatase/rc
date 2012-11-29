@@ -1,5 +1,5 @@
 " vimrc for Y.Watase
-" Last Modified:  2012/07/19.
+" Last Modified:  2012/11/27.
 
 """"""""""""""""""""""""""""""
 " gerenal
@@ -75,8 +75,8 @@ noremap! <C-d> <delete>
 " global
 "nmap <C-n> :cn<CR>
 "nmap <C-p> :cp<CR>
-nmap 	   :GtagsCursor<CR>
-nmap     :Gtags -r <CR>
+"nmap 	   :GtagsCursor<CR>
+"nmap     :Gtags -r <CR>
 " // global
 :cnoremap <C-a> <Home>
 :cnoremap <C-e> <End>
@@ -91,10 +91,11 @@ nmap <F4> :vertical diffsplit
 " changelog
 "
 """"""""""""""""""""""""""""""
-"Catalyst changelog
+"Perl Module changelog
 :au BufNewFile,BufRead Changes setf changelog
 let g:changelog_username   = "ywatase <ywatase@gmail.com>"
-"let g:changelog_timeformat = "%Y-%m-%d %X"
+let g:changelog_timeformat = "%Y-%m-%d"
+let g:changelog_date_entry_search = '^[0-9\.]*\s*%d\_s*%u'
 
 """"""""""""""""""""""""""""""
 " Search
@@ -402,10 +403,13 @@ endfunction
 """"""""""""""""""""""""""""""
 let g:quickrun_config = {}
 let g:quickrun_config['markdown'] = {
-      \ 'type': 'markdown/pandoc',
-      \ 'outputter': 'browser',
-      \ 'cmdopt': '-s'
-      \ }
+	  \ 'type': 'markdown/Markdown.pl',
+	  \ 'outputter': 'browser',
+	  \ }
+"     \ 'type': 'markdown/pandoc',
+"     \ 'outputter': 'browser',
+"     \ 'cmdopt': '-s'
+"     \ }
 """"""""""""""""""""""""""""""
 " neocomplcache.vim
 """"""""""""""""""""""""""""""
