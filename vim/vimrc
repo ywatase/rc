@@ -62,6 +62,13 @@ Bundle 'ywatase/flymake-perl.vim.git'
 " for markdown
 Bundle 'hallison/vim-markdown.git'
 Bundle 'tyru/open-browser.vim.git'
+" for Japanese Help
+Bundle 'vim-jp/vimdoc-ja.git'
+" こんな感じで使う
+" help {word}@ja
+" helpgrep {word}@en
+" 英語を優先したい場合
+" :set helplang=en,ja
 
 filetype plugin indent on
 
