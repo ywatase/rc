@@ -103,6 +103,7 @@ nmap <F4> :vertical diffsplit
 let g:changelog_username   = "ywatase <ywatase@gmail.com>"
 let g:changelog_timeformat = "%Y-%m-%d"
 let g:changelog_date_entry_search = '^[0-9\.]*\s*%d\_s*%u'
+autocmd FileType changelog set spell
 
 """"""""""""""""""""""""""""""
 " Search
