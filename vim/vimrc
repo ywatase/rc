@@ -1,5 +1,5 @@
 " vimrc for Y.Watase
-" Last Modified:  2012/12/06.
+" Last Modified:  2012/12/11.
 
 """"""""""""""""""""""""""""""
 " general
@@ -34,10 +34,16 @@ Bundle 'nginx.vim'
 Bundle 'ack.vim'
 Bundle 'sudo.vim'
 Bundle 'vcscommand.vim'
+Bundle 'surround.vim'
 "Bundle 'L9'
 " L9 is required by FuzzyFinder
 "Bundle 'FuzzyFinder'
 
+" xmledit
+" make symbolic link by yourself.
+" conflict EnhCommentify.vim.
+" need comment out <LocalLeader>x
+Bundle 'sukima/xmledit.git'
 
 " non github repos
 " Bundle 'git://git.wincent.com/command-t.git'

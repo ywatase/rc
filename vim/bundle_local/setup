@@ -1,0 +1,9 @@
+#!/bin/bash
+
+CWD=$(dirname $0)
+SCRIPTS=("$(ls $CWD/*/setup)")
+for SCRIPT_NAME in "${SCRIPTS[@]}"
+do
+	echo $SCRIPT_NAME
+	$SCRIPT_NAME
+done
