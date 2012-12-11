@@ -1,0 +1,13 @@
+#!/bin/bash
+
+CUR_DIR=$(dirname $0)
+
+cd $CUR_DIR/../../bundle/xmledit/ftplugin
+for FT in html tt2 xslate
+do
+	if ! [ -s $FT.vim ] ; then
+		ln -s xml.vim $FT.vim
+	fi
+done
+
+perl -i -ne '/<LocalLeader>x/ or print $_' xml.vim
