@@ -1,5 +1,5 @@
 " vimrc for Y.Watase
-" Last Modified:  2012/12/11.
+" Last Modified:  2012/12/14.
 
 """"""""""""""""""""""""""""""
 " general
@@ -56,9 +56,9 @@ Bundle 'thinca/vim-quickrun.git'
 Bundle 'jondistad/vimclojure.git'
 Bundle 'motemen/git-vim.git'
 Bundle 'Shougo/neocomplcache'
+Bundle 'Shougo/neosnippet'
 Bundle 'Shougo/vimproc.git'
 Bundle 'Shougo/vimshell.git'
-Bundle 'Shougo/neocomplcache-snippets-complete.git'
 Bundle 'Shougo/unite.vim'
 Bundle 'pangloss/vim-javascript'
 Bundle 'bartekd/vim-dart'
