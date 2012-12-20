@@ -1,6 +1,6 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "          FILE:  init.vim
-" Last Modified:  2012/06/05.
+" Last Modified:  2012/12/20.
 "        AUTHOR:  Yusuke Wtase <ywatase@gmail.com>
 "       VERSION:  1.0
 "       CREATED:  2012/06/05
@@ -17,7 +17,8 @@ let b:did_perl_init_ftplugin = 1
 map     <buffer>  <silent>  ,ry   :call Perl_Perltidy("n")<CR>
 vmap    <buffer>  <silent>  ,ry   <C-C>:call Perl_Perltidy("v")<CR>
 map     <buffer>  <silent>  ,rc  :call Perl_Perlcritic()<CR>
-noremap <buffer>  <silent>  ,rs   :call Perl_Source()<CR>
+"noremap <buffer>  <silent>  ,rs   :call Perl_Source()<CR>
+noremap <buffer>  <silent>  ,rs   :Perlsource<CR>
 noremap <buffer>  <silent>  ,rp   :Perldoc<CR>
 
 """"""""""""""""""""""""""""""
@@ -44,7 +45,7 @@ endfunction
 " like EDITOR=vim perldoc -m modules
 function! Perl_Source ()
 	let l:item=expand("<cword>")
-	let l:command="perl -MClass::Inspector -e 'print Class::Inspector->resolved_filename(qq{" . l:item . "});'" 
+	let l:command="perldoc -l " . l:item 
 	echo l:command
 	let l:path = system(l:command)
 	if filereadable(l:path)
