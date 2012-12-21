@@ -1,5 +1,5 @@
 " vimrc for Y.Watase
-" Last Modified:  2012/12/14.
+" Last Modified:  2012/12/21.
 
 """"""""""""""""""""""""""""""
 " general
@@ -60,6 +60,8 @@ Bundle 'Shougo/neosnippet'
 Bundle 'Shougo/vimproc.git'
 Bundle 'Shougo/vimshell.git'
 Bundle 'Shougo/unite.vim'
+Bundle 'ujihisa/unite-colorscheme.git'
+Bundle 'ujihisa/unite-font.git'
 Bundle 'pangloss/vim-javascript'
 Bundle 'bartekd/vim-dart'
 Bundle 'basyura/jslint.vim'
@@ -75,6 +77,19 @@ Bundle 'vim-jp/vimdoc-ja.git'
 " helpgrep {word}@en
 " 英語を優先したい場合
 " :set helplang=en,ja
+
+" colorscheme
+Bundle 'jellybeans.vim'
+Bundle 'mrkn256.vim'
+Bundle 'desert256.vim'
+Bundle 'wombat256.vim'
+Bundle 'tomasr/molokai.git'
+Bundle 'WuYe'
+Bundle 'yuroyoro/yuroyoro256.vim.git'
+Bundle 'tir_black'
+Bundle 'softblue'
+Bundle 'croaker/mustang-vim.git'
+Bundle 'moss'
 
 filetype plugin indent on
 
