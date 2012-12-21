@@ -35,6 +35,7 @@ Bundle 'ack.vim'
 Bundle 'sudo.vim'
 Bundle 'vcscommand.vim'
 Bundle 'surround.vim'
+Bundle 'taglist.vim'
 "Bundle 'L9'
 " L9 is required by FuzzyFinder
 "Bundle 'FuzzyFinder'
