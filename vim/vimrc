@@ -583,6 +583,9 @@ noremap <silent> <F11>       :Tlist<CR>
 inoremap <silent> <F11>  <C-C>:Tlist<CR>
 
 let tlist_perl_settings  = 'perl;c:constants;l:labels;p:package;s:subroutines;d:POD'
+let Tlist_Show_One_File = 1
+let Tlist_Use_Right_Window = 1
+let Tlist_Exit_OnlyWindow = 1
 
 """"""""""""""""""""""""""""""
 " ref.vim
