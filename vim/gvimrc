@@ -1,0 +1,38 @@
+NeoBundleSource unite-colorscheme
+	\ unite-font
+	\ jellybeans.vim
+	\ moss
+	\ tir_black
+	\ softblue
+	\ WuYe
+	\ mrkn256.vim
+	\ desert256.vim
+	\ wombat256.vim
+	\ yuroyoro256.vim
+	\ mustang-vim
+	\ molokai
+
+""""""""""""""""""""""""""""""
+" colorroller.vim
+""""""""""""""""""""""""""""""
+let g:colorroller_colors = [
+   \'default',
+   \'moss',
+   \'jellybeans',
+   \'mustang',
+   \'softblue',
+   \'tir_black',
+   \'wombat256mod',
+   \'yuroyoro256',
+   \'molokai',
+   \'desert256',
+   \'mrkn256',
+   \'wuye',
+   \'autumn',
+   \'breeze',
+   \'fine_blue',
+   \'fruit',
+   \'neon',
+   \'night',
+   \'sea',
+   \ ]
