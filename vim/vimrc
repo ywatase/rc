@@ -76,6 +76,8 @@ Bundle 'vim-jp/vimdoc-ja.git'
 " 英語を優先したい場合
 " :set helplang=en,ja
 
+Bundle 'tsukkee/lingr-vim.git'
+
 filetype plugin indent on
 
 
