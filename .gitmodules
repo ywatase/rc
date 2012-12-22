@@ -1,9 +1,3 @@
-[submodule "vim/vundle.git"]
-	path = vim/vundle.git
-	url = https://github.com/gmarik/vundle.git
-[submodule "zsh/function-871500.git"]
-	path = zsh/function-871500.git
-	url = git://gist.github.com/871500.git
 [submodule "Anyone/kazeburo-mysetup"]
 	path = Anyone/kazeburo-mysetup
 	url = git://github.com/kazeburo/mysetup.git
@@ -13,3 +7,6 @@
 [submodule "zsh/autojump.git"]
 	path = zsh/autojump.git
 	url = git://github.com/joelthelion/autojump.git
+[submodule "vim/neobundle.vim"]
+	path = vim/neobundle.vim
+	url = https://github.com/Shougo/neobundle.vim
