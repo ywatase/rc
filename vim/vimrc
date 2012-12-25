@@ -1,5 +1,5 @@
 " vimrc for Y.Watase
-" Last Modified:  2012/12/21.
+" Last Modified:  2012/12/25.
 
 """"""""""""""""""""""""""""""
 " general
@@ -326,7 +326,7 @@ autocmd BufRead,BufNewFile *.pl,*.pm,*.cgi,*.t,*psgi :set filetype=perl
 func! MyPerlSetting  ()
 	NeoBundleSource
 				\ flymake-perl.vim
-				\ perldoc.vim
+				\ perldoc-vim
 				\ perlomni.vim
 endf
 
