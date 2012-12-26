@@ -615,14 +615,6 @@ zstyle -e ':completion::*:*:*:hosts' hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,~
 # complete database
 ###
 # All completions for zsh.
-
-# git-svn
-_git-svn () {
-    `git-svn --help | grep "^  \w" | sed "s/^  //" | sed "s/ .*//" | sed 's/^/ compadd /'`
-}
-compdef _git-svn git-svn
-
-
 # Some builtins.
 compctl -j -P % fg bg wait jobs disown
 compctl -A shift
