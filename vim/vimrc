@@ -150,7 +150,6 @@ let g:changelog_username   = "ywatase <ywatase@gmail.com>"
 let g:changelog_timeformat = "%Y-%m-%d"
 let g:changelog_date_entry_search = '^[0-9\.]*\s*%d\_s*%u'
 autocmd FileType changelog set spell
-
 """"""""""""""""""""""""""""""
 " Search
 "
@@ -324,6 +323,8 @@ endf
 filetype plugin indent on
 " Load matchit (% to bounce from do to end, etc.)
 runtime! macros/matchit.vim
+autocmd FileType gitcommit,svn set spell
+
 """"""""""""""""""""""""""""""
 " ClojureVim
 let g:clj_highlight_builtins = 1
@@ -574,3 +575,7 @@ let g:tskelLicense    = 'apache'
 " Vimfiler
 """"""""""""""""""""""""""""""
 let g:vimfiler_as_default_explorer = 1
+""""""""""""""""""""""""""""""
+" errormaker.vim
+""""""""""""""""""""""""""""""
+nmap <silent> <unique> <Leader>em :ErrorAtCursor<CR>
