@@ -572,3 +572,7 @@ let g:tskelLicense    = 'apache'
 " Vimfiler
 """"""""""""""""""""""""""""""
 let g:vimfiler_as_default_explorer = 1
+""""""""""""""""""""""""""""""
+" errormaker.vim
+""""""""""""""""""""""""""""""
+nmap <silent> <unique> <Leader>em :ErrorAtCursor<CR>
