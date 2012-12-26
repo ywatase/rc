@@ -1,5 +1,5 @@
 " vimrc for Y.Watase
-" Last Modified:  2012/12/23.
+" Last Modified:  2012/12/26.
 
 """"""""""""""""""""""""""""""
 " general
@@ -566,3 +566,7 @@ let g:tskelLicense    = 'apache'
 " Vimfiler
 """"""""""""""""""""""""""""""
 let g:vimfiler_as_default_explorer = 1
+""""""""""""""""""""""""""""""
+" errormaker.vim
+""""""""""""""""""""""""""""""
+nmap <silent> <unique> <Leader>em :ErrorAtCursor<CR>
