@@ -329,7 +329,7 @@ autocmd BufRead,BufNewFile *.pl,*.pm,*.cgi,*.t,*psgi :set filetype=perl
 func! MyPerlSetting  ()
 	NeoBundleSource
 				\ flymake-perl.vim
-				\ perldoc.vim
+				\ perldoc-vim
 				\ perlomni.vim
 endf
 
