@@ -3,7 +3,7 @@
 CUR_DIR=$(dirname $0)
 
 cd $CUR_DIR/../../bundle/xmledit/ftplugin
-for FT in html tt2 xslate
+for FT in html tt2 xslate tt2html
 do
 	if ! [ -s $FT.vim ] ; then
 		ln -s xml.vim $FT.vim
