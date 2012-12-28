@@ -1,6 +1,7 @@
 # perlbrew
 MANPATH=
 export MANPATH=`manpath`
+export GIST_DIR=$HOME/dev/gists
 # android sdk
 path=(/usr/local/ec2-api-tools/bin(N-/) $HOME/eclipse(N-/) $HOME/android-sdk(N-/) $path)
 
