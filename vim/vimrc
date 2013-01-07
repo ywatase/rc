@@ -46,9 +46,9 @@ NeoBundle 'errormarker.vim'
 NeoBundle 'sukima/xmledit.git', {
 			\ 'build' : {
 			\     'windows' : 'echo "Sorry, cannot setup automatically."',
-			\     'cygwin' : '../../bundle_local/xmledit/setup',
-			\     'mac' : '../../bundle_local/xmledit/setup',
-			\     'unix' : '../../bundle_local/xmledit/setup',
+			\     'cygwin' : '../../bundle_local/setup',
+			\     'mac' : '../../bundle_local/setup',
+			\     'unix' : '../../bundle_local/setup',
 			\ 	},
 			\ }
 
