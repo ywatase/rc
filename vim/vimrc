@@ -1,5 +1,5 @@
 " vimrc for Y.Watase
-" Last Modified:  2012/12/26.
+" Last Modified:  2013/01/07.
 
 """"""""""""""""""""""""""""""
 " general
@@ -68,16 +68,24 @@ NeoBundle 'Shougo/vimproc.git', {
 			\     'cygwin' : 'make -f make_cygwin.mak',
 			\     'mac' : 'make -f make_mac.mak',
 			\     'unix' : 'make -f make_unix.mak',
-			\    },
+			\   },
 			\ }
 NeoBundle 'Shougo/vimshell.git'
 NeoBundle 'Shougo/vimfiler.git'
 NeoBundle 'pangloss/vim-javascript'
 NeoBundle 'bartekd/vim-dart'
-NeoBundle 'basyura/jslint.vim'
 NeoBundle 'mattn/zencoding-vim'
 NeoBundleLazy 'ujihisa/unite-colorscheme.git'
 NeoBundleLazy 'ujihisa/unite-font.git'
+" javascript
+NeoBundle 'bigfish/vim-nodelint.git', {
+			\ 'build' : {
+			\     'windows' : 'echo "Sorry, cannot setup automatically."',
+			\     'cygwin' : '../../bundle_local/setup',
+			\     'mac' : '../../bundle_local/setup',
+			\     'unix' : '../../bundle_local/setup',
+			\ 	},
+			\ }
 " Clojure
 NeoBundleLazy 'jondistad/vimclojure.git'
 " Perl
@@ -94,6 +102,9 @@ NeoBundle 'vim-jp/vimdoc-ja.git'
 " helpgrep {word}@en
 " 英語を優先したい場合
 " :set helplang=en,ja
+
+NeoBundle 'tsukkee/lingr-vim.git'
+
 
 " colorscheme
 NeoBundleLazy 'jellybeans.vim'
@@ -348,7 +359,7 @@ endf
 
 
 autocmd FileType yaml set ai et
-autocmd FileType c set smartindent et
+autocmd FileType c,javascript set smartindent et
 autocmd Filetype java call MyJavaSettings()
 func! MyJavaSettings ()
 	set makeprg=javac\ %
@@ -472,16 +483,6 @@ let g:neocomplcache_omni_patterns.perl = '[^. \t]->\h\w*\|\h\w*::'
 let g:use_xhtml = 1
 let g:html_use_css = 1
 let g:html_no_pre = 1
-
-""""""""""""""""""""""""""""""
-" jslint.vim
-""""""""""""""""""""""""""""""
-func! s:javascript_filetype_settings()
-  autocmd BufLeave     <buffer> call jslint#clear()
-  autocmd BufWritePost <buffer> call jslint#check()
-  autocmd CursorMoved  <buffer> call jslint#message()
-endf
-autocmd FileType javascript call s:javascript_filetype_settings()
 """"""""""""""""""""""""""""""
 " unite.vim
 " 入力モードで開始する
@@ -577,3 +578,8 @@ let g:vimfiler_as_default_explorer = 1
 " errormaker.vim
 """"""""""""""""""""""""""""""
 nmap <silent> <unique> <Leader>em :ErrorAtCursor<CR>
+""""""""""""""""""""""""""""""
+" vim-nodelint
+""""""""""""""""""""""""""""""
+let g:NodelintConfig = $HOME . '/.vim/bundle_local/vim-nodelint/config.js'
+
