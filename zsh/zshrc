@@ -167,6 +167,12 @@ git-delete-merged-branch () {
 alias perlpath="perldoc -l"
 alias plackup_indexes="plackup -MPlack::App::Directory::Markdown \
        -e 'Plack::App::Directory::Markdown->new(visible_all_files =>1, markdown_class =>q{Text::Markdown::Discount})->to_app'"
+if which cpandoc >/dev/null 2>&1 ; then
+  perldoc () {
+    cpandoc "$@"
+  }
+fi
+
 perlsource () {
   vim -R $(perlpath $1 )
 }
@@ -553,6 +559,10 @@ if is_mac  ; then
 # if setting EDITOR=vim, /usr/bin/vim sometimes return 1 and fail to edit cron, commit log and so on
   export EDITOR=/usr/bin/vim
 else
+#  for nodelint-vim
+  if which nodelint | grep '.nvm' >/dev/null 2>&1 ; then
+    export NODE_PATH=$(cd $(dirname $(which nodelint))/..;echo $(pwd -P)/lib/node_modules)
+  fi 
   eval `dircolors -b` # set LS_COLORS
   export EDITOR=vim
 fi
