@@ -1,0 +1,17 @@
+#!/bin/bash
+
+CUR_DIR=$(cd $(dirname $0); pwd -P)
+PLUGIN_NAME=$(basename $CUR_DIR)
+PLUGIN_DIR=${CUR_DIR}/../../bundle/${PLUGIN_NAME}
+FTPLUGIN_DIR=${PLUGIN_DIR}/after/ftplugin
+
+if ! [ -e ${FTPLUGIN_DIR}/javascript.vim ] ; then
+	if ! [ -d ${FTPLUGIN_DIR} ] ; then
+		mkdir -p ${FTPLUGIN_DIR}
+	fi
+	echo 'compiler nodelint' > ${FTPLUGIN_DIR}/javascript.vim
+fi
+
+cd ${PLUGIN_DIR}/compiler
+
+perl -i -pe 's/silent lmake/silent make/' nodelint.vim
