@@ -1,8 +1,10 @@
 #!/bin/bash
 
-CUR_DIR=$(dirname $0)
+CUR_DIR=$(cd $(dirname $0); pwd -P)
+PLUGIN_NAME=$(basename $CUR_DIR)
+PLUGIN_DIR=${CUR_DIR}/../../bundle/${PLUGIN_NAME}
 
-cd $CUR_DIR/../../bundle/xmledit/ftplugin
+cd ${PLUGIN_DIR}/ftplugin
 for FT in html tt2 xslate tt2html
 do
 	if ! [ -s $FT.vim ] ; then
