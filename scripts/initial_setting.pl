@@ -1,5 +1,5 @@
 #!/usr/bin/env perl 
-# Last Modified: 2012/12/23.
+# Last Modified: 2013/01/10.
 # Author: Y.Watase <ywatase@gmail.com>
 
 use strict;
@@ -97,7 +97,7 @@ sub main {
     _clone_submodules();
     _symlink_dot_files();
     _add_zshenv($hash{'.zsh'});
-    _setup_autojump();
+#    _setup_autojump();
 }
 
 #################################################
