@@ -2,14 +2,17 @@
 MANPATH=
 export MANPATH=`manpath`
 export GISTY_DIR=$HOME/dev/gists
+
+# brew
+if which brew >/dev/null 2>&1 ; then
+	path=($(brew --prefix coreutils)/libexec/gnubin(N-/) $path)
+fi
+
 # android sdk
 path=(/usr/local/ec2-api-tools/bin(N-/) $HOME/eclipse(N-/) $HOME/android-sdk(N-/) $path)
 
 # git-tasukete
 path=($HOME/.zsh/git-tasukete(N-/) $HOME/android-sdk(N-/) $path)
-
-# perlbrew
-[[ -s "$HOME/perl5/perlbrew/etc/bashrc" ]] && source "$HOME/perl5/perlbrew/etc/bashrc"
 
 # rbenv
 path=($HOME/.rbenv/bin(N-/) $path)
@@ -18,6 +21,13 @@ whence -p rbenv >/dev/null && eval "$(rbenv init -)"
 # pythonbrew
 [[ -s "$HOME/.pythonbrew/etc/bashrc" ]] && source "$HOME/.pythonbrew/etc/bashrc"
 
-path=($HOME/perl5/perlbrew/bin(N-/) $HOME/perl5/perlbrew/perls/current/bin(N-/) $HOME/bin/*(N-/) $HOME/bin(N-/) $path)
+# nvm
+if [ -e /Users/ywatase/.nvm/nvm.sh ] ; then
+	source /Users/ywatase/.nvm/nvm.sh
+fi
 
+# perlbrew
+[[ -s "$HOME/perl5/perlbrew/etc/bashrc" ]] && source "$HOME/perl5/perlbrew/etc/bashrc"
+
+path=($HOME/bin/*(N-/) $HOME/bin(N-/) $path)
 typeset -U path
