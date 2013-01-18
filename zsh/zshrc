@@ -372,7 +372,7 @@ install-nodelibs () {
   npm install -g testacular
 # testacular https://github.com/vojtajina/testacular
   npm install -g nodelint
-  if is_max ; then
+  if is_mac ; then
     brew install phantomjs
   else
     echo 'download phantomjs from http://phantomjs.org/download.html'
