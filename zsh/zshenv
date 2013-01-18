@@ -22,8 +22,8 @@ whence -p rbenv >/dev/null && eval "$(rbenv init -)"
 [[ -s "$HOME/.pythonbrew/etc/bashrc" ]] && source "$HOME/.pythonbrew/etc/bashrc"
 
 # nvm
-if [ -e /Users/ywatase/.nvm/nvm.sh ] ; then
-	source /Users/ywatase/.nvm/nvm.sh
+if [ -e $HOME/.nvm/nvm.sh ] ; then
+	source $HOME/.nvm/nvm.sh
 fi
 
 # perlbrew
