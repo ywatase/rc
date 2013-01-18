@@ -1,5 +1,5 @@
 " vimrc for Y.Watase
-" Last Modified:  2013/01/07.
+" Last Modified:  2013/01/18.
 
 """"""""""""""""""""""""""""""
 " general
@@ -86,6 +86,8 @@ NeoBundle 'bigfish/vim-nodelint.git', {
 			\     'unix' : '../../bundle_local/setup',
 			\ 	},
 			\ }
+" SQL
+NeoBundleLazy 'SQLUtilities'
 " Clojure
 NeoBundleLazy 'jondistad/vimclojure.git'
 " Perl
@@ -366,6 +368,11 @@ func! MyJavaSettings ()
 	set grepprg=java\ `basename\ %\ .java`
 	set smartindent et
 endf
+autocmd FileType sql call MySQLSettings()
+func! MySQLSettings ()
+	NeoBundleSource SQLUtilities
+endf
+
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugin setting
