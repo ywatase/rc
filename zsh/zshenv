@@ -31,6 +31,7 @@ fi
 
 # plenv
 path=($HOME/.plenv/bin(N-/) $path)
+eval "$(plenv init -)"
 
 path=($HOME/bin/*(N-/) $HOME/bin(N-/) $path)
 typeset -U path
