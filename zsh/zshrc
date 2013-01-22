@@ -223,6 +223,13 @@ perlmethod () {
 install-perlbrew () {
   curl -kL http://xrl.us/perlbrewinstall | bash
 }
+install-plenv () {
+  if is_mac ; then
+    brew install plenv --HEAD
+  else
+    git clone git://github.com/tokuhirom/plenv.git ~/.plenv/
+  fi
+}
 
 install-cpanm () {
   curl -kL http://cpanmin.us | perl - --self-upgrade $@

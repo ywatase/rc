@@ -29,5 +29,8 @@ fi
 # perlbrew
 [[ -s "$HOME/perl5/perlbrew/etc/bashrc" ]] && source "$HOME/perl5/perlbrew/etc/bashrc"
 
+# plenv
+path=($HOME/.plenv/bin(N-/) $path)
+
 path=($HOME/bin/*(N-/) $HOME/bin(N-/) $path)
 typeset -U path
