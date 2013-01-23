@@ -19,7 +19,7 @@ _no_argument () {
 case $state in
   cmds)
     local -a cmds
-    cmds=( available exec global help init install install-cpanm list local migrate-modules rehash which)
+    cmds=( available exec global help init install install-cpanm list local migrate-modules rehash which version versions )
     _describe -t commands 'plenv command' cmds && ret=0
     ;;
   args)
