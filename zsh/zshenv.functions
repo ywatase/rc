@@ -93,6 +93,10 @@ perlmethod () {
   PERLMETHOD_ALL=; PERLMETHOD_USAGE=
 }
 
+install-cpantools () {
+	cpanm App::httpstatus App::Ack
+}
+
 install-perlbrew () {
   curl -kL http://xrl.us/perlbrewinstall | bash
 }
