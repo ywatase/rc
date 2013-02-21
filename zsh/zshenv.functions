@@ -117,6 +117,7 @@ install-module-install () {
     Module::Install::ReadmeFromPod \
     Module::Install::ReadmeMarkdownFromPod \
     Module::Install::TestBase \
+    Module::Install::CPANfile \
     Test::Requires
 }
 
@@ -257,6 +258,15 @@ install-nodelibs () {
   else
     echo 'download phantomjs from http://phantomjs.org/download.html'
   fi
+}
+
+###
+# mysql download
+###
+download-mysql () {
+  local version
+  version=${1:="5.6.10-1.el6.x86_64"}
+  curl -Lo "MySQL-#1-${version}.rpm"   "http://dev.mysql.com/get/Downloads/MySQL-$(echo $version|perl -pe 's/(\d+\.\d+).*/\1/')/MySQL-{client,server,shared,devel,shared-compat}-${version}.rpm/from/http://cdn.mysql.com/"
 }
 
 ###
