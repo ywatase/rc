@@ -1,5 +1,5 @@
 " vimrc for Y.Watase
-" Last Modified:  2013/01/18.
+" Last Modified:  2016/01/08.
 
 """"""""""""""""""""""""""""""
 " general
@@ -91,6 +91,7 @@ NeoBundleLazy 'SQLUtilities'
 " Clojure
 NeoBundleLazy 'jondistad/vimclojure.git'
 " Perl
+NeoBundleLazy 'vim-perl/vim-perl.git'
 NeoBundleLazy 'ywatase/flymake-perl.vim.git'
 NeoBundleLazy 'ywatase/perldoc-vim.git'
 NeoBundleLazy 'c9s/perlomni.vim.git'
@@ -343,14 +344,15 @@ let g:clj_paren_rainbow = 1
 """"""""""""""""""""""""""""""
 " Perl
 " 他の設定は ~/.vim/ftplugin/perl/init.vim
-autocmd BufRead,BufNewFile *.pl,*.pm,*.cgi,*.t,*psgi :set filetype=perl
+autocmd BufRead,BufNewFile *.pl,*.pm,*.cgi,*.t,*psgi,cpanfile :set filetype=perl
 func! MyPerlSetting  ()
 	let s:perlenv  = 'PERL5LIB=\"'. $PERL5LIB .'\"'
 	let g:perlomni_perl = escape('env ' . s:perlenv . ' perl', ' \();$|')
 	NeoBundleSource
+				\ vim-perl
 				\ flymake-perl.vim
 				\ perldoc-vim
-				\ perlomni.vim
+"				\ perlomni.vim
 endf
 
 """"""""""""""""""""""""""""""
