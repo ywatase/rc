@@ -2,9 +2,6 @@
 snippet #!
 	#!/usr/bin/env perl
 	
-# Hash Pointer
-snippet .
-	 =>
 # Function
 snippet sub
 	sub ${1:function_name} {
@@ -76,6 +73,8 @@ snippet xfore
 	${1:expression} foreach @${2:array};${3}
 # Package
 snippet cl
+alias   new
+options head
 	package ${1:ClassName};
 	
 	use parent qw(${2:ParentClass});
@@ -83,15 +82,18 @@ snippet cl
 	sub new {
 		my $class = shift;
 		$class = ref $class if ref $class;
-		my $self = bless {}, $class;
+        my %args = ref $_[0] ? %{$_[0]} : @_;
+		my $self = bless \%args, $class;
 		$self;
 	}
+    ${3}
 	
 	1;
 snippet accessor
+options head
 	sub ${1:subname} {
-	    $_[0]->{_${1:subname}} = $_[1] if $_[1];
-	    return $_[0]->{_${1:subname}}
+	    $_[0]->{_$1} = $_[1] if $_[1];
+	    return $_[0]->{_$1}
 	}
 # Read File
 snippet slurp
@@ -139,9 +141,10 @@ snippet open3
 	waitpid($pid, 0);
 	close $rdr;
 
+snippet querylog
+    require DBIx::QueryLog; my $guard = DBIx::QueryLog->guard();
 snippet dump 
 	use Data::Dumper; warn Dumper ${1:$var};
-	${2}
 snippet say 
 	print ${1:$var}, "\n";
 	${2}
@@ -265,7 +268,7 @@ snippet param
 # Moose & Mouse
 snippet has
 	has '${1}' => (is => 'rw', isa => '${2}', lazy_build => 1);
-	sub _build_${1} {
+	sub _build_$1 {
 	    my ($self) = @_;
 	    return;
 	}
