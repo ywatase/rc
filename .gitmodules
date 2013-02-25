@@ -10,3 +10,6 @@
 [submodule "zsh/z.git"]
 	path = zsh/z.git
 	url = git://github.com/rupa/z.git
+[submodule "zsh/antigen.git"]
+	path = zsh/antigen.git
+	url = https://github.com/zsh-users/antigen.git

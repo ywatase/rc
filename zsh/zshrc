@@ -11,6 +11,10 @@ setopt PRINT_EIGHT_BIT
 
 autoload -Uz is-at-least
 
+###
+# antigen
+###
+source $HOME/.zsh/zshrc.antigen
 
 ###
 # enable auto complete 
