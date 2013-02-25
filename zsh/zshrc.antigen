@@ -1,0 +1,41 @@
+source $HOME/.zsh/antigen.git/antigen.zsh
+
+if is_mac ; then
+	antigen-bundle osx
+	if which brew >/dev/null 2>&1 ; then
+		antigen-bundle brew
+	fi
+elif is_debian ; then
+	antigen-bundle debian
+elif is_redhat && which yum >/dev/null 2>&1 ; then
+	antigen-bundle yum
+fi
+# ruby
+antigen-bundle rails3
+antigen-bundle rake
+antigen-bundle rbenv
+antigen-bundle ruby
+antigen-bundle bundler
+antigen-bundle capistrano
+antigen-bundle gem
+# perl
+antigen-bundle cpanm
+antigen-bundle perl
+# javascript
+antigen-bundle node
+antigen-bundle npm
+
+# others
+antigen-bundle rsync
+antigen-bundle git
+antigen-bundle git-flow
+antigen-bundle history
+antigen-bundle knife
+antigen-bundle mercurial
+antigen-bundle mvn
+antigen-bundle screen
+antigen-bundle svn
+antigen-bundle vi-mode
+antigen-bundle vundle
+
+antigen-apply
