@@ -1,5 +1,7 @@
 source $HOME/.zsh/antigen.git/antigen.zsh
 
+antigen-lib
+
 if is_mac ; then
 	antigen-bundle osx
 	if which brew >/dev/null 2>&1 ; then
@@ -37,5 +39,13 @@ antigen-bundle screen
 antigen-bundle svn
 antigen-bundle vi-mode
 antigen-bundle vundle
+
+
+antigen-bundle command-not-found
+# Syntax highlighting bundle.
+antigen-bundle zsh-users/zsh-syntax-highlighting
+
+antigen-theme funky
+antigen-theme $HOME/.zsh/themes/rprompt.zsh-theme
 
 antigen-apply
