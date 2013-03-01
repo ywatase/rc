@@ -94,7 +94,7 @@ perlmethod () {
 }
 
 install-cpantools () {
-	cpanm App::httpstatus App::Ack
+	cpanm App::httpstatus App::Ack CPAN::Meta::Check
 }
 
 install-perlbrew () {
