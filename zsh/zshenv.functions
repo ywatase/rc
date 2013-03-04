@@ -104,7 +104,7 @@ install-plenv () {
   if is_mac ; then
     brew install plenv --HEAD
   else
-    git clone git://github.com/tokuhirom/plenv.git ~/.plenv/
+    git clone https://github.com/tokuhirom/plenv.git ~/.plenv/
   fi
 }
 
@@ -224,13 +224,13 @@ install-rvm () {
 }
 
 install-rbenv () {
-  git clone git://github.com/sstephenson/rbenv.git $HOME/.rbenv
+  git clone https://github.com/sstephenson/rbenv.git $HOME/.rbenv
   echo 'path=($HOME/.rbenv/bin(N-/) $path)' >> .zshenv
   echo 'eval "$(rbenv init -)"' >> .zshenv
   cd $HOME/.rbenv
   mkdir plugins
   cd plugins
-  git clone git://github.com/sstephenson/ruby-build.git
+  git clone https://github.com/sstephenson/ruby-build.git
   exec
   rbenv rehash
 }
@@ -246,7 +246,7 @@ install-pythonbrew () {
 # node.js
 ###
 install-nvm () {
-  git://github.com/creationix/nvm.git ~/.nvm
+  https://github.com/creationix/nvm.git ~/.nvm
 }
 install-nodelibs () {
 # less
