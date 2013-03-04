@@ -246,7 +246,7 @@ install-pythonbrew () {
 # node.js
 ###
 install-nvm () {
-  https://github.com/creationix/nvm.git ~/.nvm
+  git clone https://github.com/creationix/nvm.git ~/.nvm
 }
 install-nodelibs () {
 # less
