@@ -113,6 +113,8 @@ if is_host "pc-igademo" ; then
   alias svn="LANG=ja_JP.UTF-8 LC_ALL=ja_JP.UTF-8 svn"
 fi
 
+# mysql prompt
+export MYSQL_PS1='MySQL \v [1;33m\u[0m@[1;35m\h[0m/[1;31m\d[0m [1;33m[\R:\m:\s][0m\nmysql\c>'
 # ssh agent
 if is_ssh_client && ! is_screen && ! is_tmux ; then
   keychain ~/.ssh/id_dsa
