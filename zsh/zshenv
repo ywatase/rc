@@ -29,12 +29,15 @@ if [ -e $HOME/.nvm/nvm.sh ] ; then
 	source $HOME/.nvm/nvm.sh
 fi
 
-# perlbrew
-[[ -s "$HOME/perl5/perlbrew/etc/bashrc" ]] && source "$HOME/perl5/perlbrew/etc/bashrc"
-
-# plenv
 path=($HOME/.plenv/bin(N-/) $path)
-eval "$(plenv init -)"
+if whence -p plenv >/dev/null ; then
+	# plenv
+	eval "$(plenv init -)"
+else
+	# perlbrew
+	[[ -s "$HOME/perl5/perlbrew/etc/bashrc" ]] && source "$HOME/perl5/perlbrew/etc/bashrc"
+fi
+
 
 path=($HOME/bin/*(N-/) $HOME/bin(N-/) $path)
 typeset -U path
