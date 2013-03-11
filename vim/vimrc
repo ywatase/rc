@@ -1,5 +1,5 @@
 " vimrc for Y.Watase
-" Last Modified:  2013/02/01.
+" Last Modified:  2013/03/11.
 
 """"""""""""""""""""""""""""""
 " general
@@ -95,6 +95,8 @@ NeoBundleLazy 'vim-perl/vim-perl.git'
 NeoBundleLazy 'ywatase/flymake-perl.vim.git'
 NeoBundleLazy 'ywatase/perldoc-vim.git'
 NeoBundleLazy 'c9s/perlomni.vim.git'
+" Ruby
+NeoBundleLazy 'tpope/vim-rails.git'
 " for markdown
 NeoBundle 'hallison/vim-markdown.git'
 NeoBundle 'tyru/open-browser.vim.git'
@@ -361,8 +363,8 @@ autocmd FileType ruby,eruby call MyRubySettings()
 func! MyRubySettings()
     compiler ruby
     set autoindent expandtab
+	NeoBundleSource vim-rails
 endf
-
 
 autocmd FileType yaml set ai et
 autocmd FileType c set smartindent et

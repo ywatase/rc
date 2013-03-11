@@ -224,6 +224,9 @@ install-rvm () {
 }
 
 install-rbenv () {
+  if is_redhat ; then
+    sudo yum install zlib-devel openssl-devel libyaml-devel
+  fi
   git clone https://github.com/sstephenson/rbenv.git $HOME/.rbenv
   echo 'path=($HOME/.rbenv/bin(N-/) $path)' >> .zshenv
   echo 'eval "$(rbenv init -)"' >> .zshenv
