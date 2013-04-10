@@ -10,7 +10,7 @@ if [ "$1" = "" ] ; then
 	usage
 	exit
 fi
-export HOME=/home/watase
+#export HOME=
 source ~/perl5/perlbrew/etc/bashrc
 perlbrew use $1
 
