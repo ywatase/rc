@@ -280,6 +280,11 @@ function ssh_resolve_cname () {
   fi
 }
 
+# ec2
+ec2_get_metadata () {
+  curl -s http://169.254.169.254/latest/meta-data/
+}
+
 r() {
   local f
   f=(~/.zsh/functions/*(.))
