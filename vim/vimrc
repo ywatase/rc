@@ -1,5 +1,5 @@
 " vimrc for Y.Watase
-" Last Modified:  2013/03/11.
+" Last Modified:  2013/04/16.
 
 """"""""""""""""""""""""""""""
 " general
@@ -59,6 +59,7 @@ NeoBundle 'mattn/benchvimrc-vim.git'
 NeoBundle 'thinca/vim-ref.git'
 NeoBundle 'thinca/vim-quickrun.git'
 NeoBundle 'motemen/git-vim.git'
+NeoBundle 'scrooloose/nerdtree.git'
 NeoBundle 'Shougo/neocomplcache'
 NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/unite.vim'
@@ -597,3 +598,7 @@ nmap <silent> <unique> <Leader>em :ErrorAtCursor<CR>
 """"""""""""""""""""""""""""""
 let g:NodelintConfig = $HOME . '/.vim/bundle_local/vim-nodelint/config.js'
 
+""""""""""""""""""""""""""""""
+" nerdtree
+""""""""""""""""""""""""""""""
+nnoremap <silent> <C-e> <ESC><ESC> :NERDTreeToggle<CR>
