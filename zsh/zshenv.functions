@@ -64,6 +64,9 @@ if which cpandoc >/dev/null 2>&1 ; then
   }
 fi
 
+alias perl_nytprof='perl -d:NYTProf'
+alias perl_chk_leak='perl -MDevel::Leak::Object=GLOBAL_bless';
+alias plackup_chk_leak="plackup -MDevel::Leak::Object=GLOBAL_bless -e '\$Devel::Leak::Object::TRACKSOURCELINES = 1' --max-workers=1";
 perlsource () {
   vim -R $(perlpath $1 )
 }
