@@ -20,6 +20,9 @@ oppai () {
   perl -le 'use Acme::Oppai;eval q{print "Acme::Oppai"}."->oppai"x(shift||4);' $1
 }
 
+wakeup () {
+   /usr/bin/wakelan 001e8c7961ed
+}
 
 install-ricty () {
   brew install fontforge

@@ -38,11 +38,12 @@ fi
 ###
 alias l=ls
 if is_mac ; then
-  if [ which gls >/dev/null 2>&1 ] ; then
-    alias ls="ls -G"
-  else
+  if which gls >/dev/null 2>&1 ; then
     alias ls="gls --color=auto --show-control-chars"
+  else
+    alias ls="ls -G"
   fi
+  alias "clang++11"="clang++ -std=c++11 -stdlib=libc++ -Weverything"
   alias netstat_osx='sudo lsof -i -P'
   alias mac_dot_files_visible="defaults write com.apple.finder AppleShowAllFiles -bool YES;killall Finder"
   alias mac_dot_files_invisible="defaults write com.apple.finder AppleShowAllFiles -bool NO;killall Finder"
