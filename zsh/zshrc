@@ -46,6 +46,7 @@ if is_mac ; then
   alias netstat_osx='sudo lsof -i -P'
   alias mac_dot_files_visible="defaults write com.apple.finder AppleShowAllFiles -bool YES;killall Finder"
   alias mac_dot_files_invisible="defaults write com.apple.finder AppleShowAllFiles -bool NO;killall Finder"
+  alias mac_set_tcp_delayed_ack_0="sudo sysctl -w net.inet.tcp.delayed_ack=0"
   mac_dashboad_off() {
     echo "DASHBOARD OFF"
     mac_dashboard-toggle "true"
