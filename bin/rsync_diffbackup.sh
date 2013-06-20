@@ -9,7 +9,7 @@ fi
 DIRNAME=$(dirname $TARGET)
 BASENAME=$(basename $TARGET)
 ARCHIVE_DIR=$DIRNAME/archive
-PREVIOUS_BACKUP=${BASENAME}.$(perl -e 'use POSIX;@d = localtime; $d[3]-=1;print POSIX::strftime(q{%Y%m%d},@d)')
+PREVIOUS_BACKUP=${BASENAME}.$(perl -e 'use POSIX;@d = localtime; $d[3]-=1;print POSIX::strftime(q{%Y%m%d%H%M},@d)')
 TODAY_BACKUP=$DIRNAME/archive/${BASENAME}.$(date +%Y%m%d)
 
 TIMESTAMP_FILE=____TIMESTAMP____
@@ -24,10 +24,10 @@ else
 	rsync -a --delete $TARGET $TODAY_BACKUP
 fi
 touch $TODAY_BACKUP/$TIMESTAMP_FILE
-for RM_TARGET in $(find $ARCHIVE_DIR/$BASENAME.???????? -maxdepth 1 -type f -name $TIMESTAMP_FILE -ctime +$BACKUP_PRESERVE_DAYS)
+for RM_TARGET in $(find $ARCHIVE_DIR/$BASENAME.???????????? -maxdepth 1 -type f -name $TIMESTAMP_FILE -ctime +$BACKUP_PRESERVE_DAYS)
 do
 	RM_DIR=$(dirname $RM_TARGET)
 	mkdir $ARCHIVE_DIR/trash
-	mv ./$RM_DIR $ARCHIVE_DIR/trash
+	mv $RM_DIR $ARCHIVE_DIR/trash
 	rm -rf $ARCHIVE_DIR/trash
 done
