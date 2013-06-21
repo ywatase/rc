@@ -1,6 +1,6 @@
 source $HOME/.zsh/antigen.git/antigen.zsh
 
-antigen-lib
+antigen-use oh-my-zsh
 
 if is_mac ; then
 	antigen-bundle osx
