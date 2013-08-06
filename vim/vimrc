@@ -1,5 +1,4 @@
 " vimrc for Y.Watase
-" Last Modified:  2013/08/06.
 
 """"""""""""""""""""""""""""""
 " general
@@ -28,6 +27,7 @@ call neobundle#rc(expand('~/.vim/bundle/'))
 
 " " vim-scripts repos
 NeoBundle 'Align'
+NeoBundle 't9md/vim-quickhl.git'
 NeoBundle 'autodate.vim'
 NeoBundle 'BufOnly.vim'
 NeoBundle 'EnhCommentify.vim'
@@ -617,3 +617,16 @@ noremap <silent> <Leader>b :ChangeBuffer<CR>
 noremap <silent> <Leader>B :ChangeMixed<CR>
 noremap <silent> <Leader>f :ChangeFile<CR>
 noremap <silent> <Leader>d :ChangeDirectory<CR>
+""""""""""""""""""""""""""""""
+" quickhl
+""""""""""""""""""""""""""""""
+nmap <Space>m <Plug>(quickhl-toggle)
+xmap <Space>m <Plug>(quickhl-toggle)
+nmap <Space>M <Plug>(quickhl-reset)
+xmap <Space>M <Plug>(quickhl-reset)
+nmap <Space>j <Plug>(quickhl-match)
+let g:quickhl_keywords = [
+    \ "TODO",
+    \ "exit",
+    \ "die",
+    \ ]
