@@ -45,7 +45,7 @@ antigen-bundle command-not-found
 # Syntax highlighting bundle.
 antigen-bundle zsh-users/zsh-syntax-highlighting
 
-antigen-theme funky
+antigen-theme fox
 antigen-theme $HOME/.zsh/themes/rprompt.zsh-theme
 
 antigen-apply
