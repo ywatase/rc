@@ -1,5 +1,5 @@
 " vimrc for Y.Watase
-" Last Modified:  2013/04/16.
+" Last Modified:  2013/08/06.
 
 """"""""""""""""""""""""""""""
 " general
@@ -55,6 +55,8 @@ NeoBundle 'sukima/xmledit.git', {
 " non github repos
 " Bundle 'git://git.wincent.com/command-t.git'
 NeoBundle 'mattn/benchvimrc-vim.git'
+NeoBundle 'adaszko/chbuf.vim'
+
 " reference viewer
 NeoBundle 'thinca/vim-ref.git'
 NeoBundle 'thinca/vim-quickrun.git'
@@ -75,7 +77,7 @@ NeoBundle 'Shougo/vimshell.git'
 NeoBundle 'Shougo/vimfiler.git'
 NeoBundle 'pangloss/vim-javascript'
 NeoBundle 'bartekd/vim-dart'
-NeoBundle 'mattn/zencoding-vim'
+NeoBundle 'mattn/emmet-vim'
 NeoBundleLazy 'ujihisa/unite-colorscheme.git'
 NeoBundleLazy 'ujihisa/unite-font.git'
 " javascript
@@ -602,3 +604,11 @@ let g:NodelintConfig = $HOME . '/.vim/bundle_local/vim-nodelint/config.js'
 " nerdtree
 """"""""""""""""""""""""""""""
 nnoremap <silent> <C-e> <ESC><ESC> :NERDTreeToggle<CR>
+
+""""""""""""""""""""""""""""""
+" chbuf
+""""""""""""""""""""""""""""""
+noremap <silent> <Leader>b :ChangeBuffer<CR>
+noremap <silent> <Leader>B :ChangeMixed<CR>
+noremap <silent> <Leader>f :ChangeFile<CR>
+noremap <silent> <Leader>d :ChangeDirectory<CR>
