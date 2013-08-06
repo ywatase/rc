@@ -1,6 +1,8 @@
 source $HOME/.zsh/antigen.git/antigen.zsh
 
-antigen-use oh-my-zsh
+antigen use oh-my-zsh
+
+compinit -i
 
 if is_mac ; then
 	antigen-bundle osx
@@ -13,39 +15,39 @@ elif is_redhat && which yum >/dev/null 2>&1 ; then
 	antigen-bundle yum
 fi
 # ruby
-antigen-bundle rails3
-antigen-bundle rake
-antigen-bundle rbenv
-antigen-bundle ruby
-antigen-bundle bundler
-antigen-bundle capistrano
-antigen-bundle gem
+antigen bundle rails3
+antigen bundle rake
+antigen bundle rbenv
+antigen bundle ruby
+antigen bundle bundler
+antigen bundle capistrano
+antigen bundle gem
 # perl
-antigen-bundle cpanm
-antigen-bundle perl
+antigen bundle cpanm
+antigen bundle perl
 # javascript
-antigen-bundle node
-antigen-bundle npm
+antigen bundle node
+antigen bundle npm
 
 # others
-antigen-bundle rsync
-antigen-bundle git
-antigen-bundle git-flow
-antigen-bundle history
-antigen-bundle knife
-antigen-bundle mercurial
-antigen-bundle mvn
-antigen-bundle screen
-antigen-bundle svn
-antigen-bundle vi-mode
-antigen-bundle vundle
+antigen bundle rsync
+antigen bundle git
+antigen bundle git-flow
+antigen bundle history
+antigen bundle knife
+antigen bundle mercurial
+antigen bundle mvn
+antigen bundle screen
+antigen bundle svn
+antigen bundle vi-mode
+antigen bundle vundle
 
 
-antigen-bundle command-not-found
+antigen bundle command-not-found
 # Syntax highlighting bundle.
-antigen-bundle zsh-users/zsh-syntax-highlighting
+antigen bundle zsh-users/zsh-syntax-highlighting
 
-antigen-theme fox
-antigen-theme $HOME/.zsh/themes/rprompt.zsh-theme
+antigen theme fox
+antigen theme $HOME/.zsh/themes/rprompt.zsh-theme
 
-antigen-apply
+antigen apply
