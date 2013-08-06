@@ -12,11 +12,6 @@ setopt PRINT_EIGHT_BIT
 autoload -Uz is-at-least
 
 ###
-# antigen
-###
-source $HOME/.zsh/zshrc.antigen
-
-###
 # enable auto complete 
 ###
 fpath=($HOME/.zsh/functions(N-/) $fpath)
@@ -32,6 +27,12 @@ if is_cygwin ; then
 else
   compinit
 fi
+
+###
+# antigen
+###
+source $HOME/.zsh/zshrc.antigen
+
 
 ###
 # Alias
@@ -312,7 +313,6 @@ else
 fi
 export PAGER='less -R'
 export TZ=JST-9
-export SHELL=/bin/zsh
 export CVS_RSH=ssh
 export SVN_SSH=ssh
 export WORDCHARS='i*?_-.[]~=&;!#$%^(){}<>'
