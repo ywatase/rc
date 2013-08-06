@@ -35,7 +35,7 @@ if whence -p plenv >/dev/null ; then
 	eval "$(plenv init -)"
 else
 	# perlbrew
-	[[ -s "$HOME/perl5/perlbrew/etc/bashrc" ]] && source "$HOME/perl5/perlbrew/etc/bashrc"
+	set_perlbrew_env
 fi
 
 

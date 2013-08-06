@@ -10,35 +10,35 @@ use Getopt::Long qw(:config posix_default no_ignore_case gnu_compat bundling aut
 
 our $VERSION = "0.01";
 
+my %args;
+
 main();
 
 sub main {
-    my $rh_args = &_init_args('file|f=s');
+    init() or return 0;
 }
 
-sub _init_args {
-    my @args_pattern = @_;
-    push @args_pattern, ( 'help|h', 'manual', 'verbose' );
+sub init {
+    my @args_pattern = ( 'file|f=s', 'help|h', 'manual', 'verbose' );
 
-    my %args = (
+    %args = (
         # argname => 'default value'
     );
-    if ( not GetOptions ( \%args, @args_pattern )) {pod2usage(2); exit 0; }
-    if (exists $args{help}) { pod2usage(1); exit 0; }
-    elsif (exists $args{manual}) { pod2usage(-exitstatus => 0, -verbose => 2); exit 0;}
+    if ( not GetOptions ( \%args, @args_pattern )) {pod2usage(2)}
+    if (exists $args{help}) { pod2usage(-exitstatus => 0, -verbose => 1) }
+    elsif (exists $args{manual}) { pod2usage(-exitstatus => 0, -verbose => 2) }
     if (exists $args{file})
     {
         if (not -e $args{file})
         {
             print "Can't access file: $args{file}\n";
-            exit 1;
+            return;
         }
     }
 #  if (not @ARGV) 
 #  {
 #    print "You must input args\n";
 #    pod2usage(1);
-#    exit 1;
 #  }
     return \%args;
 }

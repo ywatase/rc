@@ -42,6 +42,9 @@ install-ricty () {
 ###
 # Perl
 ###
+set_perlbrew_env () {
+	[[ -s "$HOME/perl5/perlbrew/etc/bashrc" ]] && source "$HOME/perl5/perlbrew/etc/bashrc"
+}
 git-delete-merged-branch () {
   local reply
   if [[ $(git branch --merged | grep -v '*' | wc -l) -eq 0 ]] ; then
@@ -306,3 +309,4 @@ rpm_list () {
 rpm_extract () {
   rpm2cpio $1 | cpio -id
 }
+
