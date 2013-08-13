@@ -44,6 +44,9 @@ if is_mac ; then
   else
     alias ls="ls -G"
   fi
+  if which gtar >/dev/null 2>&1 ; then
+    alias tar=gtar
+  fi
   alias "clang++11"="clang++ -std=c++11 -stdlib=libc++ -Weverything"
   alias netstat_osx='sudo lsof -i -P'
   alias mac_dot_files_visible="defaults write com.apple.finder AppleShowAllFiles -bool YES;killall Finder"
