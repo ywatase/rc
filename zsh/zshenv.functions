@@ -310,3 +310,12 @@ rpm_extract () {
   rpm2cpio $1 | cpio -id
 }
 
+###
+# github
+###
+
+github_repositories () {
+	local git_user
+	git_user=${1:=ywatase}
+	curl https://api.github.com/users/$git_user/repos\?per_page\=100 | jq  '.[].name'
+}
