@@ -62,7 +62,8 @@ git-delete-merged-branch () {
 }
 
 alias perlpath="perldoc -l"
-alias plackup_indexes="plackup -MPlack::App::Directory::Markdown \
+alias plackup_indexes="plackup -MPlack::App::Directory -e 'Plack::App::Directory->new->to_app'"
+alias plackup_markdown="plackup -MPlack::App::Directory::Markdown \
        -e 'Plack::App::Directory::Markdown->new(visible_all_files =>1, markdown_class =>q{Text::Markdown::Discount})->to_app'"
 if which cpandoc >/dev/null 2>&1 ; then
   perldoc () {
