@@ -1,0 +1,56 @@
+#compdef carton
+
+typeset -A opt_args
+local context state line
+
+_carton () {
+  _arguments -C \
+    '(- 1 *)'{-h,--help}'[prints help]:commands:_carton_commands' \
+    '1: :->cmds' \
+    '*:: :->args' && ret=0
+
+
+  case $state in
+    cmds)
+      _wanted commands expl 'carton command' _carton_commands && ret=0
+      ;;
+    args)
+      local -a args
+      echo $words[@] >> debug.log
+      echo $CURRENT >> debug.log
+      case $words[1] in
+        install)
+          args+=('(--cached)--cached[install modules using this local cache]')
+          args+=('(--deployment)--deployment[Force the deployment mode and carton will ignore build file contents.]')
+          args+=('(--path)--path[Specify the path to install modules to. Defaults to local in the current directory.]:install path:_files')
+          ;;
+        exec)
+          # words=(perbrew exec),  CURRENT=2 が渡るのでwordsを空にして、カーソルを2戻す
+          shift 2 words
+          (( CURRENT-- ))
+          (( CURRENT-- ))
+          _normal && ret=0
+          ;;
+        help)
+          args+=('*::command:_carton_commands')
+          ;;
+        *)
+          (( ret )) && _message 'no more arguments'
+          ;;
+      esac
+      _arguments "$args[@]" && ret=0
+      ;;
+  esac
+
+  return ret
+}
+
+_carton_commands() {
+  local -a carton_cmds
+  carton_cmds=(bundle check exec help install list show tree uninstall update usage version )
+  compadd $carton_cmds
+}
+
+_carton "$@"
+
+# vim: et sw=2 ts=2 si
