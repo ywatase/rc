@@ -1,5 +1,5 @@
 #!/usr/bin/env perl 
-# Last Modified: 2013/01/10.
+# Last Modified: 2013/08/12.
 # Author: Y.Watase <ywatase@gmail.com>
 
 use strict;
@@ -79,7 +79,8 @@ C<Getopt::Std>, C<Pod::Usage>
 my %hash = (
     '.vim'            => File::Spec->catfile($FindBin::Bin, qw(.. vim)),
     '.vimrc'          => File::Spec->catfile($FindBin::Bin, qw(.. vim vimrc)),
-    '.gvimrc'          => File::Spec->catfile($FindBin::Bin, qw(.. vim gvimrc)),
+    '.gemrc'          => File::Spec->catfile($FindBin::Bin, qw(.. gemrc)),
+    '.gvimrc'         => File::Spec->catfile($FindBin::Bin, qw(.. vim gvimrc)),
     '.gitconfig'      => File::Spec->catfile($FindBin::Bin, qw(.. gitconfig)),
     '.zsh'            => File::Spec->catfile($FindBin::Bin, qw(.. zsh)),
     '.zshrc'          => File::Spec->catfile($FindBin::Bin, qw(.. zsh zshrc)),
