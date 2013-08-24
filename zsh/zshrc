@@ -33,6 +33,15 @@ fi
 ###
 source $HOME/.zsh/zshrc.antigen
 
+###
+# aws-cli
+###
+if which aws_zsh_completer.sh >/dev/null  2>&1 ; then
+  source $(which aws_zsh_completer.sh)
+fi
+if which aws >/dev/null 2>&1 ; then
+  alias aws="https_proxy= aws"
+fi
 
 ###
 # Alias
@@ -314,7 +323,8 @@ else
   eval `dircolors -b` # set LS_COLORS
   export EDITOR=vim
 fi
-export PAGER='less -R'
+export PAGER=less
+export LESS='-R'
 export TZ=JST-9
 export CVS_RSH=ssh
 export SVN_SSH=ssh
