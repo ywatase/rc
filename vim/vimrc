@@ -101,6 +101,12 @@ NeoBundleLazy 'c9s/perlomni.vim.git'
 " Ruby
 NeoBundleLazy 'vim-ruby/vim-ruby'
 NeoBundleLazy 'tpope/vim-rails.git'
+NeoBundleLazy 'alpaca-tc/alpaca_tags.git', {
+      \ 'depends': 'Shougo/vimproc',
+      \ 'autoload' : {
+      \   'commands': ['AlpacaTagsUpdate', 'AlpacaTagsSet', 'AlpacaTagsUpdateBundle']
+      \ }}
+
 " for markdown
 NeoBundle 'hallison/vim-markdown.git'
 NeoBundle 'tyru/open-browser.vim.git'
@@ -369,6 +375,7 @@ func! MyRubySettings()
     set autoindent expandtab
 	NeoBundleSource vim-rails
 				\ vim-ruby
+				\ alpaca_tags
 endf
 au BufNewFile,BufRead Gemfile setl filetype=Gemfile
 au BufWritePost Gemfile call vimproc#system('rbenv ctags')
