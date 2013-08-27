@@ -183,6 +183,15 @@ if is_mac ; then
   install-q4m-dev () {
     zsh -c "$(curl -fsSL https://raw.github.com/gist/1426403)"
   }
+  guidiff() {
+   if ! [ $# -eq 2 -a -e "${1}" -a -e "${2}" ]; then
+     echo '[Usage] guidiff <diff_path_a> <diff_path_b>.'
+     return 1
+   fi
+   local path_a=`getabspath "${1}"`
+   local path_b=`getabspath "${2}"`
+   /Applications/DiffMerge.app/Contents/MacOS/DiffMerge "${path_a}" "${path_b}"
+  }
 fi
 
 
