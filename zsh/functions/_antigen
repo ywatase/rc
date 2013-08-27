@@ -1,0 +1,58 @@
+#compdef antigen
+local state line
+
+_no_argument () {
+  (( ret )) && _message 'no more arguments'
+}
+
+_wanted_themes () {
+	local -a themes
+	themes=($(cd $ZSH/themes; ls *.zsh-theme|sed -e 's/\.zsh-theme//'))
+	_wanted versions expl 'themes' compadd $themes && ret=0 
+}
+
+_wanted_plugins () {
+	local -a plugins
+	plugins=($(cd $ZSH/plugins; ls))
+	_wanted versions expl 'plugins' compadd $plugins && ret=0 
+}
+
+_antigen () {
+	_arguments -C \
+		'1: :->cmds' \
+		'*: :->args' && ret=0
+
+	case $state in
+		cmds)
+			local -a cmds
+			cmds=( bundle bundles update revert list cleanup use selfupdate theme apply snapshot restore help )
+			_describe -t commandds 'antigen command' cmds && ret=0
+			;;
+		args)
+			case $line[1] in
+				theme)
+					if [[ $CURRENT > 3 ]] ; then
+						_no_argument
+					else
+						_wanted_themes
+					fi
+					;;
+				bundle)
+					if [[ $CURRENT > 3 ]] ; then
+						_no_argument
+					else
+						_wanted_plugins
+					fi
+					;;
+				*)
+					;;
+			esac
+			;;
+		*)
+			_no_argument
+			;;
+	esac
+	return ret
+}
+
+_antigen "$@"
