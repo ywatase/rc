@@ -10,7 +10,7 @@
 /*jslint indent: 4*/
 
 var options = {
-    "anon"       : false, // if the space may be omitted in anonymous function declarations
+    "anon"       : true,  // if the space may be omitted in anonymous function declarations
     "adsafe"     : false, // if ADsafe should be enforced
     "bitwise"    : true,  // if bitwise operators should not be allowed
     "browser"    : true,  // if the standard browser globals should be predefined
