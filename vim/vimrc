@@ -22,12 +22,15 @@ if has('vim_starting')
 endif
 call neobundle#rc(expand('~/.vim/bundle/'))
 
-" original repos on github
-" Bundle 'tpope/vim-fugitive'
+" non github repos
+" NeoBundle 'git://git.wincent.com/command-t.git'
 
-" " vim-scripts repos
-NeoBundle 'Align'
+" original repos on github
+NeoBundle 'tpope/vim-fugitive.git'
 NeoBundle 't9md/vim-quickhl.git'
+
+" vim-scripts repos
+NeoBundle 'Align'
 NeoBundle 'autodate.vim'
 NeoBundle 'BufOnly.vim'
 NeoBundle 'EnhCommentify.vim'
@@ -52,15 +55,12 @@ NeoBundle 'sukima/xmledit.git', {
 			\ 	},
 			\ }
 
-" non github repos
-" Bundle 'git://git.wincent.com/command-t.git'
 NeoBundle 'mattn/benchvimrc-vim.git'
 NeoBundle 'adaszko/chbuf.vim'
 
 " reference viewer
 NeoBundle 'thinca/vim-ref.git'
 NeoBundle 'thinca/vim-quickrun.git'
-NeoBundle 'motemen/git-vim.git'
 NeoBundle 'scrooloose/nerdtree.git'
 NeoBundle 'Shougo/neocomplcache'
 NeoBundle 'Shougo/neosnippet'
@@ -81,7 +81,7 @@ NeoBundle 'mattn/emmet-vim'
 NeoBundleLazy 'ujihisa/unite-colorscheme.git'
 NeoBundleLazy 'ujihisa/unite-font.git'
 " javascript
-NeoBundle 'bigfish/vim-nodelint.git', {
+NeoBundleLazy 'bigfish/vim-nodelint.git', {
 			\ 'build' : {
 			\     'windows' : 'echo "Sorry, cannot setup automatically."',
 			\     'cygwin' : '../../bundle_local/setup',
@@ -385,6 +385,7 @@ autocmd FileType c set smartindent et
 autocmd FileType javascript set smartindent et sw=2 ts=2 sts=2
 autocmd Filetype java call MyJavaSettings()
 func! MyJavaSettings ()
+	NeoBundleSource vim-nodelint
 	set makeprg=javac\ %
 	set grepprg=java\ `basename\ %\ .java`
 	set smartindent et
@@ -611,6 +612,7 @@ nmap <silent> <unique> <Leader>em :ErrorAtCursor<CR>
 " vim-nodelint
 """"""""""""""""""""""""""""""
 let g:NodelintConfig = $HOME . '/.vim/bundle_local/vim-nodelint/config.js'
+let g:NodelintReporter = 'vim'
 
 """"""""""""""""""""""""""""""
 " nerdtree
