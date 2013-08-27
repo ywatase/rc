@@ -7,7 +7,6 @@
 set nocompatible          " We're running Vim, not Vi!
 set modeline
 set modelines=5
-
 set scrolloff=5
 
 """"""""""""""""""""""""""""""
@@ -28,6 +27,7 @@ call neobundle#rc(expand('~/.vim/bundle/'))
 " original repos on github
 NeoBundle 'tpope/vim-fugitive.git'
 NeoBundle 't9md/vim-quickhl.git'
+NeoBundle 'itchyny/lightline.vim'
 
 " vim-scripts repos
 NeoBundle 'Align'
@@ -62,9 +62,9 @@ NeoBundle 'adaszko/chbuf.vim'
 NeoBundle 'thinca/vim-ref.git'
 NeoBundle 'thinca/vim-quickrun.git'
 NeoBundle 'scrooloose/nerdtree.git'
-NeoBundle 'Shougo/neocomplcache'
-NeoBundle 'Shougo/neosnippet'
-NeoBundle 'Shougo/unite.vim'
+NeoBundle 'Shougo/neocomplcache.vim.git'
+NeoBundle 'Shougo/neosnippet.vim.git'
+NeoBundle 'Shougo/unite.vim.git'
 NeoBundle 'Shougo/vimproc.git', {
 			\ 'build' : {
 			\     'windows' : 'echo "Sorry, cannot update vimproc binary file in Windows."',
@@ -73,10 +73,9 @@ NeoBundle 'Shougo/vimproc.git', {
 			\     'unix' : 'make -f make_unix.mak',
 			\   },
 			\ }
-NeoBundle 'Shougo/vimshell.git'
-NeoBundle 'Shougo/vimfiler.git'
+NeoBundle 'Shougo/vimshell.vim.git'
+NeoBundle 'Shougo/vimfiler.vim.git'
 NeoBundle 'pangloss/vim-javascript'
-NeoBundle 'bartekd/vim-dart'
 NeoBundle 'mattn/emmet-vim'
 NeoBundleLazy 'ujihisa/unite-colorscheme.git'
 NeoBundleLazy 'ujihisa/unite-font.git'
@@ -120,7 +119,6 @@ NeoBundle 'vim-jp/vimdoc-ja.git'
 
 NeoBundle 'tsukkee/lingr-vim.git'
 
-
 " colorscheme
 NeoBundleLazy 'jellybeans.vim'
 NeoBundleLazy 'moss'
@@ -139,8 +137,6 @@ filetype plugin indent on
 augroup MyVimrc
 	autocmd!
 	autocmd FileType perl call MyPerlSetting()
-	autocmd BufNewFile,BufRead *.clj NeoBundleSource
-				\ vimclojure
 augroup END
 
 """"""""""""""""""""""""""""""
@@ -230,117 +226,25 @@ syntax on
 " Highlight Cursor Column
 "set cursorcolumn
 
-"---------------------------------------------------------------------------
-" 日本語対応のための設定:
-"---------------------------------------------------------------------------
-" 文字コードの自動認識
-" from http://www.kawaz.jp/pukiwiki/?vim#cb691f26
-if !(has('win32'))
-	set termencoding=utf-8
-	set encoding=utf-8
-	set fileencoding=utf-8
-	set fileencodings=utf-8,cp932
-endif
-
-if &encoding !=# 'utf-8'
-  set encoding=japan
-  set fileencoding=japan
-endif
-if has('iconv')
-  let s:enc_euc = 'euc-jp'
-  let s:enc_jis = 'iso-2022-jp'
-  " iconvがeucJP-msに対応しているかをチェック
-  if iconv("\x87\x64\x87\x6a", 'cp932', 'eucjp-ms') ==# "\xad\xc5\xad\xcb"
-    let s:enc_euc = 'eucjp-ms'
-    let s:enc_jis = 'iso-2022-jp-3'
-  " iconvがJISX0213に対応しているかをチェック
-  elseif iconv("\x87\x64\x87\x6a", 'cp932', 'euc-jisx0213') ==# "\xad\xc5\xad\xcb"
-    let s:enc_euc = 'euc-jisx0213'
-    let s:enc_jis = 'iso-2022-jp-3'
-  endif
-  " fileencodingsを構築
-  if &encoding ==# 'utf-8'
-    let s:fileencodings_default = &fileencodings
-
-    " from http://d.hatena.ne.jp/heavenshell/20080105/1199536148
-    if !(has('win32'))
-      let &fileencodings = s:enc_jis .','. s:enc_euc
-      let &fileencodings = &fileencodings .','. s:fileencodings_default
-    else
-      let &fileencodings = s:enc_jis .','. s:enc_euc .',cp932'
-      let &fileencodings = &fileencodings .','. s:fileencodings_default
-    endif
-
-    unlet s:fileencodings_default
-  else
-    let &fileencodings = &fileencodings .','. s:enc_jis
-    set fileencodings+=utf-8,ucs-2le,ucs-2
-    if &encoding =~# '^\(euc-jp\|euc-jisx0213\|eucjp-ms\)$'
-      set fileencodings+=cp932
-      set fileencodings-=euc-jp
-      set fileencodings-=euc-jisx0213
-      set fileencodings-=eucjp-ms
-      let &encoding = s:enc_euc
-      let &fileencoding = s:enc_euc
-    else
-      let &fileencodings = &fileencodings .','. s:enc_euc
-    endif
-  endif
-  " 定数を処分
-  unlet s:enc_euc
-  unlet s:enc_jis
-endif
-" 日本語を含まない場合は fileencoding に encoding を使うようにする
-if has('autocmd')
-  func! AU_ReCheck_FENC()
-    if &fileencoding =~# 'iso-2022-jp' && search("[^\x01-\x7e]", 'n') == 0
-      let &fileencoding=&encoding
-    endif
-  endf
-  autocmd BufReadPost * call AU_ReCheck_FENC()
-endif
-" 改行コードの自動認識
-set fileformats=unix,dos,mac
-" □とか○の文字があってもカーソル位置がずれないようにする
-if exists('&ambiwidth')
-  set ambiwidth=double
-endif
-
-
-" メッセージを日本語にする (Windowsでは自動的に判断・設定されている)
-if !(has('win32') || has('mac')) && has('multi_lang')
-  if !exists('$LANG') || $LANG.'X' ==# 'X'
-    if !exists('$LC_CTYPE') || $LC_CTYPE.'X' ==# 'X'
-      language ctype ja_JP.eucJP
-    endif
-    if !exists('$LC_MESSAGES') || $LC_MESSAGES.'X' ==# 'X'
-      language messages ja_JP.eucJP
-    endif
-  endif
-endif
-
-" for utf8
-"set encoding=utf-8
-"set fileencodings=iso-2022-jp,cp932,euc-jp,utf-8,ucs-2le,ucs-2
-
 " ファイルを開くとき、改行コードを指定。
 set ff=unix
 
 " ステータスラインに改行コードと文字コードを表示
 set laststatus=2
-set statusline=%y%{GetStatusEx()}\ 0x%B(%b)%F%m%r%=<%c:%l>
+set statusline=%y%{MyFfFe()}%{fugitive#statusline()}\ 0x%B(%b)\ %F%m%r%=<%l:%v>\ %3p%%
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 改行コードと文字コードを取得
-func! GetStatusEx()
-let str = ''
-let str = str . '' . &fileformat . ']'
-if has('multi_byte') && &fileencoding != ''
-let str = '[' . &fileencoding . ':' . str
-endif
-return str
+func! MyFfFe()
+  let str = MyFileformat() . ':' . MyFileencoding()
+return strlen(str) ? '[' . str . ']' : ''
 endf
-
+func! MyFileformat()
+  return &fileformat
+endf
+func! MyFileencoding()
+  return (strlen(&fenc) ? &fenc : &enc)
+endf
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " filetype setting
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -348,7 +252,6 @@ filetype plugin indent on
 " Load matchit (% to bounce from do to end, etc.)
 runtime! macros/matchit.vim
 autocmd FileType gitcommit,svn set spell
-
 """"""""""""""""""""""""""""""
 " ClojureVim
 let g:clj_highlight_builtins = 1
@@ -421,93 +324,31 @@ let g:vimshell_execute_file_list = {}
 for ext in split('txt,vim,c,h,cpp,d,xml,java', ',')
 	let g:vimshell_execute_file_list[ext] = 'vim'
 endfor
-""""""""""""""""""""""""""""""
-" neocomplcache.vim
-""""""""""""""""""""""""""""""
-" Disable AutoComplPop.
-let g:acp_enableAtStartup = 0
-" Use neocomplcache.
-let g:neocomplcache_enable_at_startup = 1
-" Use smartcase.
-let g:neocomplcache_enable_smart_case = 1
-" Use camel case completion.
-let g:neocomplcache_enable_camel_case_completion = 1
-" Use underbar completion.
-let g:neocomplcache_enable_underbar_completion = 1
-" Set minimum syntax keyword length.
-let g:neocomplcache_min_syntax_length = 3
-"let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
-let g:neocomplcache_snippets_dir = $HOME . '/.vim/snippets/'
 
-" Define dictionary.
-let g:neocomplcache_dictionary_filetype_lists = {}
-"let g:neocomplcache_dictionary_filetype_lists = {
-"    \ 'default'  : '',
-"    \ 'vimshell' : $HOME.'/.vimshell_hist',
-"    \ 'scheme'   : $HOME.'/.gosh_completions'
-"    \ }
+""""""""""""""""""""""""""""""
+" neosnippet
+""""""""""""""""""""""""""""""
+let g:neosnippet#enable_snipmate_compatibility = 1
+let g:neosnippet#snippets_directory = $HOME . '/.vim/snippets/'
 
-" Define keyword.
-if !exists('g:neocomplcache_keyword_patterns')
-    let g:neocomplcache_keyword_patterns = {}
-endif
-let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
+noremap es :NeoSnippetEdit<CR>
 
 " Plugin key-mappings.
-imap <C-k>     <Plug>(neocomplcache_snippets_expand)
-smap <C-k>     <Plug>(neocomplcache_snippets_expand)
-"inoremap <expr><C-g>     neocomplcache#undo_completion()
-inoremap <expr><C-l>     neocomplcache#complete_common_string()
-
-
-map cr <ESC>:NeoComplCacheCachingInclude<CR><ESC>:NeoComplCacheCachingBuffer<CR>
-noremap es :<C-u>NeoComplCacheEditSnippets<CR>
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
 
 " SuperTab like snippets behavior.
-imap <expr><c-b> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : pumvisible() ? "\<C-n>" : "\<c-b>"
-smap <expr><c-b> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : pumvisible() ? "\<C-n>" : "\<c-b>"
+imap <expr><c-b> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-n>" : "\<c-b>"
+smap <expr><c-b> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<c-b>"
 
-
-" Recommended key-mappings.
-" <CR>: close popup and save indent.
-"inoremap <expr><CR>  neocomplcache#smart_close_popup() . "\<CR>"
-"" <TAB>: completion.
-"inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-"" <C-h>, <BS>: close popup and delete backword char.
-"inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
-"inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
-"inoremap <expr><C-y>  neocomplcache#close_popup()
-"inoremap <expr><C-e>  neocomplcache#cancel_popup()
-
-" AutoComplPop like behavior.
-"let g:neocomplcache_enable_auto_select = 1
-
-" Shell like behavior(not recommended).
-"set completeopt+=longest
-"let g:neocomplcache_enable_auto_select = 1
-"let g:neocomplcache_disable_auto_complete = 1
-"inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<TAB>"
-"inoremap <expr><CR>  neocomplcache#smart_close_popup() . "\<CR>"
-
-" Enable omni completion.
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-
-" Enable heavy omni completion.
-if !exists('g:neocomplcache_omni_patterns')
-let g:neocomplcache_omni_patterns = {}
+" For snippet_complete marker
+if has('conceal')
+	set conceallevel=2 concealcursor=i
 endif
-"let g:neocomplcache_omni_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
-"autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
-let g:neocomplcache_omni_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-let g:neocomplcache_omni_patterns.perl = '[^. \t]->\h\w*\|\h\w*::'
 
 """"""""""""""""""""""""""""""
 " Tohtml.vim
-"
 """"""""""""""""""""""""""""""
 let g:use_xhtml = 1
 let g:html_use_css = 1
@@ -561,7 +402,6 @@ let Tlist_Exit_OnlyWindow = 1
 
 """"""""""""""""""""""""""""""
 " ref.vim
-"
 """"""""""""""""""""""""""""""
 let g:ref_source_webdict_sites = {
 			\ 'wiktionary': {
@@ -626,6 +466,7 @@ noremap <silent> <Leader>b :ChangeBuffer<CR>
 noremap <silent> <Leader>B :ChangeMixed<CR>
 noremap <silent> <Leader>f :ChangeFile<CR>
 noremap <silent> <Leader>d :ChangeDirectory<CR>
+
 """"""""""""""""""""""""""""""
 " quickhl
 """"""""""""""""""""""""""""""
@@ -639,3 +480,9 @@ let g:quickhl_keywords = [
     \ "exit",
     \ "die",
     \ ]
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Import
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+source ~/.vim/vimrc.fileencoding
+source ~/.vim/vimrc.lightline
+source ~/.vim/vimrc.neocomplcache
