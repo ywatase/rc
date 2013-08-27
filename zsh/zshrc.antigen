@@ -4,50 +4,43 @@ antigen use oh-my-zsh
 
 compinit -i
 
+local brew os
 if is_mac ; then
-	antigen-bundle osx
-	if which brew >/dev/null 2>&1 ; then
-		antigen-bundle brew
-	fi
+      os=osx
+    if which brew >/dev/null 2>&1 ; then
+         brew=brew
+    fi
 elif is_debian ; then
-	antigen-bundle debian
+    os=debian
 elif is_redhat && which yum >/dev/null 2>&1 ; then
-	antigen-bundle yum
+    os=yum
 fi
+antigen bundle <<EOBUNDLES
+$os
+$brew
 # ruby
-antigen bundle rails3
-antigen bundle rake
-antigen bundle rbenv
-antigen bundle ruby
-antigen bundle bundler
-antigen bundle capistrano
-antigen bundle gem
+rake
+rbenv
+ruby
+bundler
+capistrano
+gem
 # perl
-antigen bundle cpanm
-antigen bundle perl
+cpanm
+perl
 # javascript
-antigen bundle node
-antigen bundle npm
-
+node
+npm
 # others
-antigen bundle rsync
-antigen bundle git
-antigen bundle git-flow
-antigen bundle history
-antigen bundle knife
-antigen bundle mercurial
-antigen bundle mvn
-antigen bundle screen
-antigen bundle svn
-antigen bundle vi-mode
-antigen bundle vundle
+git
+git-flow
+knife
+svn
+command-not-found
+## Syntax highlighting bundle.
+zsh-users/zsh-syntax-highlighting
+EOBUNDLES
 
-
-antigen bundle command-not-found
-# Syntax highlighting bundle.
-antigen bundle zsh-users/zsh-syntax-highlighting
-
-antigen theme fox
-antigen theme $HOME/.zsh/themes/rprompt.zsh-theme
+antigen theme $HOME/.zsh/themes/komachi.zsh-theme
 
 antigen apply
