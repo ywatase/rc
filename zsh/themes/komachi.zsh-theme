@@ -2,7 +2,7 @@ KOMACHI_BRACKET_COLOR="%{$fg[white]%}"
 KOMACHI_PLENV_COLOR="%{$fg[yellow]%}"
 KOMACHI_RVM_COLOR="%{$fg[magenta]%}"
 KOMACHI_PLENV_COLOR="%{$fg[magenta]%}"
-KOMACHI_PERL_LOCALLIB_COLOR="%{$fg[red]%}"
+KOMACHI_PERL_LOCALLIB_COLOR="%{$fg[magenta]%}"
 KOMACHI_DIR_COLOR="%{$fg[cyan]%}"
 KOMACHI_GIT_BRANCH_COLOR="%{$fg[green]%}"
 KOMACHI_GIT_CLEAN_COLOR="%{$fg[green]%}"
@@ -36,7 +36,7 @@ _get_perlversion () {
 			perlversion=$(plenv version | sed -e 's/ (set.*$//')
 		fi
 	fi
-	echo $perlversion$(_get_perllocallib)
+	echo $perlversion
 }
 _get_perllocallib () {
 	local perllocallib
@@ -46,21 +46,56 @@ _get_perllocallib () {
 	fi
 }
 
-if [[ "$(_get_perlversion)" != "" ]] ; then
-  KOMACHI_PLENV_="$KOMACHI_BRACKET_COLOR"[pl:"$KOMACHI_PLENV_COLOR\${\$(_get_perlversion)}$KOMACHI_BRACKET_COLOR"]"%{$reset_color%}"
-fi
-if [[ "$(_get_rubyversion)" != "" ]] ; then
-	KOMACHI_RVM_="$KOMACHI_BRACKET_COLOR"[rb:"$KOMACHI_RVM_COLOR\${\$(_get_rubyversion)}$KOMACHI_BRACKET_COLOR"]"%{$reset_color%}"
-fi
+_is_enough_term_width () {
+	if [[ $COLUMNS > 200 ]] ; then
+		true
+	else
+		false
+	fi
+}
 
+_get_prompt () {
+	if _is_enough_term_width ; then
+		_get_plenv
+		_get_rbenv
+		echo "$KOMACHI_HOST_$KOMACHI_PLENV_$KOMACHI_RVM_:$KOMACHI_DIR_$__PROMPT2"
+	else
+		echo "$KOMACHI_HOST_$KOMACHI_DIR_$__PROMPT2"
+	fi
+}
 
-KOMACHI_DIR_="$KOMACHI_DIR_COLOR%~\$(git_prompt_info)%{$reset_color%} "
+_get_rprompt () {
+	if ! _is_enough_term_width ; then
+		_get_plenv
+		_get_rbenv
+		echo "$KOMACHI_PLENV_$KOMACHI_RVM_"
+	fi
+}
+
+_get_plenv () {
+  if [[ "$(_get_perlversion)" != "" ]] ; then
+	  KOMACHI_PLENV_="$KOMACHI_BRACKET_COLOR"[pl:"$KOMACHI_PLENV_COLOR${$(_get_perlversion)}${$(_get_perllocallib)}$KOMACHI_BRACKET_COLOR"]"%{$reset_color%}"
+	else
+		KOMACHI_PLENV_=
+  fi
+}
+
+_get_rbenv () {
+	if [[ "$(_get_rubyversion)" != "" ]] ; then
+		KOMACHI_RVM_="$KOMACHI_BRACKET_COLOR"[rb:"$KOMACHI_RVM_COLOR${$(_get_rubyversion)}$KOMACHI_BRACKET_COLOR"]"%{$reset_color%}"
+	else
+		KOMACHI_RVM_=
+	fi
+}
+
+KOMACHI_DIR_="$KOMACHI_DIR_COLOR%~${$(git_prompt_info)}%{$reset_color%} "
 KOMACHI_PROMPT="%(?,%{$fg[green]%}(^_^%)%{$reset_color%},%{$fg[red]%}(T^T%)%{$reset_color%}) $"
 KOMACHI_HOST_='%n@%m:'
 
 # Put it all together!
-PROMPT="$KOMACHI_HOST_$KOMACHI_DIR_
+__PROMPT2="
 $KOMACHI_PROMPT%{$reset_color%} "
-RPROMPT="$KOMACHI_PLENV_$KOMACHI_RVM_"
+PROMPT="\${\$(_get_prompt)}"
+RPROMPT="\${\$(_get_rprompt)}"
 
 # vim:ft=zsh si ts=2 sw=2 sts=2:
