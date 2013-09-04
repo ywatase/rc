@@ -280,6 +280,12 @@ install-pythonbrew () {
   curl -kL http://github.com/utahta/pythonbrew/raw/master/pythonbrew-install | bash
 }
 
+install-pyenv () {
+  git clone git://github.com/yyuu/pyenv.git .pyenv
+  echo 'path=($HOME/.pyenv/bin(N-/) $path)' >> .zshenv
+  echo 'eval "$(pyenv init -)"' >> .zshenv
+}
+
 ###
 # node.js
 ###
