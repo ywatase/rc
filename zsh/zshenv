@@ -24,6 +24,12 @@ path=($HOME/.rbenv/versions/$ruby_version/bin(N-/) $path)
 # pythonbrew
 [[ -s "$HOME/.pythonbrew/etc/bashrc" ]] && source "$HOME/.pythonbrew/etc/bashrc"
 
+# pyenv
+path=($HOME/.ryenv/bin(N-/) $path)
+if whence -p pyenv >/dev/null ; then
+	eval "$(pyenv init -)"
+fi
+
 # nvm
 if [ -e $HOME/.nvm/nvm.sh ] ; then
 	source $HOME/.nvm/nvm.sh
