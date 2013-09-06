@@ -60,7 +60,7 @@ _get_prompt () {
 	KOMACHI_DIR_="$KOMACHI_DIR_COLOR%~${$(git_prompt_info)}%{$reset_color%} "
 	KOMACHI_HOST_='%n@%m:'
 	KOMACHI_PROMPT_="
-%(?,%{$fg[green]%}(^_^%)%{$reset_color%},%{$fg[red]%}(T^T%)%{$reset_color%}) \$%{$reset_color} "
+%(?,%{$fg[green]%}(^_^%)%{$reset_color%},%{$fg[red]%}(T^T%)%{$reset_color%}) \$%{$reset_color%} "
 
 	if _is_enough_term_width ; then
 		_get_plenv
