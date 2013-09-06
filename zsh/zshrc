@@ -38,6 +38,7 @@ source $HOME/.zsh/zshrc.antigen
 ###
 if which aws_zsh_completer.sh >/dev/null  2>&1 ; then
   source $(which aws_zsh_completer.sh)
+  source $HOME/.zsh/zshrc.aws
 fi
 if which aws >/dev/null 2>&1 ; then
   alias aws="https_proxy= aws"
@@ -194,7 +195,6 @@ if is_mac ; then
    /Applications/DiffMerge.app/Contents/MacOS/DiffMerge "${path_a}" "${path_b}"
   }
 fi
-
 
 ###
 # screen
