@@ -1,0 +1,1 @@
+alias jq_ec2_instance="jq '.Reservations[].Instances | map(select(.KeyName==\"tech_pj_aws_watase\"))  | .[] | {InstanceId, State: .State.Name, PublicDnsName}'"

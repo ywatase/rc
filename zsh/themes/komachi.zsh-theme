@@ -55,12 +55,19 @@ _is_enough_term_width () {
 }
 
 _get_prompt () {
+	local KOMACHI_DIR_ KOMACHI_HOST_ KOMACHI_PROMPT
+
+	KOMACHI_DIR_="$KOMACHI_DIR_COLOR%~${$(git_prompt_info)}%{$reset_color%} "
+	KOMACHI_HOST_='%n@%m:'
+	KOMACHI_PROMPT_="
+%(?,%{$fg[green]%}(^_^%)%{$reset_color%},%{$fg[red]%}(T^T%)%{$reset_color%}) \$%{$reset_color} "
+
 	if _is_enough_term_width ; then
 		_get_plenv
 		_get_rbenv
-		echo "$KOMACHI_HOST_$KOMACHI_PLENV_$KOMACHI_RVM_:$KOMACHI_DIR_$__PROMPT2"
+		echo "$KOMACHI_HOST_$KOMACHI_PLENV_$KOMACHI_RVM_:$KOMACHI_DIR_$KOMACHI_PROMPT_"
 	else
-		echo "$KOMACHI_HOST_$KOMACHI_DIR_$__PROMPT2"
+		echo "$KOMACHI_HOST_$KOMACHI_DIR_$KOMACHI_PROMPT_"
 	fi
 }
 
@@ -88,13 +95,7 @@ _get_rbenv () {
 	fi
 }
 
-KOMACHI_DIR_="$KOMACHI_DIR_COLOR%~${$(git_prompt_info)}%{$reset_color%} "
-KOMACHI_PROMPT="%(?,%{$fg[green]%}(^_^%)%{$reset_color%},%{$fg[red]%}(T^T%)%{$reset_color%}) $"
-KOMACHI_HOST_='%n@%m:'
-
 # Put it all together!
-__PROMPT2="
-$KOMACHI_PROMPT%{$reset_color%} "
 PROMPT="\${\$(_get_prompt)}"
 RPROMPT="\${\$(_get_rprompt)}"
 
