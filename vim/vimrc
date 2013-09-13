@@ -28,6 +28,7 @@ call neobundle#rc(expand('~/.vim/bundle/'))
 NeoBundle 'tpope/vim-fugitive.git'
 NeoBundle 't9md/vim-quickhl.git'
 NeoBundle 'itchyny/lightline.vim'
+NeoBundle 'scrooloose/syntastic.git'
 
 " vim-scripts repos
 NeoBundle 'Align'
@@ -57,6 +58,11 @@ NeoBundle 'sukima/xmledit.git', {
 
 NeoBundle 'mattn/benchvimrc-vim.git'
 NeoBundle 'adaszko/chbuf.vim'
+NeoBundle 'alpaca-tc/alpaca_tags.git', {
+      \ 'depends': 'Shougo/vimproc',
+      \ 'autoload' : {
+      \   'commands': ['AlpacaTagsUpdate', 'AlpacaTagsSet', 'AlpacaTagsUpdateBundle']
+      \ }}
 
 " reference viewer
 NeoBundle 'thinca/vim-ref.git'
@@ -94,17 +100,12 @@ NeoBundleLazy 'SQLUtilities'
 NeoBundleLazy 'jondistad/vimclojure.git'
 " Perl
 NeoBundleLazy 'vim-perl/vim-perl.git'
-NeoBundleLazy 'ywatase/flymake-perl.vim.git'
+"NeoBundleLazy 'ywatase/flymake-perl.vim.git'
 NeoBundleLazy 'ywatase/perldoc-vim.git'
 NeoBundleLazy 'c9s/perlomni.vim.git'
 " Ruby
 NeoBundleLazy 'vim-ruby/vim-ruby'
 NeoBundleLazy 'tpope/vim-rails.git'
-NeoBundleLazy 'alpaca-tc/alpaca_tags.git', {
-      \ 'depends': 'Shougo/vimproc',
-      \ 'autoload' : {
-      \   'commands': ['AlpacaTagsUpdate', 'AlpacaTagsSet', 'AlpacaTagsUpdateBundle']
-      \ }}
 
 " for markdown
 NeoBundle 'hallison/vim-markdown.git'
@@ -265,8 +266,8 @@ func! MyPerlSetting  ()
 	let g:perlomni_perl = escape('env ' . s:perlenv . ' perl', ' \();$|')
 	NeoBundleSource
 				\ vim-perl
-				\ flymake-perl.vim
 				\ perldoc-vim
+"				\ flymake-perl.vim
 "				\ perlomni.vim
 endf
 
@@ -278,7 +279,6 @@ func! MyRubySettings()
     set autoindent expandtab
 	NeoBundleSource vim-rails
 				\ vim-ruby
-				\ alpaca_tags
 endf
 au BufNewFile,BufRead Gemfile setl filetype=Gemfile
 au BufWritePost Gemfile call vimproc#system('rbenv ctags')
@@ -480,6 +480,39 @@ let g:quickhl_keywords = [
     \ "exit",
     \ "die",
     \ ]
+
+""""""""""""""""""""""""""""""
+" syntastic
+""""""""""""""""""""""""""""""
+let g:syntastic_perl_checkers=['perl', 'perlcritic', 'podchecker']
+let g:syntastic_always_populate_loc_list=1
+""""""""""""""""""""""""""""""
+" alpaca
+""""""""""""""""""""""""""""""
+let g:alpaca_update_tags_config = {
+      \ '_' : '-R --sort=yes',
+      \ 'js' : '--languages=+js',
+      \ '-js' : '--languages=-js,JavaScript',
+      \ 'vim' : '--languages=+Vim,vim',
+      \ '-vim' : '--languages=-Vim,vim',
+      \ '-style': '--languages=-css,sass,scss,js,JavaScript,html',
+      \ 'scss' : '--languages=+scss --languages=-css,sass',
+      \ 'sass' : '--languages=+sass --languages=-css,scss',
+      \ 'css' : '--languages=+css',
+      \ 'java' : '--languages=+java $JAVA_HOME/src',
+      \ 'ruby': '--languages=+Ruby',
+      \ 'coffee': '--languages=+coffee',
+      \ '-coffee': '--languages=-coffee',
+      \ 'bundle': '--languages=+Ruby --languages=-css,sass,scss,js,JavaScript,coffee',
+      \ }
+
+aug AlpacaUpdateTags
+	au!
+	au FileWritePost,BufWritePost * AlpacaTagsUpdate -style
+	" bundleのオプションは自動で追加して実行します。
+	au FileWritePost,BufWritePost Gemfile AlpacaTagsUpdateBundle
+	au FileReadPost,BufEnter * AlpacaTagsSet
+aug END
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Import
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""

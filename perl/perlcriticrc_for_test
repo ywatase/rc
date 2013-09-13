@@ -1,0 +1,28 @@
+# http://blog.64p.org/entry/2013/04/24/101816
+only=1
+
+# -------------------------------------------------------------------------
+# Not important.
+
+[BuiltinFunctions::ProhibitSleepViaSelect]
+[BuiltinFunctions::RequireGlobFunction]
+[ClassHierarchies::ProhibitOneArgBless]
+
+# -------------------------------------------------------------------------
+# Bug detection
+[InputOutput::ProhibitBarewordFileHandles]
+[Modules::RequireFilenameMatchesPackage]
+[Subroutines::ProhibitNestedSubs]
+[Subroutines::ProhibitReturnSort]
+[TestingAndDebugging::RequireUseStrict]
+[Variables::ProhibitConditionalDeclarations]
+[Variables::RequireLexicalLoopIterators]
+
+[TestingAndDebugging::ProhibitNoStrict]
+allow=refs
+
+# -------------------------------------------------------------------------
+# Security issue detection
+[InputOutput::RequireEncodingWithUTF8Layer]
+[Modules::ProhibitEvilModules]
+[InputOutput::ProhibitTwoArgOpen]

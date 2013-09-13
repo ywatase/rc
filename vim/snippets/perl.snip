@@ -266,7 +266,7 @@ snippet param
 	$c->request->param('${1:param}')
 	${2}
 # Moose & Mouse
-snippet has
+snippet hasMoose
 	has '${1}' => (is => 'rw', isa => '${2}', lazy_build => 1);
 	sub _build_$1 {
 	    my ($self) = @_;
@@ -274,6 +274,17 @@ snippet has
 	}
 snippet immutable
 	__PACKAGE__->meta->make_immutable();
+# Moo
+snippet Moo
+    use Moo;
+    use MooX::Types::MooseLike::Base qw(:all);
+    ${1}
+snippet has
+	has '${1}' => (is => 'lazy', isa => ${2});
+	sub _build_$1 {
+	    my ($self) = @_;
+	    return;
+	}
 
 snippet benchmark
 	use Benchmark qw/timethese cmpthese/;

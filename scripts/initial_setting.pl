@@ -1,5 +1,5 @@
 #!/usr/bin/env perl 
-# Last Modified: 2013/08/12.
+# Last Modified: 2013/09/13.
 # Author: Y.Watase <ywatase@gmail.com>
 
 use strict;
@@ -88,7 +88,7 @@ my %hash = (
     '.screenrc'       => File::Spec->catfile($FindBin::Bin, qw(.. screen screenrc)),
     '.screen_setting' => File::Spec->catfile($FindBin::Bin, qw(.. screen screen_setting.linux_utf8)),
     '.perltidyrc'     => File::Spec->catfile($FindBin::Bin, qw(.. perl perltidyrc_critic)),
-    '.perlcritic'     => File::Spec->catfile($FindBin::Bin, qw(.. perl perlcritic)),
+    '.perlcriticrc'     => File::Spec->catfile($FindBin::Bin, qw(.. perl perlcriticrc)),
 );
 
 main();
