@@ -37,7 +37,7 @@ source $HOME/.zsh/zshrc.antigen
 # aws-cli
 ###
 if which aws_zsh_completer.sh >/dev/null  2>&1 ; then
-  source $(which aws_zsh_completer.sh)
+  source $(pyenv which aws_zsh_completer.sh)
   source $HOME/.zsh/zshrc.aws
 fi
 if which aws >/dev/null 2>&1 ; then
