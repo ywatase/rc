@@ -21,7 +21,23 @@ oppai () {
 }
 
 wakeup () {
-   /usr/bin/wakelan 001e8c7961ed
+	local mac mac_nocolon
+	mac=$1
+	mac_nocolon=$(echo $mac | perl -pe 's/://g')
+	if which wakeonlan >/dev/null 2>&1 ; then
+		wakeonlan "$mac"
+	elif which wakelan >/dev/null 2>&1 ; then
+		wakelan $mac_nocolon
+	elif [ -x /usr/sbin/etherwake ] ; then
+		/usr/sbin/etherwake $mac_nocolon
+	else
+		echo There is no wakeonlan command.
+		return
+	fi
+}
+
+wakeup_igademo () {
+   wakeup '00:1e:8c:79:61:ed'
 }
 
 install-ricty () {
