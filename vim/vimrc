@@ -26,9 +26,16 @@ call neobundle#rc(expand('~/.vim/bundle/'))
 
 " original repos on github
 NeoBundle 'tpope/vim-fugitive.git'
-NeoBundle 't9md/vim-quickhl.git'
+NeoBundle 't9md/vim-quickhl.git', {
+	\ 'depends': ['kana/vim-operator-user'],
+	\ }
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'scrooloose/syntastic.git'
+
+" joke
+NeoBundle 'yomi322/vim-operator-suddendeath', {
+	\ 'depends': ['kana/vim-operator-user'],
+	\ }
 
 " vim-scripts repos
 NeoBundle 'Align'
@@ -58,10 +65,12 @@ NeoBundle 'sukima/xmledit.git', {
 
 NeoBundle 'mattn/benchvimrc-vim.git'
 NeoBundle 'adaszko/chbuf.vim'
-NeoBundle 'alpaca-tc/alpaca_tags.git', {
-      \ 'depends': 'Shougo/vimproc',
+NeoBundleLazy 'alpaca-tc/alpaca_tags', {
+      \ 'rev' : 'development',
+      \ 'depends': ['Shougo/vimproc', 'Shougo/unite.vim'],
       \ 'autoload' : {
-      \   'commands': ['AlpacaTagsUpdate', 'AlpacaTagsSet', 'AlpacaTagsUpdateBundle']
+      \   'commands' : ['Tags', 'TagsUpdate', 'TagsSet', 'TagsBundle', 'TagsCleanCache'],
+      \   'unite_sources' : ['tags']
       \ }}
 
 " reference viewer
@@ -470,16 +479,25 @@ noremap <silent> <Leader>d :ChangeDirectory<CR>
 """"""""""""""""""""""""""""""
 " quickhl
 """"""""""""""""""""""""""""""
-nmap <Space>m <Plug>(quickhl-toggle)
-xmap <Space>m <Plug>(quickhl-toggle)
-nmap <Space>M <Plug>(quickhl-reset)
-xmap <Space>M <Plug>(quickhl-reset)
-nmap <Space>j <Plug>(quickhl-match)
-let g:quickhl_keywords = [
+nmap <Space>m <Plug>(quickhl-manual-this)
+xmap <Space>m <Plug>(quickhl-manual-this)
+
+nmap <Space>M <Plug>(quickhl-manual-reset)
+xmap <Space>M <Plug>(quickhl-manual-reset)
+
+nmap <Space>j <Plug>(quickhl-cword-toggle)
+nmap <Space>] <Plug>(quickhl-tag-toggle)
+
+map H <Plug>(operator-quickhl-manual-this-motion)
+
+let g:quickhl_manual_keywords = [
     \ "TODO",
     \ "exit",
     \ "die",
-    \ ]
+	\ "finish",
+	\ {"pattern": '\s\+$', "regexp": 1 },
+	\ {"pattern": '\d\{1,3}\.\d\{1,3}\.\d\{1,3}\.\d\{1,3}', "regexp": 1 },
+	\ ]
 
 """"""""""""""""""""""""""""""
 " syntastic
@@ -506,13 +524,15 @@ let g:alpaca_update_tags_config = {
       \ 'bundle': '--languages=+Ruby --languages=-css,sass,scss,js,JavaScript,coffee',
       \ }
 
-aug AlpacaUpdateTags
-	au!
-	au FileWritePost,BufWritePost * AlpacaTagsUpdate -style
-	" bundleのオプションは自動で追加して実行します。
-	au FileWritePost,BufWritePost Gemfile AlpacaTagsUpdateBundle
-	au FileReadPost,BufEnter * AlpacaTagsSet
-aug END
+augroup AlpacaTags
+	autocmd!
+	if exists(':Tags')
+		autocmd BufWritePost * TagsUpdate ruby
+		autocmd BufWritePost Gemfile TagsBundle
+		autocmd BufEnter * TagsSet
+	endif
+augroup END
+nnoremap <expr>tt  ':Unite tags -horizontal -buffer-name=tags -input='.expand("<cword>").'<CR>'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Import
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
