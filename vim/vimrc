@@ -477,6 +477,10 @@ noremap <silent> <Leader>f :ChangeFile<CR>
 noremap <silent> <Leader>d :ChangeDirectory<CR>
 
 """"""""""""""""""""""""""""""
+" suddendeath
+""""""""""""""""""""""""""""""
+map X <Plug>(operator-suddendeath)
+""""""""""""""""""""""""""""""
 " quickhl
 """"""""""""""""""""""""""""""
 nmap <Space>m <Plug>(quickhl-manual-this)
