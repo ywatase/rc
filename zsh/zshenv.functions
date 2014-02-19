@@ -99,6 +99,16 @@ fi
 alias perl_nytprof='perl -d:NYTProf'
 alias perl_chk_leak='perl -MDevel::Leak::Object=GLOBAL_bless';
 alias plackup_chk_leak="plackup -MDevel::Leak::Object=GLOBAL_bless -e '\$Devel::Leak::Object::TRACKSOURCELINES = 1' --max-workers=1";
+minil () {
+  if is_valid_minilla_version ; then
+	  =minil "$@"
+  else 
+	  cpanm Minilla
+  fi
+}
+is_valid_minilla_version () {
+  perl -MMinilla -Mversion -le 'use version;  my $rv; my $v = version->parse($Minilla::VERSION); if ($v < version->parse("v0.9.0")){print STDERR "Too old Minilla"; $r=1}else{$r=0} exit $r;'
+}
 perlsource () {
   vim -R $(perlpath $1 )
 }
@@ -150,12 +160,28 @@ install-cpantools () {
 install-perlbrew () {
   curl -kL http://xrl.us/perlbrewinstall | bash
 }
+
+install-perltools () {
+  curl -kL https://raw2.github.com/hirose31/list-installed-perl-modules/master/list-installed-perl-modules > ~/bin/list-installed-perl-modules
+}
+
 install-plenv () {
   if is_mac ; then
-    brew install plenv --HEAD
+    brew install plenv
+    brew install perl-build
   else
     git clone https://github.com/tokuhirom/plenv.git ~/.plenv/
-	git clone https://github.com/tokuhirom/Perl-Build.git ~/.plenv/plugins/perl-build/
+    git clone https://github.com/tokuhirom/Perl-Build.git ~/.plenv/plugins/perl-build/
+    git clone https://github.com/Tacahilo/plenv-update.git ~/.plenv/plugins/plenv-update
+  fi
+  if [ "$(basename $SHELL)" = 'zsh' ] ; then
+    echo 'path=($HOME/.plenv/bin(N-/) $path)' >> ~/.zshenv
+    echo 'eval "$(plenv init -)"' >> ~/.zshenv
+    echo 'check your ~/.zshenv'
+  else
+    echo 'export PATH="$HOME/.plenv/bin:$PATH"' >> ~/.bash_profile
+    echo 'eval "$(plenv init -)"' >> ~/.bash_profile
+    echo 'check your ~/.bash_profile'
   fi
 }
 
@@ -355,7 +381,9 @@ rpm_extract () {
 ###
 
 github_repositories () {
-	local git_user
-	git_user=${1:=ywatase}
-	curl https://api.github.com/users/$git_user/repos\?per_page\=100 | jq  '.[].name'
+  local git_user
+  git_user=${1:=ywatase}
+  curl https://api.github.com/users/$git_user/repos\?per_page\=100 | jq  '.[].name'
 }
+
+# vim:set et ts=2 sts=2 sw=2:
