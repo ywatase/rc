@@ -37,6 +37,9 @@ NeoBundle 'yomi322/vim-operator-suddendeath', {
 	\ 'depends': ['kana/vim-operator-user'],
 	\ }
 
+" folding
+NeoBundle 'LeafCage/foldCC.git'
+
 " vim-scripts repos
 NeoBundle 'Align'
 NeoBundle 'autodate.vim'
@@ -76,6 +79,7 @@ NeoBundleLazy 'alpaca-tc/alpaca_tags', {
 " reference viewer
 NeoBundle 'thinca/vim-ref.git'
 NeoBundle 'thinca/vim-quickrun.git'
+NeoBundle 'thinca/vim-localrc.git'
 NeoBundle 'scrooloose/nerdtree.git'
 NeoBundle 'Shougo/neocomplcache.vim.git'
 NeoBundle 'Shougo/neosnippet.vim.git'
@@ -95,7 +99,7 @@ NeoBundle 'mattn/emmet-vim'
 NeoBundleLazy 'ujihisa/unite-colorscheme.git'
 NeoBundleLazy 'ujihisa/unite-font.git'
 " javascript
-NeoBundleLazy 'bigfish/vim-nodelint.git', {
+NeoBundle 'bigfish/vim-nodelint.git', {
 			\ 'build' : {
 			\     'windows' : 'echo "Sorry, cannot setup automatically."',
 			\     'cygwin' : '../../bundle_local/setup',
@@ -108,6 +112,14 @@ NeoBundleLazy 'SQLUtilities'
 " Clojure
 NeoBundleLazy 'jondistad/vimclojure.git'
 " Perl
+NeoBundle 'y-uuki/perl-local-lib-path.vim', {
+			\ 'build' : {
+			\     'windows' : 'echo "Sorry, cannot setup automatically."',
+			\     'cygwin' : '../../bundle_local/setup',
+			\     'mac' : '../../bundle_local/setup',
+			\     'unix' : '../../bundle_local/setup',
+			\ 	},
+			\ }
 NeoBundleLazy 'vim-perl/vim-perl.git'
 "NeoBundleLazy 'ywatase/flymake-perl.vim.git'
 NeoBundleLazy 'ywatase/perldoc-vim.git'
@@ -119,6 +131,7 @@ NeoBundleLazy 'tpope/vim-rails.git'
 " for markdown
 NeoBundle 'hallison/vim-markdown.git'
 NeoBundle 'tyru/open-browser.vim.git'
+NeoBundle 'thinca/vim-ft-markdown_fold.git'
 " for Japanese Help
 NeoBundle 'vim-jp/vimdoc-ja.git'
 " こんな感じで使う
@@ -217,6 +230,21 @@ set foldmethod=indent
 " Don't autofold on opening file
 set foldlevel=100
 
+" 見た目改善
+set fillchars=vert:\|
+hi Folded gui=bold term=standout ctermbg=LightGrey ctermfg=DarkBlue guibg=Grey30 guifg=Grey80
+hi FoldColumn gui=bold term=standout ctermbg=LightGrey ctermfg=DarkBlue guibg=Grey guifg=DarkBlue
+
+func! MyFoldingSettingOn ()
+	set foldtext=FoldCCtext()
+	set foldcolumn=5
+endf
+
+func! MyFoldingSettingOff ()
+	set foldcolumn=0
+	set foldtext=foldtext()
+endf
+
 " Align plugin for multibyte charactor
 let g:Align_xstrlen=3
 
@@ -273,6 +301,7 @@ autocmd BufRead,BufNewFile *.pl,*.pm,*.cgi,*.t,*psgi,cpanfile :set filetype=perl
 func! MyPerlSetting  ()
 	let s:perlenv  = 'PERL5LIB=\"'. $PERL5LIB .'\"'
 	let g:perlomni_perl = escape('env ' . s:perlenv . ' perl', ' \();$|')
+	PerlLocalLibPath
 	NeoBundleSource
 				\ vim-perl
 				\ perldoc-vim
@@ -291,13 +320,18 @@ func! MyRubySettings()
 endf
 au BufNewFile,BufRead Gemfile setl filetype=Gemfile
 au BufWritePost Gemfile call vimproc#system('rbenv ctags')
-
+""""""""""""""""""""""""""""""
+" その他
+autocmd FileType markdown call MyFoldingSettingOn()
 autocmd FileType yaml set ai et
 autocmd FileType c set smartindent et
-autocmd FileType javascript set smartindent et sw=2 ts=2 sts=2
+autocmd FileType javascript call MyJavaScriptSettings()
 autocmd Filetype java call MyJavaSettings()
+func! MyJavaScriptSettings ()
+  NeoBundleSource vim-nodelint
+  set smartindent et sw=2 ts=2 sts=2
+endf 
 func! MyJavaSettings ()
-	NeoBundleSource vim-nodelint
 	set makeprg=javac\ %
 	set grepprg=java\ `basename\ %\ .java`
 	set smartindent et
