@@ -21,8 +21,6 @@ path=($HOME/.zsh/git-tasukete(N-/) $HOME/android-sdk(N-/) $path)
 # rbenv
 path=($HOME/.rbenv/bin(N-/) $path)
 whence -p rbenv >/dev/null && eval "$(rbenv init -)"
-ruby_version=$(rbenv version | awk '{print $1}')
-path=($HOME/.rbenv/versions/$ruby_version/bin(N-/) $path)
 
 # pythonbrew
 [[ -s "$HOME/.pythonbrew/etc/bashrc" ]] && source "$HOME/.pythonbrew/etc/bashrc"
