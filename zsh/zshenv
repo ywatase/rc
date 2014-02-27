@@ -5,7 +5,10 @@ export MANPATH=`manpath`
 export GISTY_DIR=$HOME/dev/gists
 
 # brew
-if which brew >/dev/null 2>&1 ; then
+if is_mac ; then
+	path=(/usr/local/bin(N-/) $path)
+fi
+if whence -p brew >/dev/null ; then
 	path=($(brew --prefix coreutils)/libexec/gnubin(N-/) $path)
 fi
 
@@ -35,6 +38,7 @@ if [ -e $HOME/.nvm/nvm.sh ] ; then
 	source $HOME/.nvm/nvm.sh
 fi
 
+# perl
 path=($HOME/.plenv/bin(N-/) $path)
 if whence -p plenv >/dev/null ; then
 	# plenv
@@ -44,6 +48,9 @@ else
 	set_perlbrew_env
 fi
 
+# go
+export GOPATH=$HOME/go
+path=($HOME/go(N-/) $path)
 
 path=($HOME/bin/*(N-/) $HOME/bin(N-/) $path)
 typeset -U path
