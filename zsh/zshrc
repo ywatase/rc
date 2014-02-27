@@ -114,22 +114,6 @@ alias dstat-cpu='dstat -Tclr'
 alias dstat-net='dstat -Tclnd'
 alias dstat-disk='dstat -Tcldr'
 
-_SUDO=sudo
-# for windows
-if is_cygwin ; then
-  _SUDO=''
-  alias vi=vim
-  alias gvim=/usr/local/vim/gvim
-  alias traceroute="tracert"
-  alias svn="LANG=C LC_ALL=C svn"
-fi
-
-if is_host "pc-igademo" ; then
-#  export LANG=C
-  export GIT_PROXY_COMMAND=$HOME/bin/git-proxy
-  alias svn="LANG=ja_JP.UTF-8 LC_ALL=ja_JP.UTF-8 svn"
-fi
-
 # mysql prompt
 export MYSQL_PS1='MySQL \v [1;33m\u[0m@[1;35m\h[0m/[1;31m\d[0m [1;33m[\R:\m:\s][0m\nmysql\c>'
 # ssh agent
