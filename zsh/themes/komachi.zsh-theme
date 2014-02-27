@@ -29,13 +29,15 @@ _get_rubyversion () {
 }
 _get_perlversion () {
 	local perlversion
-	if which perlbrew &> /dev/null; then
+	local perlpath
+	perlpath=$(which perl)
+	if [[ "$perlpath" =~ "plenv" ]] ; then
+		perlversion=$(plenv version | sed -e 's/ (set.*$//')
+	elif [[ "$perlpath" =~ "perlbrew" ]] ; then
 		perlversion=$(perlbrew use | sed -e 's/^Currently using //' -e 's/^perl-//')
 	else
-		if which plenv &> /dev/null; then
-			perlversion=$(plenv version | sed -e 's/ (set.*$//')
-		fi
-	fi
+		perlversion=$(perl -e 'use version; print version->parse($])->normal' 2>/dev/null || perl -e 'print $]')
+  fi
 	echo $perlversion
 }
 _get_perllocallib () {
