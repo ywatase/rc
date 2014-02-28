@@ -17,20 +17,21 @@ set scrolloff=5
 filetype off
 
 if has('vim_starting')
-	set runtimepath+=~/.vim/neobundle.vim/
+	set runtimepath+=~/.vim/bundle/neobundle.vim/
 endif
 call neobundle#rc(expand('~/.vim/bundle/'))
+NeoBundleFetch 'Shougo/neobundle.vim'
 
 " non github repos
 " NeoBundle 'git://git.wincent.com/command-t.git'
 
-" original repos on github
-NeoBundle 'tpope/vim-fugitive.git'
-NeoBundle 't9md/vim-quickhl.git', {
+" base plugin
+NeoBundle 'tpope/vim-fugitive'
+NeoBundle 't9md/vim-quickhl', {
 	\ 'depends': ['kana/vim-operator-user'],
 	\ }
 NeoBundle 'itchyny/lightline.vim'
-NeoBundle 'scrooloose/syntastic.git'
+NeoBundle 'scrooloose/syntastic'
 
 " joke
 NeoBundle 'yomi322/vim-operator-suddendeath', {
@@ -38,7 +39,7 @@ NeoBundle 'yomi322/vim-operator-suddendeath', {
 	\ }
 
 " folding
-NeoBundle 'LeafCage/foldCC.git'
+NeoBundle 'LeafCage/foldCC'
 
 " vim-scripts repos
 NeoBundle 'Align'
@@ -57,7 +58,7 @@ NeoBundle 'errormarker.vim'
 " make symbolic link by yourself.
 " conflict EnhCommentify.vim.
 " need comment out <LocalLeader>x
-NeoBundle 'sukima/xmledit.git', {
+NeoBundle 'sukima/xmledit', {
 			\ 'build' : {
 			\     'windows' : 'echo "Sorry, cannot setup automatically."',
 			\     'cygwin' : '../../bundle_local/setup',
@@ -66,7 +67,7 @@ NeoBundle 'sukima/xmledit.git', {
 			\ 	},
 			\ }
 
-NeoBundle 'mattn/benchvimrc-vim.git'
+NeoBundle 'mattn/benchvimrc-vim'
 NeoBundle 'adaszko/chbuf.vim'
 NeoBundleLazy 'alpaca-tc/alpaca_tags', {
       \ 'rev' : 'development',
@@ -77,14 +78,20 @@ NeoBundleLazy 'alpaca-tc/alpaca_tags', {
       \ }}
 
 " reference viewer
-NeoBundle 'thinca/vim-ref.git'
-NeoBundle 'thinca/vim-quickrun.git'
-NeoBundle 'thinca/vim-localrc.git'
-NeoBundle 'scrooloose/nerdtree.git'
-NeoBundle 'Shougo/neocomplcache.vim.git'
-NeoBundle 'Shougo/neosnippet.vim.git'
-NeoBundle 'Shougo/unite.vim.git'
-NeoBundle 'Shougo/vimproc.git', {
+NeoBundle 'thinca/vim-ref'
+NeoBundle 'thinca/vim-quickrun'
+NeoBundle 'thinca/vim-localrc'
+NeoBundle 'scrooloose/nerdtree'
+
+" snippet
+NeoBundle 'Shougo/neocomplcache'
+NeoBundle 'Shougo/neosnippet'
+NeoBundle 'Shougo/neosnippet-snippets'
+NeoBundle 'honza/vim-snippets'
+NeoBundle 'bonsaiben/bootstrap-snippets'
+
+NeoBundle 'Shougo/unite.vim'
+NeoBundle 'Shougo/vimproc', {
 			\ 'build' : {
 			\     'windows' : 'echo "Sorry, cannot update vimproc binary file in Windows."',
 			\     'cygwin' : 'make -f make_cygwin.mak',
@@ -92,14 +99,14 @@ NeoBundle 'Shougo/vimproc.git', {
 			\     'unix' : 'make -f make_unix.mak',
 			\   },
 			\ }
-NeoBundle 'Shougo/vimshell.vim.git'
-NeoBundle 'Shougo/vimfiler.vim.git'
+NeoBundle 'Shougo/vimshell.vim'
+NeoBundle 'Shougo/vimfiler.vim'
 NeoBundle 'pangloss/vim-javascript'
 NeoBundle 'mattn/emmet-vim'
-NeoBundleLazy 'ujihisa/unite-colorscheme.git'
-NeoBundleLazy 'ujihisa/unite-font.git'
+NeoBundleLazy 'ujihisa/unite-colorscheme'
+NeoBundleLazy 'ujihisa/unite-font'
 " javascript
-NeoBundle 'bigfish/vim-nodelint.git', {
+NeoBundle 'bigfish/vim-nodelint', {
 			\ 'build' : {
 			\     'windows' : 'echo "Sorry, cannot setup automatically."',
 			\     'cygwin' : '../../bundle_local/setup',
@@ -110,7 +117,7 @@ NeoBundle 'bigfish/vim-nodelint.git', {
 " SQL
 NeoBundleLazy 'SQLUtilities'
 " Clojure
-NeoBundleLazy 'jondistad/vimclojure.git'
+NeoBundleLazy 'jondistad/vimclojure'
 " Perl
 NeoBundle 'y-uuki/perl-local-lib-path.vim', {
 			\ 'build' : {
@@ -120,27 +127,27 @@ NeoBundle 'y-uuki/perl-local-lib-path.vim', {
 			\     'unix' : '../../bundle_local/setup',
 			\ 	},
 			\ }
-NeoBundleLazy 'vim-perl/vim-perl.git'
-"NeoBundleLazy 'ywatase/flymake-perl.vim.git'
-NeoBundleLazy 'ywatase/perldoc-vim.git'
-NeoBundleLazy 'c9s/perlomni.vim.git'
+NeoBundleLazy 'vim-perl/vim-perl'
+"NeoBundleLazy 'ywatase/flymake-perl.vim'
+NeoBundleLazy 'ywatase/perldoc-vim'
+NeoBundleLazy 'c9s/perlomni.vim'
 " Ruby
 NeoBundleLazy 'vim-ruby/vim-ruby'
-NeoBundleLazy 'tpope/vim-rails.git'
+NeoBundleLazy 'tpope/vim-rails'
 
 " for markdown
-NeoBundle 'hallison/vim-markdown.git'
-NeoBundle 'tyru/open-browser.vim.git'
-NeoBundle 'thinca/vim-ft-markdown_fold.git'
+NeoBundle 'hallison/vim-markdown'
+NeoBundle 'tyru/open-browser.vim'
+NeoBundle 'thinca/vim-ft-markdown_fold'
 " for Japanese Help
-NeoBundle 'vim-jp/vimdoc-ja.git'
+NeoBundle 'vim-jp/vimdoc-ja'
 " こんな感じで使う
 " help {word}@ja
 " helpgrep {word}@en
 " 英語を優先したい場合
 " :set helplang=en,ja
 
-NeoBundle 'tsukkee/lingr-vim.git'
+NeoBundle 'tsukkee/lingr-vim'
 
 " colorscheme
 NeoBundleLazy 'jellybeans.vim'
@@ -151,9 +158,11 @@ NeoBundleLazy 'WuYe'
 NeoBundleLazy 'mrkn256.vim'
 NeoBundleLazy 'desert256.vim'
 NeoBundleLazy 'wombat256.vim'
-NeoBundleLazy 'yuroyoro/yuroyoro256.vim.git'
-NeoBundleLazy 'croaker/mustang-vim.git'
-NeoBundleLazy 'tomasr/molokai.git'
+NeoBundleLazy 'yuroyoro/yuroyoro256.vim'
+NeoBundleLazy 'croaker/mustang-vim'
+NeoBundleLazy 'tomasr/molokai'
+
+NeoBundleCheck
 
 filetype plugin indent on
 
@@ -571,6 +580,18 @@ augroup AlpacaTags
 	endif
 augroup END
 nnoremap <expr>tt  ':Unite tags -horizontal -buffer-name=tags -input='.expand("<cword>").'<CR>'
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" chrome
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let OSTYPE = system('uname')
+if OSTYPE == "Darwin\n"
+	command! -bar -nargs=1 -complete=file ChromeOpen silent !open -a "Google Chrome" <args>
+	command! -bar ChromeReload silent !osascript -e 'tell application "Google Chrome" to reload active tab of window 1'
+	command! -bar ChromeStartObserve autocmd BufWritePost <buffer> ChromeReload
+	command! -bar ChromeStartObserveOnce ChromeStopObserve | autocmd BufWritePost <buffer> ChromeReload
+	command! -bar ChromeStopObserve autocmd! BufWritePost <buffer>
+endif
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Import
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
