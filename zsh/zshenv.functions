@@ -386,4 +386,24 @@ github_repositories () {
   curl https://api.github.com/users/$git_user/repos\?per_page\=100 | jq  '.[].name'
 }
 
+###
+# docker
+###
+
+install-docker () {
+  if is_mac ; then
+    install-packer
+    brew install docker
+    brew install boot2docker
+  else
+    echo not supported.
+    exit 1
+  fi
+}
+
+install-packer () {
+  brew tap homebrew/binary
+  brew install homebrew/binary/packer
+}
+
 # vim:set et ts=2 sts=2 sw=2:
