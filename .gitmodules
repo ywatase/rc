@@ -1,12 +1,6 @@
 [submodule "Anyone/kazeburo-mysetup"]
 	path = Anyone/kazeburo-mysetup
 	url = git://github.com/kazeburo/mysetup.git
-[submodule "zsh/git-tasukete"]
-	path = zsh/git-tasukete
-	url = git://github.com/rosylilly/git-tasukete.git
-[submodule "zsh/z.git"]
-	path = zsh/z.git
-	url = git://github.com/rupa/z.git
 [submodule "zsh/antigen.git"]
 	path = zsh/antigen.git
 	url = https://github.com/zsh-users/antigen.git
