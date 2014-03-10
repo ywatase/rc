@@ -13,3 +13,6 @@
 [submodule "zsh/git-tasukete.git"]
 	path = zsh/git-tasukete.git
 	url = https://github.com/rosylilly/git-tasukete.git
+[submodule "Anyone/kazeburo-mysetup"]
+	path = Anyone/kazeburo-mysetup
+	url = https://github.com/kazeburo/mysetup.git
