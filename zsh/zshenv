@@ -16,7 +16,7 @@ fi
 path=(/usr/local/ec2-api-tools/bin(N-/) $HOME/eclipse(N-/) $HOME/android-sdk(N-/) $path)
 
 # git-tasukete
-path=($HOME/.zsh/git-tasukete(N-/) $HOME/android-sdk(N-/) $path)
+path=($HOME/.zsh/git-tasukete.git(N-/) $HOME/android-sdk(N-/) $path)
 
 # rbenv
 path=($HOME/.rbenv/bin(N-/) $path)
