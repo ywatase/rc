@@ -131,6 +131,17 @@ NeoBundleLazy 'vim-perl/vim-perl'
 "NeoBundleLazy 'ywatase/flymake-perl.vim'
 NeoBundleLazy 'ywatase/perldoc-vim'
 NeoBundleLazy 'c9s/perlomni.vim'
+
+NeoBundleLazy 'moznion/vim-cpanfile'
+NeoBundle     'moznion/syntastic-cpanfile', {
+			\ 'build' : {
+			\     'windows' : 'echo "Sorry, cannot setup automatically."',
+			\     'cygwin' : '../../bundle_local/setup',
+			\     'mac' : '../../bundle_local/setup',
+			\     'unix' : '../../bundle_local/setup',
+			\ 	},
+			\ }
+
 " Ruby
 NeoBundleLazy 'vim-ruby/vim-ruby'
 NeoBundleLazy 'tpope/vim-rails'
@@ -306,7 +317,7 @@ let g:clj_paren_rainbow = 1
 """"""""""""""""""""""""""""""
 " Perl
 " 他の設定は ~/.vim/ftplugin/perl/init.vim
-autocmd BufRead,BufNewFile *.pl,*.pm,*.cgi,*.t,*psgi,cpanfile :set filetype=perl
+autocmd BufRead,BufNewFile *.pl,*.pm,*.cgi,*.t,*psgi :set filetype=perl
 func! MyPerlSetting  ()
 	let s:perlenv  = 'PERL5LIB=\"'. $PERL5LIB .'\"'
 	let g:perlomni_perl = escape('env ' . s:perlenv . ' perl', ' \();$|')
@@ -316,6 +327,14 @@ func! MyPerlSetting  ()
 				\ perldoc-vim
 "				\ flymake-perl.vim
 "				\ perlomni.vim
+endf
+autocmd BufRead,BufNewFile cpanfile call MyCpanfileSetting()
+func! MyCpanfileSetting ()
+	set filetype=cpanfile
+	set syntax=perl.cpanfile
+	PerlLocalLibPath
+	NeoBundleSource
+				\ vim-cpanfile
 endf
 
 """"""""""""""""""""""""""""""
@@ -550,6 +569,7 @@ let g:quickhl_manual_keywords = [
 " syntastic
 """"""""""""""""""""""""""""""
 let g:syntastic_perl_checkers=['perl', 'perlcritic', 'podchecker']
+let g:syntastic_enable_perl_checker=1
 let g:syntastic_always_populate_loc_list=1
 """"""""""""""""""""""""""""""
 " alpaca

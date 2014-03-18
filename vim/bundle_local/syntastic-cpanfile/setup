@@ -1,0 +1,8 @@
+#!/bin/bash
+
+CUR_DIR=$(cd $(dirname $0); pwd -P)
+PLUGIN_NAME=$(basename $CUR_DIR)
+PLUGIN_DIR=${CUR_DIR}/../../bundle/${PLUGIN_NAME}
+
+
+ln -s $PLUGIN_DIR/syntax_checker/cpanfile ~/.vim/bundle/syntastic/syntax_checkers/
