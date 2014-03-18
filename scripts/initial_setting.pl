@@ -99,6 +99,7 @@ sub main {
     _symlink_dot_files();
     _add_zshenv($hash{'.zsh'});
 #    _setup_autojump();
+    _clone_neobundle();
 }
 
 #################################################
@@ -125,6 +126,19 @@ END
     open my $fh, '>>', "$ENV{HOME}/.zshenv" or die $!;
     print $fh $str;
     close $fh;
+}
+
+=item B<_clone_neobundle> - clone neobundle
+
+=cut
+
+sub _clone_neobundle {
+    my $dir = getcwd;
+    system "mkdir $ENV{HOME}/.vim/bundle";
+    chdir "$ENV{HOME}/.vim/bundle";
+
+    system "git clone https://github.com/Shougo/neobundle.vim.git";
+    chdir $dir
 }
 
 =item B<_clone_submodules> - clone submodules
