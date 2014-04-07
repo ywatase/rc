@@ -265,6 +265,17 @@ snippet redirect
 snippet param 
 	$c->request->param('${1:param}')
 	${2}
+# Getopt::Long
+snippet GetoptLong
+    use Getopt::Long qw(:config posix_default no_ignore_case gnu_compat bundling auto_version auto_help);
+    use Pod::Usage;
+# File::Spec->catfile
+snippet File::Spec
+    use File::Spec;
+    use File::Basename;
+    use lib File::Spec->catfile(dirname(__FILE__), qw(${1:.. lib}));
+snippet catfile
+    File::Spec->catfile(dirname(__FILE__), qw(${1:.. lib}));
 # Moose & Mouse
 snippet hasMoose
 	has '${1}' => (is => 'rw', isa => '${2}', lazy_build => 1);
