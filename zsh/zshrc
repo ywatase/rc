@@ -311,7 +311,7 @@ if is_mac  ; then
   export EDITOR=/usr/bin/vim
 else
 #  for nodelint-vim
-  if which nodelint | grep '.nvm' >/dev/null 2>&1 ; then
+  if whence -p nodelint | grep '.nvm' >/dev/null 2>&1 ; then
     export NODE_PATH=$(cd $(dirname $(which nodelint))/..;echo $(pwd -P)/lib/node_modules)
   fi 
   eval `dircolors -b` # set LS_COLORS

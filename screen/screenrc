@@ -3,7 +3,7 @@ escape ^z^z
 # must make symbolic link
 bind . source $HOME/.screen_setting
 bufferfile $HOME/tmp/screen-excahng
-cjkwidth on
+#cjkwidth on
 
 # ssh-agent
 setenv SSH_AUTH_SOCK /home/watase/tmp/ssh-agent-watase
@@ -20,7 +20,7 @@ setenv SSH_AUTH_SOCK /home/watase/tmp/ssh-agent-watase
 #hardstatus alwayslastline "$USER@$HOSTNAME %h"
 
 # case 3
-caption always "%{= wk} %-w%{=bu dg}%n %t%{-}%+w %= %{=b wb}%y/%m/%d(%D) %{=b wb}%c"
+caption always "%{= wk} %-w%{=bu dg}%n %t%{-}%+w %= %{=b wb}%y/%m/%d %{=b wb}%c:%s (%l)"
 defhstatus "[^En:^Et]"
 hardstatus alwayslastline "$USER@$HOSTNAME %h"
 
