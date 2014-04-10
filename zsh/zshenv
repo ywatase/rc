@@ -1,4 +1,9 @@
 source $HOME/.zsh/zshenv.functions
+# system-wide environment settings for zsh(1)
+if [ -x /usr/libexec/path_helper ]; then
+	path=()
+	eval `/usr/libexec/path_helper -s`
+fi
 
 MANPATH=
 export MANPATH=`manpath`
