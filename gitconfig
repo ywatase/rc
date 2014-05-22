@@ -10,6 +10,7 @@
 	autocrlf = input                 # CRLFを自動変換
 	editor = vim
 	quotepath = false                # 日本語をエスケープせずに表示
+	precomposeunicode = true
 [color]
 	# colorの設定(以下のコマンドは自動で色つける)
 	status = auto
