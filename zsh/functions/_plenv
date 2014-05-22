@@ -1,7 +1,59 @@
 #compdef plenv
 
 typeset -A opt_args
-local context state line
+local context state line curcontext="$curcontext" expl args ret=1
+
+local -a _plenv_subcommands _plenv_subcommands_summary
+local -a _plenv_available_perl_versions
+
+# cache policy
+#(Nmw+2)   # 2week
+#(Nmh+5)   # 5hour
+#(Nms+100) # 100sec
+_plenv_caching_policy () {
+	local -a oldp
+	oldp=( "$1"(Nmh+5) ) # 1 week
+	(( $#oldp ))
+}
+
+_find_or_store_cache () {
+	local cache_store
+	local -a list
+	varname=$1
+	cache_store="_plenv_$varname"
+
+	local cache_policy
+	zstyle -s ":completion:${curcontext}:" cache-policy cache_policy
+	if [[ -z "$cache_policy" ]]; then
+		zstyle ":completion:${curcontext}:" cache-policy _plenv_caching_policy
+	fi
+	list=(${(P)varname})
+  if ( [[ $#list -eq 0 ]] || _cache_invalid $cache_store ) && ! _retrieve_cache $cache_store ; then
+    eval _get_$varname
+    _store_cache $cache_store $varname
+	fi
+}
+
+_get__plenv_available_perl_versions () {
+  _plenv_available_perl_versions=(${(@f)"$(plenv completions install)"})
+}
+
+_get__plenv_subcommands () {
+  _plenv_subcommands=(${(@f)"$(plenv commands)"})
+}
+
+_get__plenv_subcommands_summary () {
+  _plenv_subcommands_summary=(${(@f)"$(__get__plenv_subcommand_summary)"})
+}
+
+__get__plenv_subcommand_summary () {
+  local cmd
+  _get__plenv_subcommands
+  for cmd in ${_plenv_subcommands}
+  do
+    plenv help --summary $cmd | perl -lne 's/^\s+//; printf qq|%s\n|, join ":", split(/\s+/, $_, 2);'
+  done
+}
 
 _arguments -C \
   '1: :->cmds' \
@@ -9,8 +61,8 @@ _arguments -C \
 
 _wanted_installed_perlversion () {
   local -a installed_versions
-  installed_versions=($(plenv list | perl -pe 's/^\*//m;s/\n/ /m'))
-  _wanted versions expl 'perl version' compadd $installed_versions && ret=0 
+  installed_versions=(${(@f)"$(plenv completions global)"})
+  _wanted versions expl 'perl versions' compadd $installed_versions && ret=0 
 }
 _no_argument () {
   (( ret )) && _message 'no more arguments'
@@ -18,13 +70,12 @@ _no_argument () {
 
 case $state in
   cmds)
-    local -a cmds
-    cmds=( available exec global help init install install-cpanm list local migrate-modules rehash which version versions )
-    _describe -t commands 'plenv command' cmds && ret=0
+    _find_or_store_cache '_plenv_subcommands_summary'
+    _describe -t commands 'plenv command' _plenv_subcommands_summary && ret=0
     ;;
   args)
     case $line[1] in
-      global | local)
+      global | local | shell)
         if [[ $CURRENT > 3 ]] ; then
           _no_argument
         else
@@ -35,9 +86,8 @@ case $state in
         if [[ $CURRENT > 3 ]] ; then
           _no_argument
         else
-          local -a perl_versions
-          perl_versions=($(plenv available|perl -pe 's/^i//m;s/\n/ /m'))
-          _wanted perl_versions expl 'perl-<version-number>' compadd $perl_versions && ret=0 
+          _find_or_store_cache '_plenv_available_perl_versions'
+          _wanted perl_versions expl 'perl-<version-number>' compadd $_plenv_available_perl_versions && ret=0 
         fi
         ;;
       migrate-modules)
@@ -47,7 +97,7 @@ case $state in
           _wanted_installed_perlversion
         fi
         ;;
-      exec | which)
+      exec | which | whence)
         # words=(perbrew exec),  CURRENT=2 が渡るのでwordsを空にして、カーソルを2戻す
         shift 2 words
         (( CURRENT-- ))
