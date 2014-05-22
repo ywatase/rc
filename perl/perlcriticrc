@@ -15,7 +15,7 @@
 #[-Variables::ProhibitPackageVars]
 #[-Variables::ProhibitPunctuationVars]
 [TestingAndDebugging::RequireUseStrict]
-equivalent_modules = Moo Moo::Role
+equivalent_modules = Moo Moo::Role MooseX::MethodAttributes::Role Any::Moose
 [TestingAndDebugging::ProhibitNoStrict]
 allow=refs
 [Subroutines::ProhibitExcessComplexity]
