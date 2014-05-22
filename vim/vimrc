@@ -343,7 +343,7 @@ endf
 autocmd FileType ruby,eruby call MyRubySettings()
 func! MyRubySettings()
     compiler ruby
-    set autoindent expandtab
+    set autoindent expandtab sw=2 ts=2 sts=2
 	NeoBundleSource vim-rails
 				\ vim-ruby
 endf
