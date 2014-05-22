@@ -406,4 +406,18 @@ install-packer () {
   brew install homebrew/binary/packer
 }
 
+clear_cache () {
+  local y old_dir=`pwd`
+  echo remove these[y/N]
+  echo $(cd $_cache_dir; ls) 
+  read y
+  if [ "$y" = "y" ] ; then
+    rm $_cache_dir/*
+    echo zsh cache files removed.
+  else
+    echo canceled.
+  fi
+
+}
+
 # vim:set et ts=2 sts=2 sw=2:
