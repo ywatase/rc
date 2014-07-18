@@ -407,6 +407,14 @@ let g:vimshell_execute_file_list = {}
 for ext in split('txt,vim,c,h,cpp,d,xml,java', ',')
 	let g:vimshell_execute_file_list[ext] = 'vim'
 endfor
+" ,ipl: replyを非同期で起動
+nnoremap <silent> ,ipl :VimShellInteractive reply --cfg .replyrc_vimshell<CR>
+" ,irb: irbを非同期で起動
+nnoremap <silent> ,irb :VimShellInteractive irb<CR>
+" ,ss: 非同期で開いたインタプリタに現在の行を評価させる
+vmap <silent> ,ss :VimShellSendString<CR>
+" 選択中に,ss: 非同期で開いたインタプリタに選択行を評価させる
+nnoremap <silent> ,ss <S-v>:VimShellSendString<CR>
 
 """"""""""""""""""""""""""""""
 " neosnippet
