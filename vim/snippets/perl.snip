@@ -80,11 +80,10 @@ options head
 	use parent qw(${2:ParentClass});
 	
 	sub new {
-		my $class = shift;
-		$class = ref $class if ref $class;
+		my $this = shift;
+		my $class = ref($this) || $this; ## no critic
         my %args = ref $_[0] ? %{$_[0]} : @_;
-		my $self = bless \%args, $class;
-		$self;
+		return bless \%args, $class;
 	}
     ${3}
 	
@@ -145,6 +144,8 @@ snippet querylog
     require DBIx::QueryLog; my $guard = DBIx::QueryLog->guard();
 snippet dump 
 	use Data::Dumper; warn Dumper ${1:$var};
+snippet reply
+	use Carp::Reply; Carp::Reply::repl();
 snippet say 
 	print ${1:$var}, "\n";
 	${2}
