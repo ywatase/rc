@@ -166,17 +166,17 @@ NeoBundle 'vim-jp/vimdoc-ja'
 NeoBundle 'tsukkee/lingr-vim'
 
 " colorscheme
-NeoBundleLazy 'jellybeans.vim'
-NeoBundleLazy 'moss'
-NeoBundleLazy 'tir_black'
-NeoBundleLazy 'softblue'
-NeoBundleLazy 'WuYe'
-NeoBundleLazy 'mrkn256.vim'
-NeoBundleLazy 'desert256.vim'
-NeoBundleLazy 'wombat256.vim'
-NeoBundleLazy 'yuroyoro/yuroyoro256.vim'
-NeoBundleLazy 'croaker/mustang-vim'
-NeoBundleLazy 'tomasr/molokai'
+NeoBundle 'jellybeans.vim'
+NeoBundle 'moss'
+NeoBundle 'tir_black'
+NeoBundle 'softblue'
+NeoBundle 'WuYe'
+NeoBundle 'mrkn256.vim'
+NeoBundle 'desert256.vim'
+NeoBundle 'wombat256.vim'
+NeoBundle 'yuroyoro/yuroyoro256.vim'
+NeoBundle 'croaker/mustang-vim'
+NeoBundle 'tomasr/molokai'
 
 " " for Dash
 " NeoBundle 'rizzatti/funcoo.vim'
@@ -299,6 +299,9 @@ set ff=unix
 " ステータスラインに改行コードと文字コードを表示
 set laststatus=2
 set statusline=%y%{MyFfFe()}%{fugitive#statusline()}\ 0x%B(%b)\ %F%m%r%=<%l:%v>\ %3p%%
+
+" colorscheme
+colorscheme yuroyoro256
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 改行コードと文字コードを取得
