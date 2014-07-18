@@ -323,14 +323,14 @@ install-pythonbrew () {
 }
 
 install-pyenv () {
-  git clone git://github.com/yyuu/pyenv.git $HOME/.pyenv
+  git clone https://github.com/yyuu/pyenv.git $HOME/.pyenv
   echo 'path=($HOME/.pyenv/bin(N-/) $path)' >> $HOME/.zshenv
   echo 'eval "$(pyenv init -)"' >> $HOME/.zshenv
   if ! [ -d $HOME/.pyenv/plugins ] ; then
     mkdir $HOME/.pyenv/plugins
   fi
   cd $HOME/.pyenv/plugins
-  git clone git://github.com/yyuu/pyenv-virtualenv.git
+  git clone https://github.com/yyuu/pyenv-virtualenv.git
   exec
   pyenv rehash
 }
