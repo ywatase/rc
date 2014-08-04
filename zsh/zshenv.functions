@@ -43,7 +43,7 @@ wakeup_igademo () {
 install-ricty () {
   brew install fontforge
   local tmpdir ricty_version migu_1m_url cwd
-  ricty_version=3.2.2
+  ricty_version=3.2.3
   migu_1m_url='http://sourceforge.jp/frs/redir.php?m=jaist&f=%2Fmix-mplus-ipa%2F59022%2Fmigu-1m-20130617.zip'
   cwd=$PWD
 
