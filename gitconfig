@@ -81,3 +81,5 @@
 	trustExitCode = true
 [push]
 	default = simple
+[url "https://"]
+	insteadOf = git://
