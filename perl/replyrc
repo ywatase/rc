@@ -9,6 +9,8 @@ script_line5 = sub p { print Dumper @_ }
 [DataDumper]
 [Colors]
 [ReadLine]
+history_file = '.hist'
+history_length = 1000
 [Hints]
 [Packages]
 [LexicalPersistence]
@@ -22,3 +24,4 @@ script_line5 = sub p { print Dumper @_ }
 [Editor]
 editor = vim
 
+# vim:set ft=cfg:
