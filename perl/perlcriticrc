@@ -8,7 +8,6 @@
 #[-RegularExpressions::RequireExtendedFormatting]
 #[-RegularExpressions::RequireLineBoundaryMatching]
 #[-TestingAndDebugging::RequirePackageWarnings]
-#[-TestingAndDebugging::RequireUseWarnings]
 #[-ValuesAndExpressions::ProhibitConstantPragma]
 #[-ValuesAndExpressions::ProhibitEmptyQuotes]
 #[-ValuesAndExpressions::ProhibitInterpolationOfLiterals]
@@ -23,7 +22,9 @@
 #[-Subroutines::RequireFinalReturn]
 
 [TestingAndDebugging::RequireUseStrict]
-equivalent_modules = Moo Moo::Role MooseX::MethodAttributes::Role Any::Moose
+equivalent_modules = Mouse Moo Moo::Role MooseX::MethodAttributes::Role Any::Moose
+[TestingAndDebugging::RequireUseWarnings]
+equivalent_modules = Mouse Moo Moo::Role MooseX::MethodAttributes::Role Any::Moose
 [TestingAndDebugging::ProhibitNoStrict]
 allow=refs
 [Subroutines::ProhibitExcessComplexity]
