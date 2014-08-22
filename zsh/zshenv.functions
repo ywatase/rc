@@ -116,8 +116,16 @@ perlsourcew () {
   ${_SUDO} vim $(perlpath $1)
 }
 develcover () {
+  local cmd
   cover -delete
-  HARNESS_PERL_SWITCHES=-MDevel::Cover make test
+  if [ -e "Makefile" ] ; then;
+    cmd="make test"
+  elif [ -e "Build" ] ; then;
+    cmd="./Build test"
+  else
+    cmd="prove -l t"
+  fi
+  HARNESS_PERL_SWITCHES=-MDevel::Cover $cmd
   cover
 }
 
