@@ -10,6 +10,11 @@ setopt cdable_vars sh_word_split auto_param_keys
 setopt PRINT_EIGHT_BIT
 
 autoload -Uz is-at-least
+autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
+add-zsh-hook chpwd chpwd_recent_dirs
+zstyle ':chpwd:*' recent-dirs-max 5000
+zstyle ':chpwd:*' recent-dirs-default yes
+zstyle ':completion:*' recent-dirs-insert both
 
 ###
 # enable auto complete 
@@ -32,6 +37,15 @@ fi
 # antigen
 ###
 source $HOME/.zsh/zshrc.antigen
+
+###
+# setting for peco
+###
+if whence -p peco >/dev/null ; then
+  for f (~/.zsh/peco/*.zsh) source "${f}" # load peco sources
+  bindkey '^r' peco-select-history
+  bindkey '^@' peco-cdr
+fi
 
 ###
 # aws-cli
@@ -115,6 +129,9 @@ alias dstat-mem='dstat -Tclm'
 alias dstat-cpu='dstat -Tclr'
 alias dstat-net='dstat -Tclnd'
 alias dstat-disk='dstat -Tcldr'
+alias sshv="$(whence -p ssh) -l vagrant -o 'NoHostAuthenticationForLocalhost=yes' -i ~/.vagrant.d/insecure_private_key"
+alias be="bundle exec"
+alias ce="carton exec"
 
 # mysql prompt
 export MYSQL_PS1='MySQL \v \u@\h(\d)>'
@@ -341,6 +358,7 @@ HISTSIZE=100000                       # メモリ内の履歴の数
 SAVEHIST=100000                       # 保存される履歴の数
 setopt extended_history               # 履歴ファイルに時刻を記録
 setopt share_history
+setopt hist_no_store
 setopt hist_ignore_dups hist_ignore_space
 function history-all { history -E 1 } # 全履歴の一覧を出力する
 autoload history-search-end
