@@ -1,5 +1,5 @@
 #!/usr/bin/env perl 
-# Last Modified: 2013/09/13.
+# Last Modified: 2014/07/18.
 # Author: Y.Watase <ywatase@gmail.com>
 
 use strict;
@@ -77,18 +77,20 @@ C<Getopt::Std>, C<Pod::Usage>
 =cut
 
 my %hash = (
-    '.vim'            => File::Spec->catfile($FindBin::Bin, qw(.. vim)),
-    '.vimrc'          => File::Spec->catfile($FindBin::Bin, qw(.. vim vimrc)),
-    '.gemrc'          => File::Spec->catfile($FindBin::Bin, qw(.. gemrc)),
-    '.gvimrc'         => File::Spec->catfile($FindBin::Bin, qw(.. vim gvimrc)),
-    '.gitconfig'      => File::Spec->catfile($FindBin::Bin, qw(.. gitconfig)),
-    '.zsh'            => File::Spec->catfile($FindBin::Bin, qw(.. zsh)),
-    '.zshrc'          => File::Spec->catfile($FindBin::Bin, qw(.. zsh zshrc)),
-    '.tmux.conf'      => File::Spec->catfile($FindBin::Bin, qw(.. tmux.conf)),
-    '.screenrc'       => File::Spec->catfile($FindBin::Bin, qw(.. screen screenrc)),
-    '.screen_setting' => File::Spec->catfile($FindBin::Bin, qw(.. screen screen_setting.linux_utf8)),
-    '.perltidyrc'     => File::Spec->catfile($FindBin::Bin, qw(.. perl perltidyrc_critic)),
+    '.vim'              => File::Spec->catfile($FindBin::Bin, qw(.. vim)),
+    '.vimrc'            => File::Spec->catfile($FindBin::Bin, qw(.. vim vimrc)),
+    '.gemrc'            => File::Spec->catfile($FindBin::Bin, qw(.. gemrc)),
+    '.gvimrc'           => File::Spec->catfile($FindBin::Bin, qw(.. vim gvimrc)),
+    '.gitconfig'        => File::Spec->catfile($FindBin::Bin, qw(.. gitconfig)),
+    '.zsh'              => File::Spec->catfile($FindBin::Bin, qw(.. zsh)),
+    '.zshrc'            => File::Spec->catfile($FindBin::Bin, qw(.. zsh zshrc)),
+    '.tmux.conf'        => File::Spec->catfile($FindBin::Bin, qw(.. tmux.conf)),
+    '.screenrc'         => File::Spec->catfile($FindBin::Bin, qw(.. screen screenrc)),
+    '.screen_setting'   => File::Spec->catfile($FindBin::Bin, qw(.. screen screen_setting.linux_utf8)),
+    '.perltidyrc'       => File::Spec->catfile($FindBin::Bin, qw(.. perl perltidyrc_critic)),
     '.perlcriticrc'     => File::Spec->catfile($FindBin::Bin, qw(.. perl perlcriticrc)),
+    '.replyrc'          => File::Spec->catfile($FindBin::Bin, qw(.. perl replyrc)),
+    '.replyrc_vimshell' => File::Spec->catfile($FindBin::Bin, qw(.. perl replyrc_vimshell)),
 );
 
 main();

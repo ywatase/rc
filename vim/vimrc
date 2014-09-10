@@ -70,12 +70,14 @@ NeoBundle 'sukima/xmledit', {
 NeoBundle 'mattn/benchvimrc-vim'
 NeoBundle 'adaszko/chbuf.vim'
 NeoBundleLazy 'alpaca-tc/alpaca_tags', {
-      \ 'rev' : 'development',
-      \ 'depends': ['Shougo/vimproc', 'Shougo/unite.vim'],
-      \ 'autoload' : {
-      \   'commands' : ['Tags', 'TagsUpdate', 'TagsSet', 'TagsBundle', 'TagsCleanCache'],
-      \   'unite_sources' : ['tags']
-      \ }}
+     \ 'depends': ['Shougo/vimproc'],
+     \ 'autoload' : {
+     \   'commands' : [
+     \     { 'name' : 'AlpacaTagsBundle', 'complete': 'customlist,alpaca_tags#complete_source' },
+     \     { 'name' : 'AlpacaTagsUpdate', 'complete': 'customlist,alpaca_tags#complete_source' },
+     \     'AlpacaTagsSet', 'AlpacaTagsCleanCache', 'AlpacaTagsEnable', 'AlpacaTagsDisable', 'AlpacaTagsKillProcess', 'AlpacaTagsProcessStatus',
+     \ ],
+     \ }}
 
 " reference viewer
 NeoBundle 'thinca/vim-ref'
@@ -104,7 +106,9 @@ NeoBundle 'Shougo/vimshell.vim'
 NeoBundle 'Shougo/vimfiler.vim'
 NeoBundle 'pangloss/vim-javascript'
 NeoBundle 'mattn/emmet-vim'
-NeoBundleLazy 'ujihisa/unite-colorscheme'
+NeoBundle 'tsukkee/unite-tag'
+NeoBundle 'ujihisa/unite-colorscheme'
+NeoBundle 'kmnk/vim-unite-giti'
 NeoBundleLazy 'ujihisa/unite-font'
 " javascript
 NeoBundle 'bigfish/vim-nodelint', {
@@ -162,17 +166,21 @@ NeoBundle 'vim-jp/vimdoc-ja'
 NeoBundle 'tsukkee/lingr-vim'
 
 " colorscheme
-NeoBundleLazy 'jellybeans.vim'
-NeoBundleLazy 'moss'
-NeoBundleLazy 'tir_black'
-NeoBundleLazy 'softblue'
-NeoBundleLazy 'WuYe'
-NeoBundleLazy 'mrkn256.vim'
-NeoBundleLazy 'desert256.vim'
-NeoBundleLazy 'wombat256.vim'
-NeoBundleLazy 'yuroyoro/yuroyoro256.vim'
-NeoBundleLazy 'croaker/mustang-vim'
-NeoBundleLazy 'tomasr/molokai'
+NeoBundle 'jellybeans.vim'
+NeoBundle 'moss'
+NeoBundle 'tir_black'
+NeoBundle 'softblue'
+NeoBundle 'WuYe'
+NeoBundle 'mrkn256.vim'
+NeoBundle 'desert256.vim'
+NeoBundle 'wombat256.vim'
+NeoBundle 'yuroyoro/yuroyoro256.vim'
+NeoBundle 'croaker/mustang-vim'
+NeoBundle 'tomasr/molokai'
+
+" " for Dash
+" NeoBundle 'rizzatti/funcoo.vim'
+" NeoBundle 'rizzatti/dash.vim'
 
 NeoBundleCheck
 
@@ -292,6 +300,9 @@ set ff=unix
 set laststatus=2
 set statusline=%y%{MyFfFe()}%{fugitive#statusline()}\ 0x%B(%b)\ %F%m%r%=<%l:%v>\ %3p%%
 
+" colorscheme
+colorscheme yuroyoro256
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 改行コードと文字コードを取得
 func! MyFfFe()
@@ -343,7 +354,7 @@ endf
 autocmd FileType ruby,eruby call MyRubySettings()
 func! MyRubySettings()
     compiler ruby
-    set autoindent expandtab
+    set autoindent expandtab sw=2 ts=2 sts=2
 	NeoBundleSource vim-rails
 				\ vim-ruby
 endf
@@ -396,6 +407,14 @@ let g:vimshell_execute_file_list = {}
 for ext in split('txt,vim,c,h,cpp,d,xml,java', ',')
 	let g:vimshell_execute_file_list[ext] = 'vim'
 endfor
+" ,ipl: replyを非同期で起動
+nnoremap <silent> ,ipl :VimShellInteractive reply --cfg .replyrc_vimshell<CR>
+" ,irb: irbを非同期で起動
+nnoremap <silent> ,irb :VimShellInteractive irb<CR>
+" ,ss: 非同期で開いたインタプリタに現在の行を評価させる
+vmap <silent> ,ss :VimShellSendString<CR>
+" 選択中に,ss: 非同期で開いたインタプリタに選択行を評価させる
+nnoremap <silent> ,ss <S-v>:VimShellSendString<CR>
 
 """"""""""""""""""""""""""""""
 " neosnippet
@@ -427,9 +446,47 @@ let g:html_use_css = 1
 let g:html_no_pre = 1
 """"""""""""""""""""""""""""""
 " unite.vim
-" 入力モードで開始する
 """"""""""""""""""""""""""""""
-" let g:unite_enable_start_insert=1
+" 入力モードで開始する
+let g:unite_enable_start_insert=1
+
+" メニュー
+let g:unite_source_menu_menus = {
+      \   "shortcut" : {
+      \       "description" : "sample unite-menu",
+      \       "command_candidates" : [
+      \           ["edit vimrc", "edit $MYVIMRC"],
+      \           ["edit zshrc", "edit $HOME/.zshrc"],
+      \           ["unite file_mru", "Unite file_mru"],
+      \           ["Unite colorscheme", "Unite -auto-preview colorscheme"],
+      \           ["unite output:message", "Unite output:message"],
+      \           ["unite mapping", "Unite mapping"],
+      \           ["unite bookmark", "Unite bookmark"],
+      \       ],
+      \   },
+      \   "git" : {
+      \       "description" : "            gestionar repositorios git                             ⌘ [espacio]g",
+      \   }
+      \ }
+let g:unite_source_menu_menus.git.command_candidates = [
+    \   ['tig                                                       ⌘  ,gt', 'normal ,gt'],
+    \   ['git status       (Fugitive)                               ⌘  ,gs', 'Gstatus'],
+    \   ['git diff         (Fugitive)                               ⌘  ,gd', 'Gdiff'],
+    \   ['git add          (Fugitive)                               ⌘  ,ga', 'Git! add'],
+    \   ['git add -p       (Fugitive)                               ⌘  ,gA', 'Git! add -p'],
+    \   ['git commit       (Fugitive)                               ⌘  ,gc', 'Gcommit'],
+    \   ['git log          (Fugitive)                               ⌘  ,gl', 'exe "silent Glog | Unite quickfix"'],
+    \   ['git blame        (Fugitive)                               ⌘  ,gb', 'Gblame'],
+    \   ['git stage        (Fugitive)                               ⌘  ,gw', 'Gwrite'],
+    \   ['git checkout     (Fugitive)                               ⌘  ,go', 'Gread'],
+    \   ['git rm           (Fugitive)                               ⌘  ,gr', 'Gremove'],
+    \   ['git mv           (Fugitive)                               ⌘  ,gm', 'exe "Gmove " input("destino: ")'],
+    \   ['git push         (Fugitive, salida por buffer)            ⌘  ,gp', 'Git! push'],
+    \   ['git pull         (Fugitive, salida por buffer)            ⌘  ,gP', 'Git! pull'],
+    \   ['git prompt       (Fugitive, salida por buffer)            ⌘  ,gi', 'exe "Git! " input("comando git: ")'],
+    \   ['git cd           (Fugitive)', 'Gcd']
+    \ ]
+
 " バッファ一覧
 nnoremap <silent> ,ub :<C-u>Unite buffer<CR>
 " ファイル一覧
@@ -442,6 +499,15 @@ nnoremap <silent> ,um :<C-u>Unite file_mru<CR>
 nnoremap <silent> ,uu :<C-u>Unite buffer file_mru<CR>
 " 全部乗せ
 nnoremap <silent> ,ua :<C-u>UniteWithBufferDir -buffer-name=files buffer file_mru bookmark file<CR>
+" 検索
+nnoremap <silent> ,ul :<C-u>Unite line -buffer-name=search -no-quit -start-insert<CR>
+" menu: ショートカット
+nnoremap <silent> ,us :<C-u>Unite menu:shortcut<CR>
+nnoremap <silent> [menu]s :<C-u>Unite menu:shortcut<CR>
+" menu: git
+nnoremap <silent> ,ug :Unite -silent -start-insert menu:git<CR>
+nnoremap <silent> [menu]g :Unite -silent -start-insert menu:git<CR>
+
 
 " ウィンドウを分割して開く
 au FileType unite nnoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
@@ -452,6 +518,18 @@ au FileType unite inoremap <silent> <buffer> <expr> <C-l> unite#do_action('vspli
 " ESCキーを2回押すと終了する
 au FileType unite nnoremap <silent> <buffer> <ESC><ESC> q
 au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>q
+
+""""""""""""""""""""""""""""""
+" fugitive.vim
+""""""""""""""""""""""""""""""
+nnoremap ,gt :!tig
+nnoremap ,gs :Gstatus
+nnoremap ,gd :Gdiff
+nnoremap ,ga :Git! add
+nnoremap ,gc :Gcommit
+nnoremap ,gb :Gblame
+nnoremap ,gw :Gwrite
+nnoremap ,go :Gread
 
 """"""""""""""""""""""""""""""
 " keisen.vim
@@ -575,8 +653,9 @@ let g:syntastic_always_populate_loc_list=1
 """"""""""""""""""""""""""""""
 " alpaca
 """"""""""""""""""""""""""""""
-let g:alpaca_update_tags_config = {
+let g:alpaca_tags#config = {
       \ '_' : '-R --sort=yes',
+      \ 'perl' : '--languages=+perl',
       \ 'js' : '--languages=+js',
       \ '-js' : '--languages=-js,JavaScript',
       \ 'vim' : '--languages=+Vim,vim',
@@ -591,16 +670,17 @@ let g:alpaca_update_tags_config = {
       \ '-coffee': '--languages=-coffee',
       \ 'bundle': '--languages=+Ruby --languages=-css,sass,scss,js,JavaScript,coffee',
       \ }
+let g:alpaca_tags#timeout_period = 60
 
 augroup AlpacaTags
 	autocmd!
-	if exists(':Tags')
-		autocmd BufWritePost * TagsUpdate ruby
-		autocmd BufWritePost Gemfile TagsBundle
-		autocmd BufEnter * TagsSet
+	if exists(':AlpacaTags')
+		autocmd BufWritePost * AlpacaTagsUpdate perl
+		autocmd BufWritePost Gemfile AlpacaTagsBundle
+		autocmd BufEnter * AlpacaTagsSet
 	endif
 augroup END
-nnoremap <expr>tt  ':Unite tags -horizontal -buffer-name=tags -input='.expand("<cword>").'<CR>'
+nnoremap <expr>tt  ':Unite tag -horizontal -buffer-name=tags -input='.expand("<cword>").'<CR>'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " chrome
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""

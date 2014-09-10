@@ -10,6 +10,11 @@ setopt cdable_vars sh_word_split auto_param_keys
 setopt PRINT_EIGHT_BIT
 
 autoload -Uz is-at-least
+autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
+add-zsh-hook chpwd chpwd_recent_dirs
+zstyle ':chpwd:*' recent-dirs-max 5000
+zstyle ':chpwd:*' recent-dirs-default yes
+zstyle ':completion:*' recent-dirs-insert both
 
 ###
 # enable auto complete 
@@ -32,6 +37,15 @@ fi
 # antigen
 ###
 source $HOME/.zsh/zshrc.antigen
+
+###
+# setting for peco
+###
+if whence -p peco >/dev/null ; then
+  for f (~/.zsh/peco/*.zsh) source "${f}" # load peco sources
+  bindkey '^r' peco-select-history
+  bindkey '^@' peco-cdr
+fi
 
 ###
 # aws-cli
@@ -63,6 +77,8 @@ if is_mac ; then
   alias mac_dot_files_visible="defaults write com.apple.finder AppleShowAllFiles -bool YES;killall Finder"
   alias mac_dot_files_invisible="defaults write com.apple.finder AppleShowAllFiles -bool NO;killall Finder"
   alias mac_set_tcp_delayed_ack_0="sudo sysctl -w net.inet.tcp.delayed_ack=0"
+  alias mac_enable_timemachie="sudo tmutil enablelocal"
+  alias mac_disable_timemachie="sudo tmutil disablelocal"
   mac_dashboad_off() {
     echo "DASHBOARD OFF"
     mac_dashboard-toggle "true"
@@ -113,9 +129,12 @@ alias dstat-mem='dstat -Tclm'
 alias dstat-cpu='dstat -Tclr'
 alias dstat-net='dstat -Tclnd'
 alias dstat-disk='dstat -Tcldr'
+alias sshv="$(whence -p ssh) -l vagrant -o 'NoHostAuthenticationForLocalhost=yes' -i ~/.vagrant.d/insecure_private_key"
+alias be="bundle exec"
+alias ce="carton exec"
 
 # mysql prompt
-export MYSQL_PS1='MySQL \v [1;33m\u[0m@[1;35m\h[0m/[1;31m\d[0m [1;33m[\R:\m:\s][0m\nmysql\c>'
+export MYSQL_PS1='MySQL \v \u@\h(\d)>'
 # ssh agent
 if is_ssh_client && ! is_screen && ! is_tmux ; then
   keychain ~/.ssh/id_dsa
@@ -339,6 +358,7 @@ HISTSIZE=100000                       # メモリ内の履歴の数
 SAVEHIST=100000                       # 保存される履歴の数
 setopt extended_history               # 履歴ファイルに時刻を記録
 setopt share_history
+setopt hist_no_store
 setopt hist_ignore_dups hist_ignore_space
 function history-all { history -E 1 } # 全履歴の一覧を出力する
 autoload history-search-end

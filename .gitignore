@@ -6,3 +6,4 @@ vim/.netrwhist
 zsh/zshenv_coreutils_alias
 zsh/cdd_pwd_list
 zsh/cdd_pwd_list.t
+.DS_Store

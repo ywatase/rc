@@ -1,3 +1,4 @@
+## no need for web development
 #[-ControlStructures::ProhibitPostfixControls]
 #[-Documentation::RequirePodAtEnd]
 #[-Documentation::RequirePodSections]
@@ -7,15 +8,23 @@
 #[-RegularExpressions::RequireExtendedFormatting]
 #[-RegularExpressions::RequireLineBoundaryMatching]
 #[-TestingAndDebugging::RequirePackageWarnings]
-#[-TestingAndDebugging::RequireUseWarnings]
 #[-ValuesAndExpressions::ProhibitConstantPragma]
 #[-ValuesAndExpressions::ProhibitEmptyQuotes]
 #[-ValuesAndExpressions::ProhibitInterpolationOfLiterals]
 #[-ValuesAndExpressions::ProhibitNoisyQuotes]
 #[-Variables::ProhibitPackageVars]
 #[-Variables::ProhibitPunctuationVars]
+#[-ValuesAndExpressions::RequireConstantVersion]
+
+## for too many errors
+#[-ValuesAndExpressions::ProhibitMagicNumbers]
+#[-Subroutines::ProhibitBuiltinHomonyms]
+#[-Subroutines::RequireFinalReturn]
+
 [TestingAndDebugging::RequireUseStrict]
-equivalent_modules = Moo Moo::Role
+equivalent_modules = Mouse Moo Moo::Role MooseX::MethodAttributes::Role Any::Moose
+[TestingAndDebugging::RequireUseWarnings]
+equivalent_modules = Mouse Moo Moo::Role MooseX::MethodAttributes::Role Any::Moose
 [TestingAndDebugging::ProhibitNoStrict]
 allow=refs
 [Subroutines::ProhibitExcessComplexity]

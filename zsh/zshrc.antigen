@@ -33,7 +33,6 @@ node
 npm
 # others
 git
-git-flow
 knife
 vagrant
 svn
@@ -42,6 +41,11 @@ command-not-found
 zsh-users/zsh-syntax-highlighting
 EOBUNDLES
 
+antigen bundle git-flow
+antigen bundle docker
+
 antigen theme $HOME/.zsh/themes/komachi.zsh-theme
 
 antigen apply
+
+zstyle ':completion::complete:*' cache-path $HOME/.zcompcache
