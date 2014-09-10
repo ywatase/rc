@@ -340,6 +340,11 @@ install-pyenv () {
   cd $HOME/.pyenv/plugins
   git clone https://github.com/yyuu/pyenv-virtualenv.git
   exec
+  fi
+  if [ "$(basename $SHELL)" = 'zsh' ] ; then
+    echo 'path=($HOME/.pyenv/bin(N-/) $path)' >> $HOME/.zshenv
+    echo 'eval "$(pyenv init -)"' >> $HOME/.zshenv
+  fi
   pyenv rehash
 }
 
