@@ -397,6 +397,22 @@ github_repositories () {
 ###
 # docker
 ###
+#
+if is_mac ; then
+   export DOCKER_HOST=tcp://127.0.0.1:2375
+fi
+function docker-host-vagrant () {
+  export DOCKER_HOST=tcp://127.0.0.1:4243
+}
+function docker-host-boot2docker () {
+  export DOCKER_HOST=tcp://127.0.0.1:2375
+}
+function vagrant-docker-ssh () {
+  local cwd=$pwd
+  cd ~/.vagrant.d/data/docker-host
+  vagrant ssh
+  cd $cwd
+}
 
 install-docker () {
   if is_mac ; then
@@ -414,6 +430,93 @@ install-packer () {
   brew install homebrew/binary/packer
 }
 
+build_custom_boot2docker () {
+  # https://medium.com/boot2docker-lightweight-linux-for-docker/boot2docker-together-with-virtualbox-guest-additions-da1e3ab2465c
+	# https://gist.github.com/brutasse/94d8d66aabf2e7f4e246
+	if ! [ -d ~/work/boot2docker ] ; then
+		mkdir -p ~/work/boot2docker
+	fi
+
+	if ! [ -d 94d8d66aabf2e7f4e246 ] ; then
+		git clone https://gist.github.com/brutasse/94d8d66aabf2e7f4e246
+	fi
+	cd 94d8d66aabf2e7f4e246
+
+	git pull
+
+	./build_docker.sh
+
+	local TODAY=$(date +%Y%m%d)
+
+	# build the actual boot2docker.iso with virtual box guest additions
+	docker build -t mattes/boot2docker-vbga .
+
+	# the following line is proposed in many tutorials, but does not work for me
+	# (it outputs an iso that won't work)
+	# docker run -i -t --rm mattes/boot2docker-vbga > ../boot2docker.${TODAY}.iso
+
+	# # so I do:
+  (perl -e "sleep 60" | docker run -i -t --rm mattes/boot2docker-vbga /bin/bash) &
+	# # then in a second shell:
+  container_id=$(docker ps -aq -n=1)
+	docker cp $container_id:boot2docker.iso ../boot2docker.${TODAY}.iso
+	ln -sf boot2docker.${TODAY}.iso boot2docker.iso
+  docker stop $container_id
+}
+
+boot2docker-init () {
+	boot2docker init
+	boot2docker stop
+  cp ~/work/boot2docker/boot2docker.iso ~/.boot2docker/boot2docker.iso
+	VBoxManage sharedfolder add boot2docker-vm -name var_folders -hostpath /var/folders
+	VBoxManage sharedfolder add boot2docker-vm -name home -hostpath $HOME
+  VBoxManage controlvm "boot2docker-vm" natpf1 "registry,tcp,,5000,,5000"
+	boot2docker up
+}
+
+boot2docker-up () {
+	boot2docker up
+  local target mp
+  boot2docker ssh "sudo modprobe vboxsf && sudo mkdir -p $HOME && sudo mount -t vboxsf home $HOME"
+  for target in /var/folders
+  do
+    mp=$(echo $target | perl -pe 's{/}{_}g;s{^_}{};')
+    boot2docker ssh "sudo modprobe vboxsf && sudo mkdir -p $target && sudo mount -t vboxsf $mp $target"
+  done
+}
+
+docker-registry () {
+  local m
+  local cmd=$1
+  typeset -A m
+  m=("list" 1 "delete" 2 "run" 3)
+  shift
+  if [ "$m[$cmd]" = "" ] ; then
+    echo no subcommand: $cmd
+    echo subcommands: run list delete
+
+  else 
+    eval _docker-registry-$cmd "$@"
+  fi
+}
+
+_docker-registry-run () {
+  docker run -p 5000:5000 -d -v ~/docker_registry:/tmp/registry registry
+}
+
+_docker-registry-list () {
+    curl --dump-header - -X GET http://localhost:5000/v1/repositories/$1
+}
+
+_docker-registry-delete () {
+    curl --dump-header - -X DELETE http://localhost:5000/v1/repositories/$1
+}
+
+
+
+###
+# other
+###
 clear_cache () {
   local y old_dir=`pwd`
   echo remove these[y/N]
