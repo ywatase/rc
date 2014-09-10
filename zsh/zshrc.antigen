@@ -42,6 +42,7 @@ zsh-users/zsh-syntax-highlighting
 EOBUNDLES
 
 antigen bundle git-flow
+antigen bundle docker
 
 antigen theme $HOME/.zsh/themes/komachi.zsh-theme
 
