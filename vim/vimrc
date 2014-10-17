@@ -53,6 +53,8 @@ NeoBundle 'vcscommand.vim'
 NeoBundle 'surround.vim'
 NeoBundle 'taglist.vim'
 NeoBundle 'errormarker.vim'
+NeoBundle 'glidenote/memolist.vim'
+NeoBundle 'csexton/jekyll.vim'
 
 " xmledit
 " make symbolic link by yourself.
@@ -69,7 +71,7 @@ NeoBundle 'sukima/xmledit', {
 
 NeoBundle 'mattn/benchvimrc-vim'
 NeoBundle 'adaszko/chbuf.vim'
-NeoBundleLazy 'alpaca-tc/alpaca_tags', {
+NeoBundle 'alpaca-tc/alpaca_tags', {
      \ 'depends': ['Shougo/vimproc'],
      \ 'autoload' : {
      \   'commands' : [
@@ -132,10 +134,8 @@ NeoBundle 'y-uuki/perl-local-lib-path.vim', {
 			\     'unix' : '../../bundle_local/setup',
 			\ 	},
 			\ }
-NeoBundleLazy 'vim-perl/vim-perl'
-"NeoBundleLazy 'ywatase/flymake-perl.vim'
-NeoBundleLazy 'ywatase/perldoc-vim'
-NeoBundleLazy 'c9s/perlomni.vim'
+NeoBundle 'vim-perl/vim-perl'
+NeoBundle 'ywatase/perldoc-vim'
 
 NeoBundleLazy 'moznion/vim-cpanfile'
 NeoBundle     'moznion/syntastic-cpanfile', {
@@ -147,12 +147,17 @@ NeoBundle     'moznion/syntastic-cpanfile', {
 			\ 	},
 			\ }
 
+" Go
+NeoBundle 'google/vim-ft-go'
+NeoBundle 'vim-jp/vim-go-extra'
+
 " Ruby
-NeoBundleLazy 'vim-ruby/vim-ruby'
-NeoBundleLazy 'tpope/vim-rails'
+NeoBundle 'vim-ruby/vim-ruby'
+NeoBundle 'tpope/vim-rails'
 
 " for markdown
 NeoBundle 'hallison/vim-markdown'
+NeoBundle 'kannokanno/previm'
 NeoBundle 'tyru/open-browser.vim'
 NeoBundle 'thinca/vim-ft-markdown_fold'
 " for Japanese Help
@@ -188,7 +193,21 @@ filetype plugin indent on
 
 augroup MyVimrc
 	autocmd!
-	autocmd FileType perl call MyPerlSetting()
+    autocmd BufRead,BufNewFile *.pl,*.pm,*.cgi,*.t,*psgi :set filetype=perl
+    autocmd FileType perl call MyPerlSetting()
+"    autocmd FileType go autocmd BufWritePre <buffer> Fmt
+    autocmd BufRead,BufNewFile cpanfile call MyCpanfileSetting()
+    autocmd FileType ruby,eruby call MyRubySettings()
+    autocmd FileType markdown call MyFoldingSettingOn()
+    autocmd FileType javascript call MyJavaScriptSettings()
+    autocmd Filetype java call MyJavaSettings()
+    autocmd FileType sql call MySQLSettings()
+    autocmd BufNewFile,BufRead Changes setf changelog
+    autocmd FileType changelog,gitcommit,svn set spell
+    autocmd FileType yaml set ai et
+    autocmd FileType c set smartindent et
+    autocmd BufNewFile,BufRead Gemfile setl filetype=Gemfile
+    autocmd BufWritePost Gemfile call vimproc#system('rbenv ctags')
 augroup END
 
 """"""""""""""""""""""""""""""
@@ -217,11 +236,9 @@ nmap <F4> :vertical diffsplit
 "
 """"""""""""""""""""""""""""""
 "Perl Module changelog
-:au BufNewFile,BufRead Changes setf changelog
 let g:changelog_username   = "ywatase <ywatase@gmail.com>"
 let g:changelog_timeformat = "%Y-%m-%d"
 let g:changelog_date_entry_search = '^[0-9\.]*\s*%d\_s*%u'
-autocmd FileType changelog set spell
 """"""""""""""""""""""""""""""
 " Search
 "
@@ -321,7 +338,6 @@ endf
 filetype plugin indent on
 " Load matchit (% to bounce from do to end, etc.)
 runtime! macros/matchit.vim
-autocmd FileType gitcommit,svn set spell
 """"""""""""""""""""""""""""""
 " ClojureVim
 let g:clj_highlight_builtins = 1
@@ -329,18 +345,11 @@ let g:clj_paren_rainbow = 1
 """"""""""""""""""""""""""""""
 " Perl
 " 他の設定は ~/.vim/ftplugin/perl/init.vim
-autocmd BufRead,BufNewFile *.pl,*.pm,*.cgi,*.t,*psgi :set filetype=perl
 func! MyPerlSetting  ()
 	let s:perlenv  = 'PERL5LIB=\"'. $PERL5LIB .'\"'
 	let g:perlomni_perl = escape('env ' . s:perlenv . ' perl', ' \();$|')
 	PerlLocalLibPath
-	NeoBundleSource
-				\ vim-perl
-				\ perldoc-vim
-"				\ flymake-perl.vim
-"				\ perlomni.vim
 endf
-autocmd BufRead,BufNewFile cpanfile call MyCpanfileSetting()
 func! MyCpanfileSetting ()
 	set filetype=cpanfile
 	set syntax=perl.cpanfile
@@ -351,22 +360,12 @@ endf
 
 """"""""""""""""""""""""""""""
 " Ruby
-autocmd FileType ruby,eruby call MyRubySettings()
 func! MyRubySettings()
     compiler ruby
     set autoindent expandtab sw=2 ts=2 sts=2
-	NeoBundleSource vim-rails
-				\ vim-ruby
 endf
-au BufNewFile,BufRead Gemfile setl filetype=Gemfile
-au BufWritePost Gemfile call vimproc#system('rbenv ctags')
 """"""""""""""""""""""""""""""
 " その他
-autocmd FileType markdown call MyFoldingSettingOn()
-autocmd FileType yaml set ai et
-autocmd FileType c set smartindent et
-autocmd FileType javascript call MyJavaScriptSettings()
-autocmd Filetype java call MyJavaSettings()
 func! MyJavaScriptSettings ()
   NeoBundleSource vim-nodelint
   set smartindent et sw=2 ts=2 sts=2
@@ -376,7 +375,6 @@ func! MyJavaSettings ()
 	set grepprg=java\ `basename\ %\ .java`
 	set smartindent et
 endf
-autocmd FileType sql call MySQLSettings()
 func! MySQLSettings ()
 	NeoBundleSource SQLUtilities
 endf
@@ -682,6 +680,15 @@ augroup AlpacaTags
 augroup END
 nnoremap <expr>tt  ':Unite tag -horizontal -buffer-name=tags -input='.expand("<cword>").'<CR>'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Emmet
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:user_emmet_settings = {
+  \  'lang' : 'ja',
+  \  'custom_expands1' : {
+  \    '^\%(lorem\|lipsum\)\(\d*\)$' : function('emmet#lorem#ja#expand'),
+  \  },
+  \ }
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " chrome
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let OSTYPE = system('uname')
@@ -692,6 +699,17 @@ if OSTYPE == "Darwin\n"
 	command! -bar ChromeStartObserveOnce ChromeStopObserve | autocmd BufWritePost <buffer> ChromeReload
 	command! -bar ChromeStopObserve autocmd! BufWritePost <buffer>
 endif
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" memolist
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:memolist_memo_suffix = "md"
+let g:memolist_unite = 1
+let g:memolist_unite_option = "-start-insert"
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" jekyll
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:jekyll_path = $HOME . "/git/github/ywatase/"
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Import

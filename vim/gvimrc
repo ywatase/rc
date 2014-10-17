@@ -36,3 +36,5 @@ let g:colorroller_colors = [
    \'night',
    \'sea',
    \ ]
+
+colorscheme autumn

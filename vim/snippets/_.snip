@@ -7,3 +7,9 @@ snippet date
 	`strftime("%Y-%m-%d")`
 snippet datetime
 	`strftime("%Y-%m-%d %H%M%S")`
+snippet license_mit
+	`&enc[:2] == "utf" ? "©" : "(c)"` Copyright `strftime("%Y")` ${1:`g:snips_author`}
+    Released under the MIT license
+    http://opensource.org/licenses/mit-license.php
+snippet license_perl
+    This library is free software; you can redistribute it and/or modify it under the same terms as Perl itself.

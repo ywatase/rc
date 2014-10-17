@@ -53,7 +53,7 @@ fi
 
 # go
 export GOPATH=$HOME/go
-path=($HOME/go(N-/) $path)
+path=($HOME/go/bin(N-/) $path)
 
 path=($HOME/bin/*(N-/) $HOME/bin(N-/) $path)
 typeset -U path
