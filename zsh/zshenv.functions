@@ -471,6 +471,12 @@ boot2docker-init () {
 	VBoxManage sharedfolder add boot2docker-vm -name var_folders -hostpath /var/folders
 	VBoxManage sharedfolder add boot2docker-vm -name home -hostpath $HOME
   VBoxManage controlvm "boot2docker-vm" natpf1 "registry,tcp,,5000,,5000"
+  # Test::Docker::MySQL
+  for i in {55500..55555}
+  do 
+    VBoxManage modifyvm "boot2docker-vm" --natpf1 "tcp-port$i,tcp,,$i,,$i"
+    VBoxManage modifyvm "boot2docker-vm" --natpf1 "udp-port$i,udp,,$i,,$i"
+  done
 	boot2docker up
 }
 
