@@ -3,6 +3,7 @@ screen/screen/
 vim/bundle/
 vim/cache/
 vim/.netrwhist
+vim/recent.txt
 zsh/zshenv_coreutils_alias
 zsh/cdd_pwd_list
 zsh/cdd_pwd_list.t
