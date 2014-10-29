@@ -1,3 +1,4 @@
+#zmodload zsh/zprof && zprof
 ###
 # Set shell options
 ##
@@ -415,5 +416,9 @@ compctl -l '' -x 'p[1]' -f -- . source
 # Rmdir only real directories
 compctl -g '(|.)*(-/)' rmdir dircmp rd mdcd mkdir
 compctl -x 'p[2]' -k "(wheel staff ftpadmin okoma)"  -- pubmd
+
+#if (which zprof > /dev/null) ;then
+#	zprof | less
+#fi
 
 # vim:set ts=2 sw=2 et si:
