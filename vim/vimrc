@@ -600,7 +600,7 @@ let g:vimfiler_as_default_explorer = 1
 """"""""""""""""""""""""""""""
 " errormaker.vim
 """"""""""""""""""""""""""""""
-"nnoremap <silent> <unique> <Leader>em :ErrorAtCursor<CR>
+nnoremap <silent> <Leader>em :ErrorAtCursor<CR>
 """"""""""""""""""""""""""""""
 " vim-nodelint
 """"""""""""""""""""""""""""""
