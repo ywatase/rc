@@ -1,3 +1,4 @@
+# zmodload zsh/zprof && zprof
 source $HOME/.zsh/zshenv.functions
 # system-wide environment settings for zsh(1)
 if [ -x /usr/libexec/path_helper ]; then
@@ -10,11 +11,11 @@ export MANPATH=`manpath`
 export GISTY_DIR=$HOME/dev/gists
 
 # brew
-if is_mac ; then
+if whence -p /usr/local/bin/brew >/dev/null ; then
 	path=(/usr/local/bin(N-/) $path)
-fi
-if whence -p brew >/dev/null ; then
-	path=($(brew --prefix coreutils)/libexec/gnubin(N-/) $path)
+	# tuning
+	# /usr/local/opt/coreutils = $(brew --prefix coreutils)
+	path=(/usr/local/opt/coreutils/libexec/gnubin(N-/) $path)
 fi
 
 # android sdk
@@ -23,33 +24,16 @@ path=(/usr/local/ec2-api-tools/bin(N-/) $HOME/eclipse(N-/) $HOME/android-sdk(N-/
 # git-tasukete
 path=($HOME/.zsh/git-tasukete.git(N-/) $HOME/android-sdk(N-/) $path)
 
-# rbenv
-path=($HOME/.rbenv/bin(N-/) $path)
-whence -p rbenv >/dev/null && eval "$(rbenv init -)"
+for xxenv in rbenv pyenv plenv ndenv
+do
+	path=($HOME/.$xxenv/shims(N-/) $HOME/.$xxenv/bin(N-/) $path)
+done
 
 # pythonbrew
 [[ -s "$HOME/.pythonbrew/etc/bashrc" ]] && source "$HOME/.pythonbrew/etc/bashrc"
 
-# pyenv
-path=($HOME/.pyenv/bin(N-/) $path)
-if whence -p pyenv >/dev/null ; then
-	eval "$(pyenv init -)"
-fi
-
-# nvm
-if [ -e $HOME/.nvm/nvm.sh ] ; then
-	source $HOME/.nvm/nvm.sh
-fi
-
-# perl
-path=($HOME/.plenv/bin(N-/) $path)
-if whence -p plenv >/dev/null ; then
-	# plenv
-	eval "$(plenv init -)"
-else
-	# perlbrew
-	set_perlbrew_env
-fi
+# perlbrew
+whence -p plenv >/dev/null || set_perlbrew_env
 
 # go
 export GOPATH=$HOME/go
@@ -57,3 +41,7 @@ path=($HOME/go/bin(N-/) $path)
 
 path=($HOME/bin/*(N-/) $HOME/bin(N-/) $path)
 typeset -U path
+
+# if (which zprof > /dev/null) ;then
+#     zprof | less
+# fi

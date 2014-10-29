@@ -1,0 +1,5 @@
+# xxenv
+for xxenv in rbenv pyenv ndenv plenv
+do
+  whence -p $xxenv >/dev/null && eval "$($xxenv init -)"
+done

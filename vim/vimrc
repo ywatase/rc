@@ -19,7 +19,7 @@ filetype off
 if has('vim_starting')
 	set runtimepath+=~/.vim/bundle/neobundle.vim/
 endif
-call neobundle#rc(expand('~/.vim/bundle/'))
+call neobundle#begin(expand('~/.vim/bundle/'))
 NeoBundleFetch 'Shougo/neobundle.vim'
 
 " non github repos
@@ -34,9 +34,9 @@ NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'scrooloose/syntastic'
 
 " joke
-NeoBundle 'yomi322/vim-operator-suddendeath', {
-	\ 'depends': ['kana/vim-operator-user'],
-	\ }
+"NeoBundle 'yomi322/vim-operator-suddendeath', {
+"    \ 'depends': ['kana/vim-operator-user'],
+"    \ }
 
 " folding
 NeoBundle 'LeafCage/foldCC'
@@ -44,7 +44,7 @@ NeoBundle 'LeafCage/foldCC'
 " vim-scripts repos
 NeoBundle 'Align'
 NeoBundle 'autodate.vim'
-NeoBundle 'BufOnly.vim'
+"NeoBundle 'BufOnly.vim'
 NeoBundle 'EnhCommentify.vim'
 NeoBundle 'nginx.vim'
 NeoBundle 'ack.vim'
@@ -54,6 +54,7 @@ NeoBundle 'surround.vim'
 NeoBundle 'taglist.vim'
 NeoBundle 'errormarker.vim'
 NeoBundle 'glidenote/memolist.vim'
+NeoBundle 'fuenor/qfixgrep'
 NeoBundle 'csexton/jekyll.vim'
 
 " xmledit
@@ -69,8 +70,12 @@ NeoBundle 'sukima/xmledit', {
 			\ 	},
 			\ }
 
-NeoBundle 'mattn/benchvimrc-vim'
-NeoBundle 'adaszko/chbuf.vim'
+NeoBundleLazy 'mattn/benchvimrc-vim', {
+			\ 'autoload': {
+			\   'commands': ['BenchVimrc'],
+			\  },
+			\}
+"NeoBundle 'adaszko/chbuf.vim'
 NeoBundle 'alpaca-tc/alpaca_tags', {
      \ 'depends': ['Shougo/vimproc'],
      \ 'autoload' : {
@@ -85,7 +90,6 @@ NeoBundle 'alpaca-tc/alpaca_tags', {
 NeoBundle 'thinca/vim-ref'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-localrc'
-NeoBundle 'scrooloose/nerdtree'
 
 " snippet
 NeoBundle 'Shougo/neocomplcache'
@@ -168,17 +172,17 @@ NeoBundle 'vim-jp/vimdoc-ja'
 " 英語を優先したい場合
 " :set helplang=en,ja
 
-NeoBundle 'tsukkee/lingr-vim'
+"NeoBundle 'tsukkee/lingr-vim'
 
 " colorscheme
-NeoBundle 'jellybeans.vim'
-NeoBundle 'moss'
-NeoBundle 'tir_black'
-NeoBundle 'softblue'
-NeoBundle 'WuYe'
-NeoBundle 'mrkn256.vim'
-NeoBundle 'desert256.vim'
-NeoBundle 'wombat256.vim'
+"NeoBundle 'jellybeans.vim'
+"NeoBundle 'moss'
+"NeoBundle 'tir_black'
+"NeoBundle 'softblue'
+"NeoBundle 'WuYe'
+"NeoBundle 'mrkn256.vim'
+"NeoBundle 'desert256.vim'
+"NeoBundle 'wombat256.vim'
 NeoBundle 'yuroyoro/yuroyoro256.vim'
 NeoBundle 'croaker/mustang-vim'
 NeoBundle 'tomasr/molokai'
@@ -187,6 +191,7 @@ NeoBundle 'tomasr/molokai'
 " NeoBundle 'rizzatti/funcoo.vim'
 " NeoBundle 'rizzatti/dash.vim'
 
+call neobundle#end()
 NeoBundleCheck
 
 filetype plugin indent on
@@ -595,7 +600,7 @@ let g:vimfiler_as_default_explorer = 1
 """"""""""""""""""""""""""""""
 " errormaker.vim
 """"""""""""""""""""""""""""""
-nmap <silent> <unique> <Leader>em :ErrorAtCursor<CR>
+"nnoremap <silent> <unique> <Leader>em :ErrorAtCursor<CR>
 """"""""""""""""""""""""""""""
 " vim-nodelint
 """"""""""""""""""""""""""""""
@@ -603,17 +608,12 @@ let g:NodelintConfig = $HOME . '/.vim/bundle_local/vim-nodelint/config.js'
 let g:NodelintReporter = 'vim'
 
 """"""""""""""""""""""""""""""
-" nerdtree
-""""""""""""""""""""""""""""""
-nnoremap <silent> <C-e> <ESC><ESC> :NERDTreeToggle<CR>
-
-""""""""""""""""""""""""""""""
 " chbuf
 """"""""""""""""""""""""""""""
-noremap <silent> <Leader>b :ChangeBuffer<CR>
-noremap <silent> <Leader>B :ChangeMixed<CR>
-noremap <silent> <Leader>f :ChangeFile<CR>
-noremap <silent> <Leader>d :ChangeDirectory<CR>
+"noremap <silent> <Leader>b :ChangeBuffer<CR>
+"noremap <silent> <Leader>B :ChangeMixed<CR>
+"noremap <silent> <Leader>f :ChangeFile<CR>
+"noremap <silent> <Leader>d :ChangeDirectory<CR>
 
 """"""""""""""""""""""""""""""
 " suddendeath
@@ -703,9 +703,11 @@ endif
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " memolist
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:memolist_memo_date   = "%Y-%m-%d %H:%M"
 let g:memolist_memo_suffix = "md"
 let g:memolist_unite = 1
 let g:memolist_unite_option = "-start-insert"
+let g:memolist_qfixgrep = 1
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " jekyll
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -714,6 +716,6 @@ let g:jekyll_path = $HOME . "/git/github/ywatase/"
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Import
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-source ~/.vim/vimrc.fileencoding
+"source ~/.vim/vimrc.fileencoding
 source ~/.vim/vimrc.lightline
 source ~/.vim/vimrc.neocomplcache
