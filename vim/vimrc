@@ -1,10 +1,10 @@
+scriptencoding utf-8
 " vimrc for Y.Watase
 
 """"""""""""""""""""""""""""""
 " general
 "
 """"""""""""""""""""""""""""""
-set nocompatible          " We're running Vim, not Vi!
 set modeline
 set modelines=5
 set scrolloff=5
@@ -241,8 +241,8 @@ nmap <F4> :vertical diffsplit
 "
 """"""""""""""""""""""""""""""
 "Perl Module changelog
-let g:changelog_username   = "ywatase <ywatase@gmail.com>"
-let g:changelog_timeformat = "%Y-%m-%d"
+let g:changelog_username   = 'ywatase <ywatase@gmail.com>'
+let g:changelog_timeformat = '%Y-%m-%d'
 let g:changelog_date_entry_search = '^[0-9\.]*\s*%d\_s*%u'
 """"""""""""""""""""""""""""""
 " Search
@@ -512,15 +512,18 @@ nnoremap <silent> ,ug :Unite -silent -start-insert menu:git<CR>
 nnoremap <silent> [menu]g :Unite -silent -start-insert menu:git<CR>
 
 
-" ウィンドウを分割して開く
-au FileType unite nnoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
-au FileType unite inoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
-" ウィンドウを縦に分割して開く
-au FileType unite nnoremap <silent> <buffer> <expr> <C-l> unite#do_action('vsplit')
-au FileType unite inoremap <silent> <buffer> <expr> <C-l> unite#do_action('vsplit')
-" ESCキーを2回押すと終了する
-au FileType unite nnoremap <silent> <buffer> <ESC><ESC> q
-au FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>q
+augroup unite
+	autocmd!
+    " ウィンドウを分割して開く
+    autocmd FileType unite nnoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
+    autocmd FileType unite inoremap <silent> <buffer> <expr> <C-j> unite#do_action('split')
+    " ウィンドウを縦に分割して開く
+    autocmd FileType unite nnoremap <silent> <buffer> <expr> <C-l> unite#do_action('vsplit')
+    autocmd FileType unite inoremap <silent> <buffer> <expr> <C-l> unite#do_action('vsplit')
+    " ESCキーを2回押すと終了する
+    autocmd FileType unite nnoremap <silent> <buffer> <ESC><ESC> q
+    autocmd FileType unite inoremap <silent> <buffer> <ESC><ESC> <ESC>q
+augroup END
 
 """"""""""""""""""""""""""""""
 " fugitive.vim
@@ -547,7 +550,7 @@ let autodate_keyword_pre = '\cLast Modified:'
 noremap  <silent> <leader> l    :TlistToggle<CR>
 noremap  <silent> <F11>         :Tlist<CR>
 inoremap <silent> <F11>  <C-C>  :Tlist<CR>
-let Tlist_Ctags_Cmd = "/usr/local/bin/ctags"  " ctagsのコマンド
+let Tlist_Ctags_Cmd = '/usr/local/bin/ctags'  " ctagsのコマンド
 let Tlist_perl_settings  = 'perl;c:constants;l:labels;p:package;s:subroutines;d:POD'
 let Tlist_Show_One_File = 1
 let Tlist_Use_Right_Window = 1
@@ -692,7 +695,7 @@ let g:user_emmet_settings = {
 " chrome
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let OSTYPE = system('uname')
-if OSTYPE == "Darwin\n"
+if OSTYPE =~# "Darwin\n"
 	command! -bar -nargs=1 -complete=file ChromeOpen silent !open -a "Google Chrome" <args>
 	command! -bar ChromeReload silent !osascript -e 'tell application "Google Chrome" to reload active tab of window 1'
 	command! -bar ChromeStartObserve autocmd BufWritePost <buffer> ChromeReload
@@ -703,15 +706,15 @@ endif
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " memolist
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:memolist_memo_date   = "%Y-%m-%d %H:%M"
-let g:memolist_memo_suffix = "md"
+let g:memolist_memo_date   = '%Y-%m-%d %H:%M'
+let g:memolist_memo_suffix = 'md'
 let g:memolist_unite = 1
-let g:memolist_unite_option = "-start-insert"
+let g:memolist_unite_option = '-start-insert'
 let g:memolist_qfixgrep = 1
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " jekyll
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:jekyll_path = $HOME . "/git/github/ywatase/"
+let g:jekyll_path = $HOME . '/git/github/ywatase/'
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Import
