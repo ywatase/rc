@@ -51,8 +51,12 @@ fi
 ###
 # aws-cli
 ###
-if which aws_zsh_completer.sh >/dev/null  2>&1 ; then
-  source $(pyenv which aws_zsh_completer.sh)
+if whence -p aws_zsh_completer.sh >/dev/null ; then
+  local p=$(whence -p aws_zsh_completer.sh)
+  if [[ $p =~ "pyenv/bin" ]] ;  then
+    p=$(pyenv which aws_zsh_completer.sh)
+  fi
+  source $p
   source $HOME/.zsh/zshrc.aws
 fi
 if which aws >/dev/null 2>&1 ; then
