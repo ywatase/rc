@@ -8,6 +8,8 @@ scriptencoding utf-8
 set modeline
 set modelines=5
 set scrolloff=5
+set display=lastline
+set pumheight=10
 
 """"""""""""""""""""""""""""""
 " vundle
@@ -219,6 +221,9 @@ augroup END
 " keybind
 "
 """"""""""""""""""""""""""""""
+nnoremap Y y$
+nnoremap + <C-a>
+nnoremap - <C-x>
 noremap! <C-h> <backspace>
 noremap! <C-d> <delete>
 " global
@@ -269,6 +274,7 @@ set noexpandtab
 
 " 括弧入力時に対応する括弧を表示 (noshowmatch:表示しない)
 set showmatch
+set matchtime=1
 
 " コマンドライン補完するときに強化されたものを使う(参照 :help wildmenu)
 set wildmenu
