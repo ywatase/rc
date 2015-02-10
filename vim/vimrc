@@ -289,6 +289,12 @@ endf
 " Align plugin for multibyte charactor
 let g:Align_xstrlen=3
 
+" 80カラム目を色付け
+if (exists('+colorcolumn'))
+	set colorcolumn=80
+	highlight ColorColumn ctermbg=9
+endif
+
 """"""""""""""""""""""""""""""
 " 装飾
 "
