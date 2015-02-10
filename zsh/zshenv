@@ -12,7 +12,7 @@ export GISTY_DIR=$HOME/dev/gists
 
 # brew
 if whence -p /usr/local/bin/brew >/dev/null ; then
-	path=(/usr/local/bin(N-/) $path)
+	path=(/usr/local/bin(N-/) /usr/local/sbin(N-/) $path)
 	# tuning
 	# /usr/local/opt/coreutils = $(brew --prefix coreutils)
 	path=(/usr/local/opt/coreutils/libexec/gnubin(N-/) $path)
@@ -24,10 +24,13 @@ path=(/usr/local/ec2-api-tools/bin(N-/) $HOME/eclipse(N-/) $HOME/android-sdk(N-/
 # git-tasukete
 path=($HOME/.zsh/git-tasukete.git(N-/) $HOME/android-sdk(N-/) $path)
 
-for xxenv in rbenv pyenv plenv ndenv
+for xxenv in rbenv pyenv plenv ndenv phpenv
 do
 	path=($HOME/.$xxenv/shims(N-/) $HOME/.$xxenv/bin(N-/) $path)
 done
+
+# php composer
+path=($HOME/.composer/vendor/bin(N-/) $path)
 
 # pythonbrew
 [[ -s "$HOME/.pythonbrew/etc/bashrc" ]] && source "$HOME/.pythonbrew/etc/bashrc"
