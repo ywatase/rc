@@ -16,3 +16,6 @@
 [submodule "Anyone/kazeburo-mysetup"]
 	path = Anyone/kazeburo-mysetup
 	url = https://github.com/kazeburo/mysetup.git
+[submodule "zsh/dircolors-solarized.git"]
+	path = zsh/dircolors-solarized.git
+	url = https://github.com/seebi/dircolors-solarized.git

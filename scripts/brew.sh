@@ -2,10 +2,94 @@
 
 ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
 
-brew tap phinze/homebrew-cask
-brew install brew-cask
+taps=<<EOL
+phinze/homebrew-cask
+EOL
 
-pkgs=<<EOL
+for tap in $taps
+do
+	brew tap $tap
+done
+
+brew_pkgs=<<EOL
+ansible
+boot2docker
+brew-cask
+bsdmake
+cmake
+coreutils
+corkscrew
+ctags
+curl
+docker
+gettext
+git
+git-flow
+gnu-sed
+gnu-tar
+go
+gobject-introspection
+grep
+groff
+harfbuzz
+htop-osx
+hub
+imagemagick
+innotop
+jmeter
+jq
+keychain
+libevent
+lynx
+memcached
+mercurial
+mongodb
+msgpack
+mysql
+nginx
+ngrep
+nikto
+nkf
+nmap
+openldap
+openssh
+openssl
+packer
+peco
+percona-toolkit
+perl-build
+phantomjs
+pidof
+plenv
+proctools
+pstree
+pyenv
+qt
+rdesktop
+readline
+reattach-to-user-namespace
+redis
+rename
+rpm2cpio
+sqlite
+subversion
+the_silver_searcher
+tig
+tmux
+tree
+wakeonlan
+watch
+wget
+zsh
+zsh-completions
+EOL
+
+for pkg in $brew_pkgs
+do
+	brew install $pkg
+done
+
+cask_pkgs=<<EOL
 alfred 
 bettertouchtool
 firefox
@@ -16,7 +100,7 @@ vagrant
 virtualbox
 EOL
 
-for pkg in $pkgs
+for pkg in $cask_pkgs
 do
 	brew cask install $pkg
 done
