@@ -370,7 +370,7 @@ endf
 func! MyJavaScriptSettings ()
   NeoBundleSource vim-nodelint
   set smartindent et sw=2 ts=2 sts=2
-endf 
+endf
 func! MyJavaSettings ()
 	set makeprg=javac\ %
 	set grepprg=java\ `basename\ %\ .java`

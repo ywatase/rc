@@ -1,5 +1,5 @@
-#!/usr/bin/env perl 
-# Last Modified: 2014/07/18.
+#!/usr/bin/env perl
+# Last Modified: 2015/02/10.
 # Author: Y.Watase <ywatase@gmail.com>
 
 use strict;
@@ -183,7 +183,7 @@ sub _symlink_dot_files {
 
 =item B<_setup_autojump> - install autojump
 
-=cut 
+=cut
 
 sub _setup_autojump {
     my $dir = getcwd;
@@ -252,7 +252,7 @@ EOS
 =head1 Author
 
  Y.Watase <watase.yusuke@adways.net>
-  
+
 =cut
-  
+
 1;
