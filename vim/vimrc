@@ -43,13 +43,12 @@ NeoBundle 'scrooloose/syntastic'
 " folding
 NeoBundle 'LeafCage/foldCC'
 
-" vim-scripts repos
 NeoBundle 'Align'
+NeoBundle 'rking/ag.vim'
 NeoBundle 'autodate.vim'
 "NeoBundle 'BufOnly.vim'
 NeoBundle 'EnhCommentify.vim'
 NeoBundle 'nginx.vim'
-NeoBundle 'ack.vim'
 NeoBundle 'sudo.vim'
 NeoBundle 'vcscommand.vim'
 NeoBundle 'surround.vim'
@@ -434,11 +433,26 @@ endif
 let g:use_xhtml = 1
 let g:html_use_css = 1
 let g:html_no_pre = 1
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" ag
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" type && to search the word in all files in the current dir
+nmap <space>* :Ag <c-r>=expand("<cword>")<cr><cr>
+nnoremap <space>/ :Ag
 """"""""""""""""""""""""""""""
 " unite.vim
 """"""""""""""""""""""""""""""
 " 入力モードで開始する
 let g:unite_enable_start_insert=1
+
+let g:unite_source_history_yank_enable = 1
+let g:unite_source_rec_async_command='ag --nocolor --nogroup -g ""'
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
+
+" search a file in the filetree
+nnoremap <space><space> :split<cr> :<C-u>Unite -start-insert  file_rec/async<cr>
+" reset not it is <C-l> normally
+nnoremap <space>r <Plug>(unite_restart)
 
 " メニュー
 let g:unite_source_menu_menus = {
