@@ -70,7 +70,7 @@ install-ricty () {
 
   tmpdir=$(mktemp -d)
   cd $tmpdir
-  
+
   curl -L -o Inconsolata.otf http://levien.com/type/myfonts/Inconsolata.otf
   curl -L -o $ricty_version.zip https://github.com/yascentur/Ricty/zipball/$ricty_version
   curl -L -o migu-1m.zip $migu_1m_url
@@ -123,7 +123,7 @@ alias plackup_chk_leak="plackup -MDevel::Leak::Object=GLOBAL_bless -e '\$Devel::
 minil () {
   if is_valid_minilla_version ; then
 	  =minil "$@"
-  else 
+  else
 	  cpanm Minilla
   fi
 }
@@ -158,7 +158,7 @@ perlversion () {
   done
 }
 perlmodulelist () {
-  local modulelist 
+  local modulelist
   modulelist=(`find $(perl -e 'print join qq{\n}, @INC') -name .packlist | perl -lpe 'm{/auto/(.*)/.packlist}; (my $m = $1) =~ s{/}{::}g; $_ = $m;' | sort | uniq`)
   perlversion $modulelist
 }
@@ -275,7 +275,7 @@ yaml2pl () {
   local FILE
   local BASENAME
   for FILE in $@
-  do 
+  do
     BASENAME=$(basename $FILE .yaml)
     BASENAME=$(basename $BASENAME .yml)
     perl -MYAML::Any -e 'use Data::Dumper; { package Data::Dumper; sub qquote{shift}; }
@@ -287,7 +287,7 @@ xml2yaml () {
   local FILE
   local BASENAME
   for FILE in $@
-  do 
+  do
     BASENAME=$(basename $FILE .xml)
     perl -MYAML::Any -MXML::Simple -e 'print Dump XMLin "$ARGV[0]"' $FILE > $BASENAME.yaml
   done
@@ -297,7 +297,7 @@ json2yaml () {
   local FILE
   local BASENAME
   for FILE in $@
-  do 
+  do
     BASENAME=$(basename $FILE .json)
     perl -MYAML::Any -MJSON -e 'open my $fh, "<", $ARGV[0] or die $!; print Dump JSON::decode_json(join(q{}, <$fh>));close $fh;' $FILE > $BASENAME.yml
   done
@@ -510,7 +510,7 @@ boot2docker-init () {
   VBoxManage controlvm "boot2docker-vm" natpf1 "registry,tcp,,5000,,5000"
   # Test::Docker::MySQL
   for i in {55500..55555}
-  do 
+  do
     VBoxManage modifyvm "boot2docker-vm" --natpf1 "tcp-port$i,tcp,,$i,,$i"
     VBoxManage modifyvm "boot2docker-vm" --natpf1 "udp-port$i,udp,,$i,,$i"
   done
@@ -538,7 +538,7 @@ docker-registry () {
     echo no subcommand: $cmd
     echo subcommands: run list delete
 
-  else 
+  else
     eval _docker-registry-$cmd "$@"
   fi
 }
@@ -563,7 +563,7 @@ _docker-registry-delete () {
 clear_cache () {
   local y old_dir=`pwd`
   echo remove these[y/N]
-  echo $(cd $_cache_dir; ls) 
+  echo $(cd $_cache_dir; ls)
   read y
   if [ "$y" = "y" ] ; then
     rm $_cache_dir/*
