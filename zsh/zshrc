@@ -333,6 +333,9 @@ r() {
 if is_mac  ; then
 # avoid "/usr/bin/vim" exit code bug.
 # if setting EDITOR=vim, /usr/bin/vim sometimes return 1 and fail to edit cron, commit log and so on
+  if whence -p gdircolors >/dev/null 2>&1 ; then
+    eval $(gdircolors ~/.zsh/dircolors-solarized.git/dircolors.256dark)
+  fi
   export EDITOR=/usr/bin/vim
 else
 #  for nodelint-vim
