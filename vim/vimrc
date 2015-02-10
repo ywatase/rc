@@ -27,8 +27,11 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 " non github repos
 " NeoBundle 'git://git.wincent.com/command-t.git'
 
-" base plugin
+" git
 NeoBundle 'tpope/vim-fugitive'
+" 最後のコミット以降の変更行が見れる。
+NeoBundle 'airblade/vim-gitgutter'
+
 NeoBundle 't9md/vim-quickhl', {
 	\ 'depends': ['kana/vim-operator-user'],
 	\ }
