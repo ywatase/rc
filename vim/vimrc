@@ -173,9 +173,9 @@ NeoBundle 'vim-jp/vimdoc-ja'
 
 " colorscheme
 NeoBundle 'yuroyoro/yuroyoro256.vim'
-NeoBundle 'croaker/mustang-vim'
 NeoBundle 'tomasr/molokai'
 NeoBundle 'altercation/vim-colors-solarized'
+NeoBundle 'w0ng/vim-hybrid'
 
 call neobundle#end()
 NeoBundleCheck
