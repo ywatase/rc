@@ -19,3 +19,6 @@
 [submodule "zsh/dircolors-solarized.git"]
 	path = zsh/dircolors-solarized.git
 	url = https://github.com/seebi/dircolors-solarized.git
+[submodule "Anyone/kamipo-etcfiles"]
+	path = Anyone/kamipo-etcfiles
+	url = https://github.com/kamipo/etcfiles.git
