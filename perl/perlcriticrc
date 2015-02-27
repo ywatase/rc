@@ -22,9 +22,9 @@
 #[-Subroutines::RequireFinalReturn]
 
 [TestingAndDebugging::RequireUseStrict]
-equivalent_modules = Mouse Moo Moo::Role MooseX::MethodAttributes::Role Any::Moose
+equivalent_modules = Mouse Moo Moo::Role MooseX::MethodAttributes::Role Any::Moose Mojolicious::Lite
 [TestingAndDebugging::RequireUseWarnings]
-equivalent_modules = Mouse Moo Moo::Role MooseX::MethodAttributes::Role Any::Moose
+equivalent_modules = Mouse Moo Moo::Role MooseX::MethodAttributes::Role Any::Moose Mojolicious::Lite
 [TestingAndDebugging::ProhibitNoStrict]
 allow=refs
 [Subroutines::ProhibitExcessComplexity]
