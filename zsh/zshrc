@@ -6,7 +6,7 @@ setopt auto_menu auto_cd auto_pushd correct auto_name_dirs auto_remove_slash
 setopt pushd_ignore_dups rm_star_silent sun_keyboard_hack
 setopt extended_glob list_types no_beep always_last_prompt
 setopt cdable_vars sh_word_split auto_param_keys
-# 補完リストその他でもASCII(7ビット)以上の文字(8ビット)文字を表示 
+# 補完リストその他でもASCII(7ビット)以上の文字(8ビット)文字を表示
 # # (マルチバイト文字補完)
 setopt PRINT_EIGHT_BIT
 
@@ -18,7 +18,7 @@ zstyle ':chpwd:*' recent-dirs-default yes
 zstyle ':completion:*' recent-dirs-insert both
 
 ###
-# enable auto complete 
+# enable auto complete
 ###
 fpath=($HOME/.zsh/functions(N-/) $HOME/.zsh/zsh-perl-completions.git(N-/) $fpath)
 if is_mac ; then
@@ -227,7 +227,7 @@ if is_screen || is_tmux ; then
                 ;;
             ls|gls)
                 return
-                ;; 
+                ;;
             cd)
                 if (( $#cmd == 2)); then
                     cmd[1]=$cmd[2]:t
@@ -264,7 +264,7 @@ if is_screen || is_tmux ; then
     change_status_title() {
       echo -n "k$1\\"
     }
-fi 
+fi
 
 
 if is_screen ; then
@@ -341,7 +341,7 @@ else
 #  for nodelint-vim
   if whence -p nodelint | grep '.nvm' >/dev/null 2>&1 ; then
     export NODE_PATH=$(cd $(dirname $(which nodelint))/..;echo $(pwd -P)/lib/node_modules)
-  fi 
+  fi
   eval `dircolors -b` # set LS_COLORS
   export EDITOR=vim
 fi
@@ -391,7 +391,7 @@ zstyle ':completion:*:descriptions' format '%B%d%b'
 zstyle ':completion:*:messages' format '%d'
 zstyle ':completion:*:warnings' format 'No matches for: %d'
 zstyle ':completion:*' group-name ''
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}  # color 
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}  # color
 zstyle ':completion:*' use-cache true
 # add knows_host to hosts completion (sneed HashHostKey no at .ssh/config)
 zstyle -e ':completion::*:*:*:hosts' hosts 'reply=(${=${${(f)"$(cat {/etc/ssh_,~/.ssh/known_}hosts(|2)(N) /dev/null)"}%%[# ]*}//,/ })'
