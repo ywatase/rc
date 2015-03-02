@@ -19,23 +19,23 @@ antigen bundles <<EOBUNDLES
 $os
 $brew
 # ruby
-rake
-rbenv
-ruby
-bundler
-capistrano
-gem
+#rake
+#rbenv
+#ruby
+#bundler
+#capistrano
+#gem
 # perl
 cpanm
-perl
+#perl
 # javascript
-node
-npm
+#node
+#npm
 # others
 git
-knife
-vagrant
-svn
+#knife
+#vagrant
+#svn
 command-not-found
 ## Syntax highlighting bundle.
 zsh-users/zsh-syntax-highlighting
