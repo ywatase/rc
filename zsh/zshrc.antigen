@@ -15,7 +15,7 @@ elif is_debian ; then
 elif is_redhat && which yum >/dev/null 2>&1 ; then
     os=yum
 fi
-antigen bundle <<EOBUNDLES
+antigen bundles <<EOBUNDLES
 $os
 $brew
 # ruby
@@ -44,7 +44,7 @@ EOBUNDLES
 antigen bundle docker
 antigen bundle git-flow
 
-antigen theme $HOME/.zsh/themes/komachi.zsh-theme
+antigen theme $HOME/.zsh themes/komachi
 
 antigen apply
 
