@@ -58,20 +58,6 @@ NeoBundle 'csexton/jekyll.vim'
 
 NeoBundle 'bronson/vim-trailing-whitespace'
 
-
-" xmledit
-" make symbolic link by yourself.
-" conflict EnhCommentify.vim.
-" need comment out <LocalLeader>x
-NeoBundle 'sukima/xmledit', {
-			\ 'build' : {
-			\     'windows' : 'echo "Sorry, cannot setup automatically."',
-			\     'cygwin' : '../../bundle_local/setup',
-			\     'mac' : '../../bundle_local/setup',
-			\     'unix' : '../../bundle_local/setup',
-			\ 	},
-			\ }
-
 NeoBundleLazy 'mattn/benchvimrc-vim', {
 			\ 'autoload': {
 			\   'commands': ['BenchVimrc'],
