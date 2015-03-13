@@ -109,14 +109,6 @@ NeoBundleLazy 'SQLUtilities'
 " Clojure
 NeoBundleLazy 'jondistad/vimclojure'
 " Perl
-NeoBundle 'y-uuki/perl-local-lib-path.vim', {
-			\ 'build' : {
-			\     'windows' : 'echo "Sorry, cannot setup automatically."',
-			\     'cygwin' : '../../bundle_local/setup',
-			\     'mac' : '../../bundle_local/setup',
-			\     'unix' : '../../bundle_local/setup',
-			\ 	},
-			\ }
 NeoBundle 'vim-perl/vim-perl'
 NeoBundle 'ywatase/perldoc-vim'
 
