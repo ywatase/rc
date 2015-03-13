@@ -48,7 +48,6 @@ NeoBundle 'LeafCage/foldCC'
 
 NeoBundle 'Align'
 NeoBundle 'rking/ag.vim'
-NeoBundle 'autodate.vim'
 NeoBundle 'EnhCommentify.vim'
 NeoBundle 'nginx.vim'
 NeoBundle 'sudo.vim'
