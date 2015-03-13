@@ -395,6 +395,10 @@ if has('conceal')
 	set conceallevel=2 concealcursor=i
 endif
 
+let g:snips_author = 'Yusuke Watase'
+let g:snips_author_email = 'ywatase@gmail.com'
+let g:snips_author_github = 'https://github.com/ywatase'
+
 """"""""""""""""""""""""""""""
 " Tohtml.vim
 """"""""""""""""""""""""""""""
