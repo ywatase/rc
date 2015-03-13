@@ -54,7 +54,6 @@ NeoBundle 'sudo.vim'
 NeoBundle 'surround.vim'
 NeoBundle 'taglist.vim'
 NeoBundle 'glidenote/memolist.vim'
-NeoBundle 'fuenor/qfixgrep'
 NeoBundle 'csexton/jekyll.vim'
 
 NeoBundle 'bronson/vim-trailing-whitespace'
