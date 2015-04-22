@@ -111,6 +111,7 @@ NeoBundleLazy 'jondistad/vimclojure'
 " Perl
 NeoBundle 'vim-perl/vim-perl'
 NeoBundle 'ywatase/perldoc-vim'
+NeoBundle 'ywatase/xslate-vim'
 
 NeoBundleLazy 'moznion/vim-cpanfile'
 NeoBundle     'moznion/syntastic-cpanfile', {
@@ -294,6 +295,8 @@ set statusline=%y%{MyFfFe()}%{fugitive#statusline()}\ 0x%B(%b)\ %F%m%r%=<%l:%v>\
 " colorscheme
 set background=dark
 colorscheme solarized
+
+set undodir=~/.vim/undo
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 改行コードと文字コードを取得
