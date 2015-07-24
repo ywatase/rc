@@ -2,6 +2,7 @@ perl-modules.list
 screen/screen/
 vim/bundle/
 vim/cache/
+vim/undo/
 vim/.netrwhist
 vim/recent.txt
 zsh/zshenv_coreutils_alias
