@@ -104,6 +104,8 @@ if is_mac ; then
   }
 else
   alias ls="ls --color=auto --show-control-chars"
+  alias keybord_us="sudo loadkeys us"
+  alias keybord_jp="sudo loadkeys jp106"
 fi
 alias la="ls -aF"
 alias ll="ls -l"
