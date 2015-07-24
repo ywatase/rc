@@ -140,6 +140,8 @@ NeoBundle 'hallison/vim-markdown'
 NeoBundle 'kannokanno/previm'
 NeoBundle 'tyru/open-browser.vim'
 NeoBundle 'thinca/vim-ft-markdown_fold'
+NeoBundle 'ywatase/mdt.vim'
+NeoBundle 'ywatase/md2fswiki.vim'
 " for Japanese Help
 NeoBundle 'vim-jp/vimdoc-ja'
 " こんな感じで使う
