@@ -202,6 +202,7 @@ noremap! <C-d> <delete>
 :cnoremap <C-b> <Left>
 :cnoremap <C-n> <Down>
 :cnoremap <C-p> <Up>
+:cnoremap <C-j> <Esc>
 
 nmap <F4> :vertical diffsplit
 
