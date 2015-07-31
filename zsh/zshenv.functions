@@ -449,13 +449,15 @@ github_repositories () {
 ###
 #
 if is_mac ; then
-   export DOCKER_HOST=tcp://127.0.0.1:2375
+   export DOCKER_CERT_PATH=$HOME/.boot2docker/certs/boot2docker-vm
+   export DOCKER_TLS_VERIFY=1
+   export DOCKER_HOST=tcp://127.0.0.1:2376
 fi
 function docker-host-vagrant () {
   export DOCKER_HOST=tcp://127.0.0.1:4243
 }
 function docker-host-boot2docker () {
-  export DOCKER_HOST=tcp://127.0.0.1:2375
+  export DOCKER_HOST=tcp://127.0.0.1:2376
 }
 function vagrant-docker-ssh () {
   local cwd=$pwd
@@ -517,10 +519,11 @@ build_custom_boot2docker () {
 boot2docker-init () {
 	boot2docker init
 	boot2docker stop
-  cp ~/work/boot2docker/boot2docker.iso ~/.boot2docker/boot2docker.iso
+#  cp ~/work/boot2docker/boot2docker.iso ~/.boot2docker/boot2docker.iso
 	VBoxManage sharedfolder add boot2docker-vm -name var_folders -hostpath /var/folders
 	VBoxManage sharedfolder add boot2docker-vm -name home -hostpath $HOME
-  VBoxManage controlvm "boot2docker-vm" natpf1 "registry,tcp,,5000,,5000"
+#   VBoxManage controlvm "boot2docker-vm" natpf1 "registry,tcp,,5000,,5000"
+  VBoxManage controlvm "boot2docker-vm" natpf1 "docker,tcp,,2376,,2376"
   # Test::Docker::MySQL
   for i in {55500..55555}
   do
