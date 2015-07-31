@@ -1,0 +1,56 @@
+#compdef knife
+
+_knife_all_subcommand_with_desc () {
+  _subcommands=(${(@f)"$(knife --help | perl -e 'while(<>){/\A\*\*\s(.+)(?:\sCOMMANDS)?\s\*\*\s*\z/ or next; (my $desc = lc($1))=~s/\s+commands//;($line = <>)=~/knife\s($desc)/; print qq{$1\n$desc\n};}')"})
+  _1st_arguments=(${(k)_subcommands})
+}
+_knife_subsubcommand() {
+  _2nd_arguments=(${(@f)"$(knife $1 --help | perl -nle "/^knife\\s$1\\s(.*)/; print \$1;")"})
+}
+
+_knife_installed_formulae() {
+  installed_formulae=(`brew list`)
+}
+
+local -A _subcommands
+local -a _1st_arguments _2nd_arguments
+_knife_all_subcommand_with_desc
+
+local expl
+local -a formulae installed_formulae
+
+_arguments \
+  '(-s --server-url)'{-s,--server-url}'[Chef Server URL]:Chef Server URL:' \
+  '(-k --key)'{-k,--key}'[API Client Key]:API CLinet Key:' \
+  '(--color)--color[Use colored output]' \
+  '(-c --config)'{-c,--config}'[The configuration file to use]:config file:_files' \
+  '(--defaults)--defaults[Accept default values for all questions]' \
+  '(-e --editor)'{-e,--editor}'[Set the editor to use for interactive commands]:editor command:_files -W "(/bin /usr/bin)"' \
+  '(-E --environment)'{-E,--environment}'[Set the Chef environment]:ENVIRONMENT:' \
+  '(-F --format)'{-F,--format}'[Which format to use for output]:FORMAT:' \
+  '(--no-color)--no-color[Don''t use colors in the output]' \
+  '(-n --no-editor)'{-n,--no-editor}'[Do not open EDITOR, just accept the data as is]' \
+  '(-u --user)'{-u,--user}'[API Client Username]:USER:' \
+  '(--print-after)--print-after[Show the data after a destructive operation]' \
+  '(-V --verbose)'{-V,--verbose}'[More verbose output. Use twice for max verbosity]' \
+  '(-v --version)'{-v,--version}'[Show chef version]' \
+  '(-y --yes)'{-y,--yes}'[Say yes to all prompts for confirmation]' \
+  '(-h --help)'{-h,--help}'[Show help]' \
+  '*:: :->subcmds' && return 0
+
+if (( CURRENT == 1 )); then
+  _describe -t commands "knife subcommand" _1st_arguments -Q
+  return
+fi
+
+local subcmd
+if (( CURRENT == 3 )); then
+	subcmd="$words[1] $words[2]"
+elif (( CURRENT == 2 )); then
+	subcmd=$words[1]
+fi
+
+if [[ "$subcommands[$subcmd]" -eq  "" ]] ; then
+	_knife_subsubcommand "$subcmd"
+	_describe -t commands "knife subsubcommand" _2nd_arguments -Q
+fi

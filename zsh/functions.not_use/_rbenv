@@ -1,0 +1,43 @@
+#compdef rbenv
+
+local line state ruby_version
+
+_arguments -C \
+  '1: :->cmds' \
+  '*: :->args' && ret=0
+
+local -a completions
+case $state in
+  cmds)
+    local -a cmds
+    cmds=($(rbenv commands))
+    _describe -t commands 'rbenv command' cmds && ret=0
+    ;;
+  args)
+    case $line[1] in
+      exec)
+        if [[ $CURRENT > 3 ]] ; then
+          # words=(rbenv exec),  CURRENT=2 が渡るのでwordsを空にして、カーソルを2戻す
+          shift 2 words
+          (( CURRENT-- ))
+          (( CURRENT-- ))
+          _normal
+        else
+          completions=($(rbenv completions $line[1]))
+          _describe -t commands ".rbenv/shims" completions && ret=0
+          ruby_version=$(rbenv version | awk '{print $1}')
+          if [[ $ruby_version != 'system' ]] ; then
+            _path_files -W $HOME/.rbenv/versions/$ruby_version/bin && ret=0
+          fi
+        fi
+        ;;
+      *)
+        completions=($(rbenv completions $line[1]))
+        _describe -t commands "completions" completions && ret=0
+        ;;
+    esac
+    ;;
+esac
+return ret
+
+# vim: et sw=2 ts=2 si
