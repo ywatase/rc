@@ -56,6 +56,7 @@ NeoBundle 'surround.vim'
 NeoBundle 'taglist.vim'
 NeoBundle 'glidenote/memolist.vim'
 NeoBundle 'csexton/jekyll.vim'
+NeoBundle 'tanabe/ToggleCase-vim'
 
 NeoBundle 'bronson/vim-trailing-whitespace'
 
@@ -687,6 +688,23 @@ let g:memolist_qfixgrep = 1
 " jekyll
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:jekyll_path = $HOME . '/git/github/ywatase/'
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" ToggleCase
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nnoremap <silent> ,c :<C-u>call ToggleCase()<CR>
+
+func! LowerCamelCase (str)
+	if !strlen(a:str)
+		return
+	endif
+	let l:word_list = split(a:str , '_')
+	let l:camel_case = l:word_list[0]
+	for word in l:word_list[1:]
+		let l:camel_case = l:camel_case . toupper(word[0]) . word[1:]
+	endfor
+	return l:camel_case
+endfunc
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Import
