@@ -36,6 +36,7 @@ NeoBundle 't9md/vim-quickhl', {
 	\ 'depends': ['kana/vim-operator-user'],
 	\ }
 NeoBundle 'itchyny/lightline.vim'
+NeoBundle 'thinca/vim-localrc'
 NeoBundle 'scrooloose/syntastic'
 
 " joke
@@ -68,7 +69,6 @@ NeoBundleLazy 'mattn/benchvimrc-vim', {
 " reference viewer
 NeoBundle 'thinca/vim-ref'
 NeoBundle 'thinca/vim-quickrun'
-NeoBundle 'thinca/vim-localrc'
 
 " search
 NeoBundle 'haya14busa/incsearch.vim'
