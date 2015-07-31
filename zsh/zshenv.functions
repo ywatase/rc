@@ -18,6 +18,18 @@ profile_vimstartup_by_time () {
   done
 }
 
+localvim () {
+  local d=$(pwd -P)
+  local -a p
+  p=(
+    $d/lib(N-/)
+    $d/local/lib/perl5(N-/)
+    $d/local/lib/perl5/$(perl -MConfig -e 'print $Config{archname}')(N-/)
+  )
+  echo "let g:syntastic_perl_lib_path = ['$(pwd)/lib']" > .local.vimrc
+  echo "set path=${(j:,:)p}" >> .local.vimrc
+}
+
 ###
 # Check Command
 ###
