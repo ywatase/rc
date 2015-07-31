@@ -72,3 +72,11 @@ snippet get
 # Get Element
 snippet gett
 	getElementBy${1:Id}('${2}')${3}
+
+snippet os
+	`perl print $^O`
+
+snippet opt
+  if (options.`LowerCamelCase(@")`) {
+    args.push('--`@"`=' + options.`LowerCamelCase(@")`);
+  }
