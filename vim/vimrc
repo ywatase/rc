@@ -158,6 +158,8 @@ NeoBundle 'tomasr/molokai'
 NeoBundle 'altercation/vim-colors-solarized'
 NeoBundle 'w0ng/vim-hybrid'
 
+NeoBundle 'Glench/Vim-Jinja2-Syntax'
+
 call neobundle#end()
 NeoBundleCheck
 
