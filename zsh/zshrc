@@ -141,6 +141,11 @@ alias sshv="$(whence -p ssh) -l vagrant -o 'NoHostAuthenticationForLocalhost=yes
 alias be="bundle exec"
 alias ce="carton exec"
 
+# git
+if whence -p hub >/dev/null 2>/dev/null ; then
+  eval "$(hub alias -s)"
+fi
+
 # mysql prompt
 export MYSQL_PS1='MySQL \v \u@\h(\d)>'
 # ssh agent
@@ -432,3 +437,6 @@ compctl -x 'p[2]' -k "(wheel staff ftpadmin okoma)"  -- pubmd
 #fi
 
 # vim:set ts=2 sw=2 et si:
+
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"
