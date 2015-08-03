@@ -32,7 +32,7 @@ cpanm
 #node
 #npm
 # others
-git
+#git
 #knife
 #vagrant
 #svn
