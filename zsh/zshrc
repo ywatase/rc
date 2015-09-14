@@ -145,7 +145,12 @@ alias ce="carton exec"
 export MYSQL_PS1='MySQL \v \u@\h(\d)>'
 # ssh agent
 if is_ssh_client && ! is_screen && ! is_tmux ; then
-  keychain ~/.ssh/id_dsa
+  for type in dsa rsa ed25519
+  do
+    if -e ~/.ssh/id_${type} ; then
+      keychain ~/.ssh/id_${type}
+    fi
+  done
   source ~/.keychain/$HOST-sh
 fi
 agent="$HOME/tmp/ssh-agent-$USER"
