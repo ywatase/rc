@@ -147,7 +147,7 @@ export MYSQL_PS1='MySQL \v \u@\h(\d)>'
 if is_ssh_client && ! is_screen && ! is_tmux ; then
   for type in dsa rsa ed25519
   do
-    if -e ~/.ssh/id_${type} ; then
+    if [ -e ~/.ssh/id_${type} ] ; then
       keychain ~/.ssh/id_${type}
     fi
   done
