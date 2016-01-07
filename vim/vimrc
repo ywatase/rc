@@ -1,5 +1,5 @@
 " vimrc for Y.Watase
-" Last Modified:  2013/08/06.
+" Last Modified:  2013/06/22.
 
 """"""""""""""""""""""""""""""
 " general
@@ -99,6 +99,7 @@ NeoBundleLazy 'ywatase/flymake-perl.vim.git'
 NeoBundleLazy 'ywatase/perldoc-vim.git'
 NeoBundleLazy 'c9s/perlomni.vim.git'
 " Ruby
+NeoBundleLazy 'vim-ruby/vim-ruby'
 NeoBundleLazy 'tpope/vim-rails.git'
 " for markdown
 NeoBundle 'hallison/vim-markdown.git'
@@ -367,7 +368,10 @@ func! MyRubySettings()
     compiler ruby
     set autoindent expandtab
 	NeoBundleSource vim-rails
+				\ vim-ruby
 endf
+au BufNewFile,BufRead Gemfile setl filetype=Gemfile
+au BufWritePost Gemfile call vimproc#system('rbenv ctags')
 
 autocmd FileType yaml set ai et
 autocmd FileType c set smartindent et
@@ -538,10 +542,11 @@ let autodate_keyword_pre = '\cLast Modified:'
 " taglist.vim : toggle the taglist window
 " taglist.vim : define the title texts for Perl
 """"""""""""""""""""""""""""""
-noremap <silent> <F11>       :Tlist<CR>
-inoremap <silent> <F11>  <C-C>:Tlist<CR>
-
-let tlist_perl_settings  = 'perl;c:constants;l:labels;p:package;s:subroutines;d:POD'
+noremap  <silent> <leader> l    :TlistToggle<CR>
+noremap  <silent> <F11>         :Tlist<CR>
+inoremap <silent> <F11>  <C-C>  :Tlist<CR>
+let Tlist_Ctags_Cmd = "/usr/local/bin/ctags"  " ctagsのコマンド
+let Tlist_perl_settings  = 'perl;c:constants;l:labels;p:package;s:subroutines;d:POD'
 let Tlist_Show_One_File = 1
 let Tlist_Use_Right_Window = 1
 let Tlist_Exit_OnlyWindow = 1
