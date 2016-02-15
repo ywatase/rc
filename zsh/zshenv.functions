@@ -444,76 +444,9 @@ github_repositories () {
   curl https://api.github.com/users/$git_user/repos\?per_page\=100 | jq  '.[].name'
 }
 
-###
-# docker
-###
-#
-if is_mac ; then
-   export DOCKER_CERT_PATH=$HOME/.boot2docker/certs/boot2docker-vm
-   export DOCKER_TLS_VERIFY=1
-   export DOCKER_HOST=tcp://127.0.0.1:2376
-fi
-function docker-host-vagrant () {
-  export DOCKER_HOST=tcp://127.0.0.1:4243
-}
-function docker-host-boot2docker () {
-  export DOCKER_HOST=tcp://127.0.0.1:2376
-}
-function vagrant-docker-ssh () {
-  local cwd=$pwd
-  cd ~/.vagrant.d/data/docker-host
-  vagrant ssh
-  cd $cwd
-}
-
-install-docker () {
-  if is_mac ; then
-    install-packer
-    brew install docker
-    brew install boot2docker
-  else
-    echo not supported.
-    exit 1
-  fi
-}
-
 install-packer () {
   brew tap homebrew/binary
   brew install homebrew/binary/packer
-}
-
-build_custom_boot2docker () {
-  # https://medium.com/boot2docker-lightweight-linux-for-docker/boot2docker-together-with-virtualbox-guest-additions-da1e3ab2465c
-	# https://gist.github.com/brutasse/94d8d66aabf2e7f4e246
-	if ! [ -d ~/work/boot2docker ] ; then
-		mkdir -p ~/work/boot2docker
-	fi
-
-	if ! [ -d 94d8d66aabf2e7f4e246 ] ; then
-		git clone https://gist.github.com/brutasse/94d8d66aabf2e7f4e246
-	fi
-	cd 94d8d66aabf2e7f4e246
-
-	git pull
-
-	./build_docker.sh
-
-	local TODAY=$(date +%Y%m%d)
-
-	# build the actual boot2docker.iso with virtual box guest additions
-	docker build -t mattes/boot2docker-vbga .
-
-	# the following line is proposed in many tutorials, but does not work for me
-	# (it outputs an iso that won't work)
-	# docker run -i -t --rm mattes/boot2docker-vbga > ../boot2docker.${TODAY}.iso
-
-	# # so I do:
-  (perl -e "sleep 60" | docker run -i -t --rm mattes/boot2docker-vbga /bin/bash) &
-	# # then in a second shell:
-  container_id=$(docker ps -aq -n=1)
-	docker cp $container_id:boot2docker.iso ../boot2docker.${TODAY}.iso
-	ln -sf boot2docker.${TODAY}.iso boot2docker.iso
-  docker stop $container_id
 }
 
 boot2docker-init () {
@@ -589,5 +522,83 @@ clear_cache () {
   fi
 
 }
+
+# docker-machine stuff
+if [ $(which docker-machine) ]; then
+  export C_DOCKER_MACHINE="docker-vm"
+
+  dminit() {
+    docker-machine start ${C_DOCKER_MACHINE}
+    dmshell
+  }
+
+  dmshell() {
+    eval $(docker-machine env ${C_DOCKER_MACHINE})
+  }
+
+  docker_if_not_running() {
+    if [[ "$(docker-machine status ${C_DOCKER_MACHINE})" != 'Running' ]]; then
+      dminit
+    fi
+  }
+
+  dmhosts() {
+    DMHOSTNAME="dockerhost"
+
+    sudo -v
+
+    grep ${DMHOSTNAME} /etc/hosts > /dev/null && sudo sed -i '' "/${DMHOSTNAME}/d" /etc/hosts
+    sudo echo "$(docker-machine ip ${C_DOCKER_MACHINE}) ${DMHOSTNAME}" | sudo tee -a /etc/hosts
+  }
+
+  if [[ "$(docker-machine status ${C_DOCKER_MACHINE})" == 'Running' ]]; then
+    dmshell &> /dev/null
+  fi
+
+fi
+
+xquartz_if_not_running() {
+	v_nolisten_tcp=$(defaults read org.macosforge.xquartz.X11 nolisten_tcp)
+	v_xquartz_app=$(defaults read org.macosforge.xquartz.X11 app_to_run)
+
+	if [[ $v_nolisten_tcp == "1" ]]; then
+		defaults write org.macosforge.xquartz.X11 nolisten_tcp 0
+	fi
+
+	if [[ $v_xquartz_app != "/usr/bin/true" ]]; then
+		defaults write org.macosforge.xquartz.X11 app_to_run /usr/bin/true
+	fi
+
+	netstat -an | grep 6000 &> /dev/null || open -a XQuartz
+	while ! netstat -an \| grep 6000 &> /dev/null; do
+		sleep 2
+	done
+#	export DISPLAY=:0
+}
+
+socat_bg () {
+  socat TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:\"$DISPLAY\" &
+}
+
+socat_fg () {
+  fg
+}
+
+docker-run-x () {
+	xquartz_if_not_running
+	socat_bg
+	docker_if_not_running
+	xhost +$(docker-machine ip ${C_DOCKER_MACHINE})
+
+	docker run \
+		-e DISPLAY=$(docker-machine inspect ${C_DOCKER_MACHINE} --format={{.Driver.HostOnlyCIDR}} | cut -d'/' -f1):0 \
+    "$@"
+  socat_fg
+}
+
+docker-chrome () {
+  docker-run-x --rm  --privileged --name jesschrome jess/chrome
+}
+
 
 # vim:set et ts=2 sts=2 sw=2:
