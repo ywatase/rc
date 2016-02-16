@@ -100,15 +100,6 @@ NeoBundle 'tsukkee/unite-tag'
 NeoBundle 'ujihisa/unite-colorscheme'
 NeoBundle 'kmnk/vim-unite-giti'
 NeoBundleLazy 'ujihisa/unite-font'
-" javascript
-NeoBundle 'bigfish/vim-nodelint', {
-			\ 'build' : {
-			\     'windows' : 'echo "Sorry, cannot setup automatically."',
-			\     'cygwin' : '../../bundle_local/setup',
-			\     'mac' : '../../bundle_local/setup',
-			\     'unix' : '../../bundle_local/setup',
-			\ 	},
-			\ }
 " SQL
 NeoBundleLazy 'SQLUtilities'
 " Clojure
@@ -356,7 +347,6 @@ endf
 """"""""""""""""""""""""""""""
 " その他
 func! MyJavaScriptSettings ()
-  NeoBundleSource vim-nodelint
   set smartindent et sw=2 ts=2 sts=2
 endf
 func! MyJavaSettings ()
@@ -596,11 +586,6 @@ let g:vimfiler_as_default_explorer = 1
 " errormaker.vim
 """"""""""""""""""""""""""""""
 nnoremap <silent> <Leader>em :ErrorAtCursor<CR>
-""""""""""""""""""""""""""""""
-" vim-nodelint
-""""""""""""""""""""""""""""""
-let g:NodelintConfig = $HOME . '/.vim/bundle_local/vim-nodelint/config.js'
-let g:NodelintReporter = 'vim'
 
 """"""""""""""""""""""""""""""
 " chbuf
