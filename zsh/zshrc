@@ -55,8 +55,10 @@ if whence -p aws_zsh_completer.sh >/dev/null ; then
   local p=$(whence -p aws_zsh_completer.sh)
   if [[ $p =~ "pyenv/bin" ]] ;  then
     p=$(pyenv which aws_zsh_completer.sh)
+    source $p
+  else
+    source /usr/local/share/zsh/site-functions/_aws
   fi
-  source $p
   source $HOME/.zsh/zshrc.aws
 fi
 if which aws >/dev/null 2>&1 ; then
@@ -441,7 +443,8 @@ compctl -x 'p[2]' -k "(wheel staff ftpadmin okoma)"  -- pubmd
 #	zprof | less
 #fi
 
-# vim:set ts=2 sw=2 et si:
-
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
+
+# vim:set ts=2 sw=2 et si:
+
