@@ -449,23 +449,6 @@ install-packer () {
   brew install homebrew/binary/packer
 }
 
-boot2docker-init () {
-	boot2docker init
-	boot2docker stop
-#  cp ~/work/boot2docker/boot2docker.iso ~/.boot2docker/boot2docker.iso
-	VBoxManage sharedfolder add boot2docker-vm -name var_folders -hostpath /var/folders
-	VBoxManage sharedfolder add boot2docker-vm -name home -hostpath $HOME
-#   VBoxManage controlvm "boot2docker-vm" natpf1 "registry,tcp,,5000,,5000"
-  VBoxManage controlvm "boot2docker-vm" natpf1 "docker,tcp,,2376,,2376"
-  # Test::Docker::MySQL
-  for i in {55500..55555}
-  do
-    VBoxManage modifyvm "boot2docker-vm" --natpf1 "tcp-port$i,tcp,,$i,,$i"
-    VBoxManage modifyvm "boot2docker-vm" --natpf1 "udp-port$i,udp,,$i,,$i"
-  done
-	boot2docker up
-}
-
 boot2docker-up () {
 	boot2docker up
   local target mp
@@ -527,6 +510,24 @@ clear_cache () {
 if [ $(which docker-machine) ]; then
   export C_DOCKER_MACHINE="docker-vm"
 
+  vmpf-test-docker-mysql () {
+    vm=${1:$C_DOCKER_MACHINE}
+    # Test::Docker::MySQL
+    for i in {55500..55555}
+    do
+      vmpf $i $vm
+    done
+  }
+
+  vmpf-test-docker-mysql-delete () {
+    vm=${1:$C_DOCKER_MACHINE}
+    # Test::Docker::MySQL
+    for i in {55500..55555}
+    do
+      vmpf-delete $i $vm
+    done
+  }
+
   dminit() {
     docker-machine start ${C_DOCKER_MACHINE}
     dmshell
@@ -576,29 +577,56 @@ xquartz_if_not_running() {
 #	export DISPLAY=:0
 }
 
-socat_bg () {
-  socat TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:\"$DISPLAY\" &
-}
-
-socat_fg () {
-  fg
-}
 
 docker-run-x () {
 	xquartz_if_not_running
-	socat_bg
 	docker_if_not_running
 	xhost +$(docker-machine ip ${C_DOCKER_MACHINE})
 
+  socat TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:\"$DISPLAY\" &
+  local CHILD_PID=$!
 	docker run \
 		-e DISPLAY=$(docker-machine inspect ${C_DOCKER_MACHINE} --format={{.Driver.HostOnlyCIDR}} | cut -d'/' -f1):0 \
     "$@"
-  socat_fg
+  kill $CHILD_PID
+  fg
 }
 
 docker-chrome () {
-  docker-run-x --rm  --privileged --name jesschrome jess/chrome
+  docker-run-x --rm  --privileged "$@" --name jesschrome jess/chrome
 }
+docker-chrome-ja () {
+  docker-run-x --rm  --privileged "$@" --name ywatachrome ywatase/chrome_ja
+}
+
+docker-chrome-ja-with-ro-userdata () {
+  local DATA_CONTAINER_ID=$(docker run -dit -v /data --name data ubuntu:14.04 /bin/bash)
+  docker run --rm --volumes-from data -v "$HOME/Library/Application Support/Google/Chrome/:/userdata:ro" ubuntu:14.04 cp -r /userdata/Default /data
+  docker-run-x --rm  --privileged --volumes-from data "$@" --name ywatachrome ywatase/chrome_ja
+  docker kill ${DATA_CONTAINER_ID}
+}
+
+docker-chrome-ja-with-full () {
+  docker-run-x --rm  --privileged -v $HOME/Downloads:/root/Downloads -v "$HOME/Library/Application Support/Google/Chrome/:/data:ro" "$@" --name ywatachrome ywatase/chrome_ja
+}
+
+vmpf () {
+  port=$1
+  vm=${2:-${C_DOCKER_MACHINE}}
+  VBoxManage modifyvm $vm --natpf1 "tcp-port$port,tcp,,$port,,$port"
+  VBoxManage modifyvm $vm --natpf1 "udp-port$port,udp,,$port,,$port"
+}
+
+vmpf-delete () {
+  port=$1
+  vm=${2:-${C_DOCKER_MACHINE}}
+  VBoxManage modifyvm $vm --natpf1 delete "tcp-port$port"
+  VBoxManage modifyvm $vm --natpf1 delete "udp-port$port"
+}
+
+
+# vim:set et ts=2 sts=2 sw=2:
+
 
 
 # vim:set et ts=2 sts=2 sw=2:
