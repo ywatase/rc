@@ -43,8 +43,16 @@ export GOPATH=$HOME/go
 path=($HOME/go/bin(N-/) $path)
 
 path=($HOME/bin/*(N-/) $HOME/bin(N-/) $path)
-typeset -U path
 
+# awsenv
+if whence -p awsenv >/dev/null ; then
+  setaws () {
+    [[ $# -gt 0 ]] && eval "$(awsenv $@)"
+  }
+fi
+
+typeset -U path
 # if (which zprof > /dev/null) ;then
 #     zprof | less
 # fi
+
