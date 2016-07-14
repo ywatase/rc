@@ -507,7 +507,7 @@ clear_cache () {
 }
 
 # docker-machine stuff
-if [ $(which docker-machine) ]; then
+if $(which docker-machine >/dev/null 2>&1) ; then
   export C_DOCKER_MACHINE="docker-vm"
 
   vmpf-test-docker-mysql () {
