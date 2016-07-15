@@ -1,4 +1,4 @@
-if [ "$CYGWIN" ] ||  [ "${${(A)${(s:.:)HOST}}[1]}" = 'pc-igademo' ] ; then
+if [ "$CYGWIN" ] ||  [ "${${(A)${(s:.:)HOST}}[1]}" = 'beagle' ] ; then
 	keychain ~/.ssh/id_dsa
 	source ~/.keychain/$HOST-sh
 else
