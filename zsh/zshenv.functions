@@ -435,6 +435,21 @@ rpm_extract () {
 }
 
 ###
+# peco
+###
+download-peco () {
+  local version
+  [[ "$(curl https://github.com/peco/peco/releases/latest)" =~ releases/tag/([^\']+)\"\> ]];
+  version=${match[1]}
+  if is_mac ; then
+    curl -LO https://github.com/peco/peco/releases/download/$version/peco_darwin_amd64.zip
+  elif is_linux ; then
+    curl -LO https://github.com/peco/peco/releases/download/$version/peco_linux_amd64.tar.gz
+    tar xzf peco_linux_amd64.tar.gz
+  fi
+}
+
+###
 # github
 ###
 
