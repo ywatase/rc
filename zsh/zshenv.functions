@@ -69,10 +69,6 @@ wakeup () {
 	fi
 }
 
-wakeup_igademo () {
-   wakeup '00:1e:8c:79:61:ed'
-}
-
 install-ricty () {
   brew install fontforge
   local tmpdir ricty_version migu_1m_url cwd
