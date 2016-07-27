@@ -1,6 +1,6 @@
 #!/bin/sh
 sudo apt-get update
-sudo apt-get install -y keychain
+sudo apt-get install -y keychain silversearcher-ag
 sudo apt-get install -y slim awesome xorg gnome-terminal
 sudo apt-get install -y zsh tmux vim-common
 # font
@@ -13,6 +13,11 @@ sudo apt-get install -y fonts-dejavu-core fonts-droid \
 sudo apt-get install -y build-essential bison openssl readline-common \
    libreadline-dev curl git-core zlib1g zlib1g-dev libssl-dev libyaml-dev \
    libsqlite3-dev sqlite3 libxml2-dev libxslt-dev autoconf \
-   libc6-dev ncurses-dev
+   libc6-dev ncurses-dev autoconf bison \
+   libncurses5-dev libffi-dev libgdbm3 libgdbm-dev
+
 # python
 sudo apt-get install -y libbz2-dev libsqlite3-dev libssl-dev zlib1g-dev libreadline-dev
+
+# Japanese
+sudo apt-get install -y task-japanese-desktop
