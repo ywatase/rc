@@ -4,6 +4,7 @@ ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
 
 taps=<<EOL
 phinze/homebrew-cask
+PX4/homebrew-px4
 osx-cross/avr
 EOL
 
@@ -25,6 +26,7 @@ ctags
 curl
 docker
 dfu-programmer
+gcc-arm-none-eabi
 gettext
 git
 git-flow
