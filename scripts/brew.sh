@@ -45,11 +45,9 @@ keychain
 libevent
 lynx
 memcached
-mercurial
 mongodb
 msgpack
 mysql
-nginx
 ngrep
 nikto
 nkf
@@ -93,7 +91,7 @@ do
 done
 
 cask_pkgs=<<EOL
-alfred 
+alfred
 bettertouchtool
 firefox
 google-chrome
