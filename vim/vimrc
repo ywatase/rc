@@ -167,7 +167,7 @@ augroup MyVimrc
     autocmd FileType sql call MySQLSettings()
     autocmd BufNewFile,BufRead Changes setf changelog
     autocmd FileType changelog,gitcommit,svn set spell
-    autocmd FileType yaml set ai et
+    autocmd FileType yaml set ai et nobackup
     autocmd FileType c set smartindent et
     autocmd BufNewFile,BufRead Gemfile setl filetype=Gemfile
     autocmd BufWritePost Gemfile call vimproc#system('rbenv ctags')
