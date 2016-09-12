@@ -182,6 +182,7 @@ nnoremap + <C-a>
 nnoremap - <C-x>
 noremap! <C-h> <backspace>
 noremap! <C-d> <delete>
+noremap! <C-j> <Esc>
 " global
 "nmap <C-n> :cn<CR>
 "nmap <C-p> :cp<CR>
