@@ -100,8 +100,6 @@ NeoBundle 'tsukkee/unite-tag'
 NeoBundle 'ujihisa/unite-colorscheme'
 NeoBundle 'kmnk/vim-unite-giti'
 NeoBundleLazy 'ujihisa/unite-font'
-" SQL
-NeoBundleLazy 'SQLUtilities'
 " Clojure
 NeoBundleLazy 'jondistad/vimclojure'
 " Perl
@@ -353,9 +351,6 @@ func! MyJavaSettings ()
 	set makeprg=javac\ %
 	set grepprg=java\ `basename\ %\ .java`
 	set smartindent et
-endf
-func! MySQLSettings ()
-	NeoBundleSource SQLUtilities
 endf
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
