@@ -2,7 +2,7 @@ if !has('gui_running')
   set t_Co=256
 endif
 let g:lightline = {
-    \ 'colorscheme' : 'solarized_light',
+    \ 'colorscheme' : 'solarized',
     \ 'active': {
     \   'left':  [ [ 'mode', 'paste' ],
 	\              [ 'ftfffe', 'fugitive', 'filename' ],
