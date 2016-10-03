@@ -597,4 +597,5 @@ endfunc
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "source ~/.vim/vimrc.fileencoding
 source ~/.vim/vimrc.lightline
-source ~/.vim/vimrc.neocomplcache
+"source ~/.vim/vimrc.neocomlcache
+source ~/.vim/vimrc.neocomplete
