@@ -118,8 +118,7 @@ NeoBundle     'moznion/syntastic-cpanfile', {
 			\ }
 
 " Go
-NeoBundle 'google/vim-ft-go'
-NeoBundle 'vim-jp/vim-go-extra'
+NeoBundle 'fatih/vim-go'
 
 " Ruby
 NeoBundle 'vim-ruby/vim-ruby'
