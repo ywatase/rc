@@ -519,7 +519,7 @@ clear_cache () {
 
 # docker-machine stuff
 if $(which docker-machine >/dev/null 2>&1) ; then
-  export C_DOCKER_MACHINE="docker-vm"
+  export C_DOCKER_MACHINE="default"
 
   vmpf-test-docker-mysql () {
     vm=${1:$C_DOCKER_MACHINE}
@@ -634,10 +634,4 @@ vmpf-delete () {
   VBoxManage modifyvm $vm --natpf1 delete "tcp-port$port"
   VBoxManage modifyvm $vm --natpf1 delete "udp-port$port"
 }
-
-
-# vim:set et ts=2 sts=2 sw=2:
-
-
-
 # vim:set et ts=2 sts=2 sw=2:
