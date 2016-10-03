@@ -1,0 +1,146 @@
+[[plugins]]
+repo = 'Shougo/dein.vim'
+
+[[plugins]]
+# git
+repo = 'tpope/vim-fugitive'
+
+[[plugins]]
+# 最後のコミット以降の変更行が見れる。
+repo = 'airblade/vim-gitgutter'
+
+[[plugins]]
+repo = 't9md/vim-quickhl'
+depends = ['vim-operator-user']
+
+[[plugins]]
+repo = 'kana/vim-operator-user'
+
+[[plugins]]
+repo = 'itchyny/lightline.vim'
+[[plugins]]
+repo = 'thinca/vim-localrc'
+[[plugins]]
+repo = 'scrooloose/syntastic'
+
+# folding
+[[plugins]]
+repo = 'LeafCage/foldCC'
+
+[[plugins]]
+repo = 'Align'
+
+[[plugins]]
+repo = 'rking/ag.vim'
+
+[[plugins]]
+repo = 'EnhCommentify.vim'
+
+[[plugins]]
+repo = 'nginx.vim'
+
+[[plugins]]
+repo = 'sudo.vim'
+
+[[plugins]]
+repo = 'surround.vim'
+
+[[plugins]]
+repo = 'taglist.vim'
+
+[[plugins]]
+repo = 'glidenote/memolist.vim'
+
+[[plugins]]
+repo = 'csexton/jekyll.vim'
+
+[[plugins]]
+repo = 'tanabe/ToggleCase-vim'
+
+[[plugins]]
+repo = 'bronson/vim-trailing-whitespace'
+
+# reference viewer
+[[plugins]]
+repo = 'thinca/vim-ref'
+
+[[plugins]]
+repo = 'thinca/vim-quickrun'
+
+# search
+[[plugins]]
+repo = 'haya14busa/incsearch.vim'
+[[plugins]]
+repo = 'haya14busa/incsearch-migemo.vim'
+
+# snippet
+[[plugins]]
+repo = 'Shougo/neocomplcache'
+
+[[plugins]]
+repo = 'Shougo/neosnippet'
+depends = ['neosnippet-snippets']
+on_i = 1
+
+[[plugins]]
+repo = 'Shougo/neosnippet-snippets'
+on_i = 1
+on_ft = ['snippet']
+
+[[plugins]]
+repo = 'honza/vim-snippets'
+
+[[plugins]]
+repo = 'bonsaiben/bootstrap-snippets'
+
+[[plugins]]
+repo = 'Shougo/unite.vim'
+
+[[plugins]]
+repo  = 'Shougo/vimproc'
+hook_post_update = '''
+  if dein#util#_is_windows()
+    let cmd = 'tools\\update-dll-mingw'
+  elseif dein#util#_is_cygwin()
+    let cmd = 'make -f make_cygwin.mak'
+  elseif executable('gmake')
+    let cmd = 'gmake'
+  else
+    let cmd = 'make'
+  endif
+  let g:dein#plugin.build = cmd
+'''
+
+[[plugins]]
+repo = 'Shougo/vimshell.vim'
+
+[[plugins]]
+repo = 'Shougo/vimfiler.vim'
+
+[[plugins]]
+repo = 'mattn/emmet-vim'
+
+# for Japanese Help
+[[plugins]]
+repo = 'vim-jp/vimdoc-ja'
+# こんな感じで使う
+# help {word}@ja
+# helpgrep {word}@en
+# 英語を優先したい場合
+# :set helplang=en,ja
+
+#[[plugins]]
+#repo = 'tsukkee/lingr-vim'
+
+# colorscheme
+[[plugins]]
+repo = 'yuroyoro/yuroyoro256.vim'
+
+[[plugins]]
+repo = 'tomasr/molokai'
+
+[[plugins]]
+repo = 'altercation/vim-colors-solarized'
+
+[[plugins]]
+repo = 'w0ng/vim-hybrid'

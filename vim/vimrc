@@ -18,145 +18,52 @@ set pumheight=10
 
 filetype off
 
-if has('vim_starting')
-	set runtimepath+=~/.vim/bundle/neobundle.vim/
+" プラグインが実際にインストールされるディレクトリ
+let s:dein_dir = expand('~/.vim/dein')
+" dein.vim 本体
+let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
+
+" dein.vim がなければ github から落としてくる
+if &runtimepath !~# '/dein.vim'
+  if !isdirectory(s:dein_repo_dir)
+    execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_dir
+  endif
+  execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ':p')
 endif
-call neobundle#begin(expand('~/.vim/bundle/'))
-NeoBundleFetch 'Shougo/neobundle.vim'
 
-" non github repos
-" NeoBundle 'git://git.wincent.com/command-t.git'
+" 設定開始
+if dein#load_state(s:dein_dir)
 
-" git
-NeoBundle 'tpope/vim-fugitive'
-" 最後のコミット以降の変更行が見れる。
-NeoBundle 'airblade/vim-gitgutter'
+  " プラグインリストを収めた TOML ファイル
+  " 予め TOML ファイル（後述）を用意しておく
+  let g:rc_dir    = expand('~/.vim/rc')
+  let s:toml      = g:rc_dir . '/dein.toml'
+  let s:lazy_toml = g:rc_dir . '/dein_lazy.toml'
 
-NeoBundle 't9md/vim-quickhl', {
-	\ 'depends': ['kana/vim-operator-user'],
-	\ }
-NeoBundle 'itchyny/lightline.vim'
-NeoBundle 'thinca/vim-localrc'
-NeoBundle 'scrooloose/syntastic'
+  call dein#begin(s:dein_dir, [$MYVIMRC, s:toml, s:lazy_toml])
 
-" joke
-"NeoBundle 'yomi322/vim-operator-suddendeath', {
-"    \ 'depends': ['kana/vim-operator-user'],
-"    \ }
+  " TOML を読み込み、キャッシュしておく
+  call dein#load_toml(s:toml,      {'lazy': 0})
+  call dein#load_toml(s:lazy_toml, {'lazy': 1})
 
-" folding
-NeoBundle 'LeafCage/foldCC'
+  " 設定終了
+  call dein#end()
+  call dein#save_state()
+endif
 
-NeoBundle 'Align'
-NeoBundle 'rking/ag.vim'
-NeoBundle 'EnhCommentify.vim'
-NeoBundle 'nginx.vim'
-NeoBundle 'sudo.vim'
-NeoBundle 'surround.vim'
-NeoBundle 'taglist.vim'
-NeoBundle 'glidenote/memolist.vim'
-NeoBundle 'csexton/jekyll.vim'
-NeoBundle 'tanabe/ToggleCase-vim'
-
-NeoBundle 'bronson/vim-trailing-whitespace'
-
-NeoBundleLazy 'mattn/benchvimrc-vim', {
-			\ 'autoload': {
-			\   'commands': ['BenchVimrc'],
-			\  },
-			\}
-"NeoBundle 'adaszko/chbuf.vim'
-
-" reference viewer
-NeoBundle 'thinca/vim-ref'
-NeoBundle 'thinca/vim-quickrun'
-
-" search
-NeoBundle 'haya14busa/incsearch.vim'
-NeoBundle 'haya14busa/incsearch-migemo.vim'
-
-" snippet
-NeoBundle 'Shougo/neocomplcache'
-NeoBundle 'Shougo/neosnippet'
-NeoBundle 'Shougo/neosnippet-snippets'
-NeoBundle 'honza/vim-snippets'
-NeoBundle 'bonsaiben/bootstrap-snippets'
-
-NeoBundle 'Shougo/unite.vim'
-NeoBundle 'Shougo/neomru.vim'
-NeoBundle 'Shougo/vimproc', {
-			\ 'build' : {
-			\     'windows' : 'echo "Sorry, cannot update vimproc binary file in Windows."',
-			\     'cygwin' : 'make -f make_cygwin.mak',
-			\     'mac' : 'make -f make_mac.mak',
-			\     'unix' : 'make -f make_unix.mak',
-			\   },
-			\ }
-NeoBundle 'Shougo/vimshell.vim'
-NeoBundle 'Shougo/vimfiler.vim'
-NeoBundle 'pangloss/vim-javascript'
-NeoBundle 'mattn/emmet-vim'
-NeoBundle 'tsukkee/unite-tag'
-NeoBundle 'ujihisa/unite-colorscheme'
-NeoBundle 'kmnk/vim-unite-giti'
-NeoBundleLazy 'ujihisa/unite-font'
-" Clojure
-NeoBundleLazy 'jondistad/vimclojure'
-" Perl
-NeoBundle 'vim-perl/vim-perl'
-NeoBundle 'ywatase/perldoc-vim'
-NeoBundle 'ywatase/xslate-vim'
-
-NeoBundleLazy 'moznion/vim-cpanfile'
-NeoBundle     'moznion/syntastic-cpanfile', {
-			\ 'build' : {
-			\     'windows' : 'echo "Sorry, cannot setup automatically."',
-			\     'cygwin' : '../../bundle_local/setup',
-			\     'mac' : '../../bundle_local/setup',
-			\     'unix' : '../../bundle_local/setup',
-			\ 	},
-			\ }
-
-" Go
-NeoBundle 'fatih/vim-go'
-
-" Ruby
-NeoBundle 'vim-ruby/vim-ruby'
-NeoBundle 'tpope/vim-rails'
-
-" for markdown
-NeoBundle 'hallison/vim-markdown'
-NeoBundle 'kannokanno/previm'
-NeoBundle 'tyru/open-browser.vim'
-NeoBundle 'thinca/vim-ft-markdown_fold'
-NeoBundle 'ywatase/mdt.vim'
-NeoBundle 'ywatase/md2fswiki.vim'
-" for Japanese Help
-NeoBundle 'vim-jp/vimdoc-ja'
-" こんな感じで使う
-" help {word}@ja
-" helpgrep {word}@en
-" 英語を優先したい場合
-" :set helplang=en,ja
-
-"NeoBundle 'tsukkee/lingr-vim'
-
-" colorscheme
-NeoBundle 'yuroyoro/yuroyoro256.vim'
-NeoBundle 'tomasr/molokai'
-NeoBundle 'altercation/vim-colors-solarized'
-NeoBundle 'w0ng/vim-hybrid'
-
-NeoBundle 'Glench/Vim-Jinja2-Syntax'
-
-call neobundle#end()
-NeoBundleCheck
+" もし、未インストールものものがあったらインストール
+if dein#check_install()
+  call dein#install()
+endif
 
 filetype plugin indent on
 
 augroup MyVimrc
 	autocmd!
     autocmd BufRead,BufNewFile *.pl,*.pm,*.cgi,*.t,*psgi :set filetype=perl
+    autocmd BufRead,BufNewFile *.tx :set filetype=xslate
+    autocmd BufRead,BufNewFile *.tmpl :set filetype=gohtmltmpl
+    autocmd BufRead,BufNewFile *.clj :set filetype=clojure
 "    autocmd FileType go autocmd BufWritePre <buffer> Fmt
     autocmd BufRead,BufNewFile cpanfile call MyCpanfileSetting()
     autocmd FileType ruby,eruby call MyRubySettings()
@@ -332,8 +239,6 @@ let g:clj_paren_rainbow = 1
 func! MyCpanfileSetting ()
 	set filetype=cpanfile
 	set syntax=perl.cpanfile
-	NeoBundleSource
-				\ vim-cpanfile
 endf
 
 """"""""""""""""""""""""""""""

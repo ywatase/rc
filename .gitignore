@@ -1,6 +1,7 @@
 perl-modules.list
 screen/screen/
 vim/bundle/
+vim/dein/
 vim/cache/
 vim/undo/
 vim/.netrwhist

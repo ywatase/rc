@@ -1,0 +1,129 @@
+################################################################################
+# tool
+################################################################################
+[[plugins]]
+repo   = 'mattn/benchvimrc-vim'
+on_cmd = ['BenchVimrc']
+
+################################################################################
+# toml
+################################################################################
+[[plugins]]
+repo  = 'cespare/vim-toml'
+on_ft = ['toml']
+
+################################################################################
+# Unite
+################################################################################
+[[plugins]]
+repo = 'Shougo/neomru.vim'
+on_source = ['unite.vim']
+
+[[plugins]]
+repo = 'ujihisa/unite-font'
+on_source = ['unite.vim']
+
+[[plugins]]
+repo = 'tsukkee/unite-tag'
+on_source = ['unite.vim']
+
+[[plugins]]
+repo = 'ujihisa/unite-colorscheme'
+on_source = ['unite.vim']
+
+[[plugins]]
+repo = 'kmnk/vim-unite-giti'
+on_source = ['unite.vim']
+
+################################################################################
+# Perl
+################################################################################
+[[plugins]]
+repo = 'vim-perl/vim-perl'
+on_ft = ['perl']
+
+[[plugins]]
+repo = 'ywatase/perldoc-vim'
+on_ft = ['perl']
+
+[[plugins]]
+repo = 'ywatase/xslate-vim'
+on_ft = ['perl','xslate']
+
+[[plugins]]
+repo  = 'moznion/vim-cpanfile'
+on_ft = ['cpanfile']
+
+[[plugins]]
+repo  = 'moznion/syntastic-cpanfile'
+on_ft = ['cpanfile']
+hook_post_update = '''
+  let g:dein#plugin.build = '../../../../dein_load/setup'
+'''
+
+
+################################################################################
+# Go
+################################################################################
+[[plugins]]
+repo  = 'fatih/vim-go'
+on_ft = ['go', 'gohtmltmpl']
+
+################################################################################
+# Ruby
+################################################################################
+[[plugins]]
+repo = 'vim-ruby/vim-ruby'
+on_ft = ['ruby']
+
+[[plugins]]
+repo = 'tpope/vim-rails'
+on_ft = ['ruby']
+
+################################################################################
+# Javascript
+################################################################################
+[[plugins]]
+repo = 'pangloss/vim-javascript'
+
+################################################################################
+# Markdown
+################################################################################
+[[plugins]]
+repo  = 'hallison/vim-markdown'
+on_ft = ['markdown']
+
+[[plugins]]
+repo  = 'kannokanno/previm'
+on_ft = ['markdown']
+
+[[plugins]]
+repo  = 'tyru/open-browser.vim'
+on_ft = ['markdown']
+
+[[plugins]]
+repo  = 'thinca/vim-ft-markdown_fold'
+on_ft = ['markdown']
+
+[[plugins]]
+repo  = 'ywatase/mdt.vim'
+on_ft = ['markdown']
+
+[[plugins]]
+repo  = 'ywatase/md2fswiki.vim'
+on_ft = ['markdown']
+
+################################################################################
+# jinja2
+################################################################################
+[[plugins]]
+repo = 'Glench/Vim-Jinja2-Syntax'
+on_ft = ['jinja2']
+
+################################################################################
+# Clojure
+################################################################################
+[[plugins]]
+repo    = 'jondistad/vimclojure'
+on_ft   = ['clojure']
+
