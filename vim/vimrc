@@ -52,15 +52,8 @@ if dein#load_state(s:dein_dir)
 endif
 
 " もし、未インストールものものがあったらインストール
-
-" vimprocだけは最初にインストールしてほしい
-if has('vim_starting')
-  if dein#check_install(['vimproc'])
-    call dein#install(['vimproc'])
-  endif
-  if dein#check_install()
-    call dein#install()
-  endif
+if dein#check_install()
+	call dein#install()
 endif
 
 filetype plugin indent on
@@ -529,25 +522,6 @@ let g:quickhl_manual_keywords = [
 	\ {"pattern": '\d\{1,3}\.\d\{1,3}\.\d\{1,3}\.\d\{1,3}', "regexp": 1 },
 	\ ]
 
-""""""""""""""""""""""""""""""
-" syntastic
-""""""""""""""""""""""""""""""
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_perl_checkers=['perl', 'perlcritic', 'podchecker']
-let g:syntastic_rubp_checkers=['rubocop']
-let g:syntastic_enable_perl_checker = 1
-let g:syntastic_debug = 0
-let g:syntastic_mode_map = {
-  \ "mode": "active",
-  \ "active_filetypes": ["ruby", "perl"],
-  \ "passive_filetypes": ["vim"] }
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Emmet
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -606,3 +580,6 @@ endfunc
 source ~/.vim/vimrc.lightline
 "source ~/.vim/vimrc.neocomlcache
 source ~/.vim/vimrc.neocomplete
+" load plugin settings
+set runtimepath+=~/.vim/
+runtime! rc/plugins/*.vim
