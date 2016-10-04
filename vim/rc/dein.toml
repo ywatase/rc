@@ -23,7 +23,36 @@ repo = 'thinca/vim-localrc'
 [[plugins]]
 repo = 'scrooloose/syntastic'
 
+################################################################################
+# Unite
+################################################################################
+[[plugins]]
+repo = 'Shougo/unite.vim'
+
+[[plugins]]
+repo = 'Shougo/neomru.vim'
+on_source = ['unite.vim']
+
+[[plugins]]
+repo = 'ujihisa/unite-font'
+on_source = ['unite.vim']
+
+[[plugins]]
+repo = 'tsukkee/unite-tag'
+on_source = ['unite.vim']
+
+[[plugins]]
+repo = 'ujihisa/unite-colorscheme'
+on_source = ['unite.vim']
+
+[[plugins]]
+repo = 'kmnk/vim-unite-giti'
+on_source = ['unite.vim']
+
+
+################################################################################
 # folding
+################################################################################
 [[plugins]]
 repo = 'LeafCage/foldCC'
 
@@ -93,9 +122,6 @@ repo = 'honza/vim-snippets'
 
 [[plugins]]
 repo = 'bonsaiben/bootstrap-snippets'
-
-[[plugins]]
-repo = 'Shougo/unite.vim'
 
 [[plugins]]
 repo  = 'Shougo/vimproc'

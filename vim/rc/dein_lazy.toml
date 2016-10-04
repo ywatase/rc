@@ -12,28 +12,15 @@ on_cmd = ['BenchVimrc']
 repo  = 'cespare/vim-toml'
 on_ft = ['toml']
 
-################################################################################
-# Unite
-################################################################################
+# カーソル位置のコンテキストのファイルタイプを判定する
 [[plugins]]
-repo = 'Shougo/neomru.vim'
-on_source = ['unite.vim']
+repo   = 'osyo-manga/vim-precious'
+depends = ['context_filetype.vim']
+on_ft = ['toml']
 
 [[plugins]]
-repo = 'ujihisa/unite-font'
-on_source = ['unite.vim']
-
-[[plugins]]
-repo = 'tsukkee/unite-tag'
-on_source = ['unite.vim']
-
-[[plugins]]
-repo = 'ujihisa/unite-colorscheme'
-on_source = ['unite.vim']
-
-[[plugins]]
-repo = 'kmnk/vim-unite-giti'
-on_source = ['unite.vim']
+repo   = 'Shougo/context_filetype.vim'
+on_ft = ['toml']
 
 ################################################################################
 # Perl
