@@ -69,30 +69,6 @@ wakeup () {
 	fi
 }
 
-install-ricty () {
-  brew install fontforge
-  local tmpdir ricty_version migu_1m_url cwd
-  ricty_version=3.2.3
-  migu_1m_url='http://sourceforge.jp/frs/redir.php?m=jaist&f=%2Fmix-mplus-ipa%2F59022%2Fmigu-1m-20130617.zip'
-  cwd=$PWD
-
-  tmpdir=$(mktemp -d)
-  cd $tmpdir
-
-  curl -L -o Inconsolata.otf http://levien.com/type/myfonts/Inconsolata.otf
-  curl -L -o $ricty_version.zip https://github.com/yascentur/Ricty/zipball/$ricty_version
-  curl -L -o migu-1m.zip $migu_1m_url
-  unzip $ricty_version.zip
-  unzip migu-1m.zip
-  cd yascentur-Ricty-*/
-  cp ../Inconsolata.otf .
-  cp ../migu-1m-*/*.ttf .
-  ./ricty_generator.sh Inconsolata.otf migu-1m-regular.ttf migu-1m-bold.ttf
-  cp Ricty*.ttf /Library/Fonts/
-  rm -r $tmpdir
-  cd cwd
-}
-
 ###
 # Perl
 ###
