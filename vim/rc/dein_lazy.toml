@@ -42,12 +42,10 @@ repo  = 'moznion/vim-cpanfile'
 on_ft = ['cpanfile']
 
 [[plugins]]
-repo  = 'moznion/syntastic-cpanfile'
-on_ft = ['cpanfile']
-hook_post_update = '''
-  let g:dein#plugin.build = '../../../../dein_load/setup'
-'''
-
+repo    = 'moznion/syntastic-cpanfile'
+on_ft   = ['cpanfile']
+depends = ['syntastic']
+build   = '../../../../../dein_local/syntastic-cpanfile/setup'
 
 ################################################################################
 # Go
@@ -55,6 +53,7 @@ hook_post_update = '''
 [[plugins]]
 repo  = 'fatih/vim-go'
 on_ft = ['go', 'gohtmltmpl']
+build = 'cp gosnippets/snippets/go.snip ~/.vim/snippets'
 
 ################################################################################
 # Ruby
@@ -79,6 +78,7 @@ repo = 'pangloss/vim-javascript'
 [[plugins]]
 repo  = 'hallison/vim-markdown'
 on_ft = ['markdown']
+build = 'cp snippets/markdown.snippets ~/.vim/snippets'
 
 [[plugins]]
 repo  = 'kannokanno/previm'

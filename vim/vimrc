@@ -18,6 +18,9 @@ set pumheight=10
 
 filetype off
 
+" snippetsディレクトリ
+let g:snippets_dir = expand('~/.vim/snippets')
+
 " プラグインが実際にインストールされるディレクトリ
 let s:dein_dir = expand('~/.vim/dein')
 " dein.vim 本体
@@ -286,7 +289,7 @@ nnoremap <silent> ,ss <S-v>:VimShellSendString<CR>
 " neosnippet
 """"""""""""""""""""""""""""""
 let g:neosnippet#enable_snipmate_compatibility = 1
-let g:neosnippet#snippets_directory = $HOME . '/.vim/snippets/'
+let g:neosnippet#snippets_directory = g:snippets_dir
 
 noremap es :NeoSnippetEdit<CR>
 
