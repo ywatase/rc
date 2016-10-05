@@ -1,7 +1,7 @@
 #!/bin/sh
 sudo apt-get update
 sudo apt-get install -y keychain silversearcher-ag
-sudo apt-get install -y slim awesome xorg gnome-terminal
+sudo apt-get install -y lightdm awesome xorg gnome-terminal
 sudo apt-get install -y zsh tmux vim-common
 # font
 sudo apt-get install -y fonts-dejavu-core fonts-droid \
