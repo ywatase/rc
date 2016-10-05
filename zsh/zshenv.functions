@@ -72,9 +72,6 @@ wakeup () {
 ###
 # Perl
 ###
-set_perlbrew_env () {
-	[[ -s "$HOME/perl5/perlbrew/etc/bashrc" ]] && source "$HOME/perl5/perlbrew/etc/bashrc"
-}
 git-delete-merged-branch () {
   local reply
   if [[ $(git branch --merged | grep -v '*' | wc -l) -eq 0 ]] ; then
@@ -170,10 +167,6 @@ install-cpantools () {
 	cpanm App::httpstatus App::Ack CPAN::Meta::Check
 }
 
-install-perlbrew () {
-  curl -kL http://xrl.us/perlbrewinstall | bash
-}
-
 install-perltools () {
   curl -kL https://raw2.github.com/hirose31/list-installed-perl-modules/master/list-installed-perl-modules > ~/bin/list-installed-perl-modules
 }
@@ -232,14 +225,6 @@ cpan-uninstall () {
   for MODULE in $@
   do
     ${_SUDO} perl -MConfig -MExtUtils::Install -e '($FULLEXT=shift)=~s{::}{/}g;uninstall "$Config{sitearchexp}/auto/$FULLEXT/.packlist",1' $MODULE
-  done
-}
-
-cpan-uninstall-perlbrew () {
-  local MODULE
-  for MODULE in $@
-  do
-    perl -MConfig -MExtUtils::Install -e '($FULLEXT=shift)=~s{::}{/}g;uninstall "$Config{sitearchexp}/auto/$FULLEXT/.packlist",1' $MODULE
   done
 }
 
