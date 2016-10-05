@@ -64,9 +64,10 @@ filetype plugin indent on
 augroup MyVimrc
 	autocmd!
     autocmd BufRead,BufNewFile *.pl,*.pm,*.cgi,*.t,*psgi :set filetype=perl
-    autocmd BufRead,BufNewFile *.tx :set filetype=xslate
+    autocmd BufRead,BufNewFile *.tx   :set filetype=xslate
     autocmd BufRead,BufNewFile *.tmpl :set filetype=gohtmltmpl
-    autocmd BufRead,BufNewFile *.clj :set filetype=clojure
+    autocmd BufRead,BufNewFile *.go   :set filetype=go
+    autocmd BufRead,BufNewFile *.clj  :set filetype=clojure
 "    autocmd FileType go autocmd BufWritePre <buffer> Fmt
     autocmd BufRead,BufNewFile cpanfile call MyCpanfileSetting()
     autocmd FileType ruby,eruby call MyRubySettings()
