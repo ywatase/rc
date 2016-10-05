@@ -517,58 +517,6 @@ clear_cache () {
 
 }
 
-# docker-machine stuff
-if $(which docker-machine >/dev/null 2>&1) ; then
-  export C_DOCKER_MACHINE="default"
-
-  vmpf-test-docker-mysql () {
-    vm=${1:$C_DOCKER_MACHINE}
-    # Test::Docker::MySQL
-    for i in {55500..55555}
-    do
-      vmpf $i $vm
-    done
-  }
-
-  vmpf-test-docker-mysql-delete () {
-    vm=${1:$C_DOCKER_MACHINE}
-    # Test::Docker::MySQL
-    for i in {55500..55555}
-    do
-      vmpf-delete $i $vm
-    done
-  }
-
-  dminit() {
-    docker-machine start ${C_DOCKER_MACHINE}
-    dmshell
-  }
-
-  dmshell() {
-    eval $(docker-machine env ${C_DOCKER_MACHINE})
-  }
-
-  docker_if_not_running() {
-    if [[ "$(docker-machine status ${C_DOCKER_MACHINE})" != 'Running' ]]; then
-      dminit
-    fi
-  }
-
-  dmhosts() {
-    DMHOSTNAME="dockerhost"
-
-    sudo -v
-
-    grep ${DMHOSTNAME} /etc/hosts > /dev/null && sudo sed -i '' "/${DMHOSTNAME}/d" /etc/hosts
-    sudo echo "$(docker-machine ip ${C_DOCKER_MACHINE}) ${DMHOSTNAME}" | sudo tee -a /etc/hosts
-  }
-
-  if [[ "$(docker-machine status ${C_DOCKER_MACHINE})" == 'Running' ]]; then
-    dmshell &> /dev/null
-  fi
-
-fi
-
 xquartz_if_not_running() {
 	v_nolisten_tcp=$(defaults read org.macosforge.xquartz.X11 nolisten_tcp)
 	v_xquartz_app=$(defaults read org.macosforge.xquartz.X11 app_to_run)
