@@ -118,33 +118,33 @@ on_ft   = ['clojure']
 # colorscheme
 ################################################################################
 [[plugins]]
-repo = 'jellybeans.vim'
+repo = 'vim-scripts/jellybeans.vim'
 gui  = 1
 
 [[plugins]]
-repo = 'moss'
+repo = 'vim-scripts/moss'
 gui  = 1
 
 [[plugins]]
-repo = 'tir_black'
+repo = 'vim-scripts/tir_black'
 gui  = 1
 
 [[plugins]]
-repo = 'softblue'
+repo = 'vim-scripts/softblue'
 gui  = 1
 
 [[plugins]]
-repo = 'WuYe'
+repo = 'vim-scripts/WuYe'
 gui  = 1
 
 [[plugins]]
-repo = 'mrkn256.vim'
+repo = 'vim-scripts/mrkn256.vim'
 gui  = 1
 
 [[plugins]]
-repo = 'desert256.vim'
+repo = 'vim-scripts/desert256.vim'
 gui  = 1
 
 [[plugins]]
-repo = 'wombat256.vim'
+repo = 'vim-scripts/wombat256.vim'
 gui  = 1
