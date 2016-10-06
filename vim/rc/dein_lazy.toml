@@ -114,3 +114,37 @@ on_ft = ['jinja2']
 repo    = 'jondistad/vimclojure'
 on_ft   = ['clojure']
 
+################################################################################
+# colorscheme
+################################################################################
+[[plugins]]
+repo = 'jellybeans.vim'
+gui  = 1
+
+[[plugins]]
+repo = 'moss'
+gui  = 1
+
+[[plugins]]
+repo = 'tir_black'
+gui  = 1
+
+[[plugins]]
+repo = 'softblue'
+gui  = 1
+
+[[plugins]]
+repo = 'WuYe'
+gui  = 1
+
+[[plugins]]
+repo = 'mrkn256.vim'
+gui  = 1
+
+[[plugins]]
+repo = 'desert256.vim'
+gui  = 1
+
+[[plugins]]
+repo = 'wombat256.vim'
+gui  = 1
