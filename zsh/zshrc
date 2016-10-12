@@ -23,7 +23,7 @@ zstyle ':completion:*' recent-dirs-insert both
 fpath=(/usr/local/share/zsh-completions $fpath)
 fpath=($HOME/.zsh/functions(N-/) $HOME/.zsh/zsh-perl-completions.git(N-/) $fpath)
 if is_mac ; then
-  path=($HOME/bin(N-/) $HOME/bin/*(N-/) /usr/local/bin $path)
+  path=($HOME/bin(N-/) $HOME/bin/*(N-/) $path)
 fi
 
 typeset -U fpath
