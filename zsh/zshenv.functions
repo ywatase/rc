@@ -407,6 +407,16 @@ download-peco () {
 }
 
 ###
+# mackerel
+###
+alias mkr_kernel='mkr hosts -v | jq -r '"'"'.[] | {"name": .name, "kernel": .meta.kernel.release}'"'"
+setmkrenv () {
+	local key=${1:-home}
+	export MACKEREL_ENVKEY=$key
+	export MACKEREL_APIKEY=$mackerel_apikeys[$key]
+}
+
+###
 # github
 ###
 
@@ -544,3 +554,4 @@ vmpf-delete () {
   VBoxManage modifyvm $vm --natpf1 delete "udp-port$port"
 }
 # vim:set et ts=2 sts=2 sw=2:
+#
