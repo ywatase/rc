@@ -12,3 +12,15 @@ au FileType go nmap <Leader>gi <Plug>(go-imports)
 au FileType go nmap <Leader>s  <Plug>(go-implements)
 au FileType go nmap <Leader>i  <Plug>(go-info)
 au FileType go nmap <Leader>e  <Plug>(go-rename)
+
+" Below are some settings you might find useful. For the full list see :he go-settings.
+" By default syntax-highlighting for Functions, Methods and Structs is disabled. To change it:
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_types = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_build_constraints = 1
+
+" Enable goimports to automatically insert import paths instead of gofmt:
+let g:go_fmt_command = "goimports"
