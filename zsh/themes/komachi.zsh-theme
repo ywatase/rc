@@ -1,5 +1,6 @@
 KOMACHI_BRACKET_COLOR="%{$fg[white]%}"
 KOMACHI_AWSENV_COLOR="%{$fg[yellow]%}"
+KOMACHI_MKRENV_COLOR="%{$fg[cyan]%}"
 KOMACHI_RVM_COLOR="%{$fg[magenta]%}"
 KOMACHI_PLENV_COLOR="%{$fg[magenta]%}"
 KOMACHI_PERL_LOCALLIB_COLOR="%{$fg[magenta]%}"
@@ -17,6 +18,10 @@ ZSH_THEME_GIT_PROMPT_DIRTY=" $KOMACHI_GIT_DIRTY_COLOR✗"
 # Our elements:
 _get_aws_profile () {
 	echo $AWS_PROFILE
+}
+
+_get_mackerel_profile () {
+	echo $MACKEREL_PROFILE
 }
 
 _get_rubyversion () {
@@ -69,10 +74,11 @@ _get_prompt () {
 %(?,%{$fg[green]%}(^_^%)%{$reset_color%},%{$fg[red]%}(T^T%)%{$reset_color%}) \$%{$reset_color%} "
 
 	if _is_enough_term_width ; then
+		_get_mkrenv
 		_get_awsenv
 		_get_plenv
 		_get_rbenv
-		echo "$KOMACHI_HOST_$KOMACHI_AWSENV_$KOMACHI_PLENV_$KOMACHI_RVM_:$KOMACHI_DIR_$KOMACHI_PROMPT_"
+		echo "$KOMACHI_HOST_$KOMACHI_MKRENV_$KOMACHI_AWSENV_$KOMACHI_PLENV_$KOMACHI_RVM_:$KOMACHI_DIR_$KOMACHI_PROMPT_"
 	else
 		echo "$KOMACHI_HOST_$KOMACHI_DIR_$KOMACHI_PROMPT_"
 	fi
@@ -80,10 +86,19 @@ _get_prompt () {
 
 _get_rprompt () {
 	if ! _is_enough_term_width ; then
+		_get_mkrenv
 		_get_awsenv
 		_get_plenv
 		_get_rbenv
-		echo "$KOMACHI_AWSENV_$KOMACHI_PLENV_$KOMACHI_RVM_"
+		echo "$KOMACHI_MKRENV_$KOMACHI_AWSENV_$KOMACHI_PLENV_$KOMACHI_RVM_"
+	fi
+}
+
+_get_mkrenv () {
+  if [[ "$MACKEREL_PROFILE" != "" ]] ; then
+		KOMACHI_MKRENV_="$KOMACHI_BRACKET_COLOR"[mkr:"$KOMACHI_MKRENV_COLOR${$(_get_mackerel_profile)}$KOMACHI_BRACKET_COLOR"]"%{$reset_color%}"
+	else
+		KOMACHI_MKRENV_=
 	fi
 }
 

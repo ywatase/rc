@@ -47,6 +47,13 @@ if whence -p awsenv >/dev/null ; then
   }
 fi
 
+# mkrenv
+if whence -p mkrenv >/dev/null ; then
+  setmkr () {
+    [[ $# -gt 0 ]] && eval "$(mkrenv $@)"
+  }
+fi
+
 typeset -U path
 # if (which zprof > /dev/null) ;then
 #     zprof | less
