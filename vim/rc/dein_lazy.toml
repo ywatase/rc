@@ -91,6 +91,11 @@ on_ft = ['markdown']
 [[plugins]]
 repo  = 'thinca/vim-ft-markdown_fold'
 on_ft = ['markdown']
+depends = ['FastFold']
+
+[[plugins]]
+repo = 'Konfekt/FastFold'
+on_ft = ['markdown']
 
 [[plugins]]
 repo  = 'ywatase/mdt.vim'
