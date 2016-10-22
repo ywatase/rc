@@ -48,7 +48,7 @@ def show_env(config):
 
 def unset_values():
     """return string representation of command to unset environment vars"""
-    return "unset {0}; ".format(' '.join(aws_dict.keys()))
+    return "unset {0}; ".format(' '.join(aws_dict.keys() + ['AWS_PROFILE']))
 
 
 def exit_out(message, error=False):
