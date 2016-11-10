@@ -252,6 +252,22 @@ yaml2pl () {
   done
 }
 
+lint-gitlab-ci-yml () {
+  ruby -e "require 'yaml'; require 'json'; puts JSON.generate({'content' => JSON.generate(YAML.load(ARGF.read)) })" .gitlab-ci.yml > .gitlab-ci.json
+  curl --header "Content-Type: application/json" https://gitlab.com/api/v3/ci/lint --data @.gitlab-ci.json
+}
+
+yaml2json () {
+  local FILE
+  local BASENAME
+  for FILE in $@
+  do
+    BASENAME=$(basename $FILE .yaml)
+    BASENAME=$(basename $BASENAME .yml)
+    ruby -e "require 'yaml'; require 'json'; puts JSON.pretty_generate YAML.load ARGF.read" $FILE > $BASENAME.json
+  done
+}
+
 xml2yaml () {
   local FILE
   local BASENAME
@@ -268,7 +284,7 @@ json2yaml () {
   for FILE in $@
   do
     BASENAME=$(basename $FILE .json)
-    perl -MYAML::Any -MJSON -e 'open my $fh, "<", $ARGV[0] or die $!; print Dump JSON::decode_json(join(q{}, <$fh>));close $fh;' $FILE > $BASENAME.yml
+    ruby -e "require 'yaml'; require 'json';puts YAML.dump JSON.load ARGF.read" $FILE  > $BASENAME.yml
   done
 }
 
