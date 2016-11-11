@@ -48,11 +48,6 @@ get_myip () {
   curl -s ifconfig.me
 }
 
-
-oppai () {
-  perl -le 'use Acme::Oppai;eval q{print "Acme::Oppai"}."->oppai"x(shift||4);' $1
-}
-
 wakeup () {
 	local mac mac_nocolon
 	mac=$1
@@ -191,23 +186,6 @@ install-plenv () {
   fi
 }
 
-install-cpanm () {
-  curl -kL http://cpanmin.us | perl - --self-upgrade $@
-}
-
-install-module-install () {
-  cpanm Module::Setup \
-    Module::Install \
-    Module::Install::TestTarget \
-    Module::Install::GithubMeta \
-    Module::Install::ReadmePodFromPod \
-    Module::Install::ReadmeFromPod \
-    Module::Install::ReadmeMarkdownFromPod \
-    Module::Install::TestBase \
-    Module::Install::CPANfile \
-    Test::Requires
-}
-
 install-amon2flavor () {
   local path_rcfile
   local cwd
@@ -225,18 +203,6 @@ cpan-uninstall () {
   for MODULE in $@
   do
     ${_SUDO} perl -MConfig -MExtUtils::Install -e '($FULLEXT=shift)=~s{::}{/}g;uninstall "$Config{sitearchexp}/auto/$FULLEXT/.packlist",1' $MODULE
-  done
-}
-
-cpan-uninstall-locallib () {
-  local MODULE
-  for MODULE in $@
-  do
-    if [ "x${PERL_LOCAL_LIB_ROOT}" != "x"  -a -d  ${PERL_LOCAL_LIB_ROOT} ] ; then
-      perl -MConfig -MExtUtils::Install -e '($FULLEXT=shift)=~s{::}{/}g; uninstall "$ENV{PERL_LOCAL_LIB_ROOT}/lib/perl5/$Config{archname}/auto/$FULLEXT/.packlist",1' $MODULE
-    else
-      echo 'environtal variable "PERL_LOCAL_LIB_ROOT" is not correct'
-    fi
   done
 }
 
@@ -310,10 +276,6 @@ locallib_delete () {
 ###
 # ruby
 ###
-install-rvm () {
-  bash < <(curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer )
-}
-
 install-rbenv () {
   if is_redhat ; then
     sudo yum install zlib-devel openssl-devel libyaml-devel
@@ -332,10 +294,6 @@ install-rbenv () {
 ###
 # python
 ###
-install-pythonbrew () {
-  curl -kL http://github.com/utahta/pythonbrew/raw/master/pythonbrew-install | bash
-}
-
 install-pyenv () {
   if is_mac ; then
     brew install plenv pyenv-virtualenv
@@ -358,9 +316,6 @@ install-pyenv () {
 ###
 # node.js
 ###
-install-nvm () {
-  git clone https://github.com/creationix/nvm.git ~/.nvm
-}
 install-ndenv () {
   git clone https://github.com/riywo/ndenv.git $HOME/.ndenv
   echo 'path=($HOME/.ndenv/bin(N-/) $path)' >> .zshenv
@@ -412,11 +367,11 @@ rpm_extract () {
 ###
 download-peco () {
   local version
-  [[ "$(curl https://github.com/peco/peco/releases/latest)" =~ releases/tag/([^\']+)\"\> ]];
-  version=${match[1]}
   if is_mac ; then
-    curl -LO https://github.com/peco/peco/releases/download/$version/peco_darwin_amd64.zip
+    brew install peco
   elif is_linux ; then
+    [[ "$(curl https://github.com/peco/peco/releases/latest)" =~ releases/tag/([^\']+)\"\> ]];
+    version=${match[1]}
     curl -LO https://github.com/peco/peco/releases/download/$version/peco_linux_amd64.tar.gz
     tar xzf peco_linux_amd64.tar.gz
   fi
@@ -430,58 +385,11 @@ alias mkr_kernel='mkr hosts -v | jq -r '"'"'.[] | {"name": .name, "kernel": .met
 ###
 # github
 ###
-
 github_repositories () {
   local git_user
   git_user=${1:=ywatase}
   curl https://api.github.com/users/$git_user/repos\?per_page\=100 | jq  '.[].name'
 }
-
-install-packer () {
-  brew tap homebrew/binary
-  brew install homebrew/binary/packer
-}
-
-boot2docker-up () {
-	boot2docker up
-  local target mp
-  boot2docker ssh "sudo modprobe vboxsf && sudo mkdir -p $HOME && sudo mount -t vboxsf home $HOME"
-  for target in /var/folders
-  do
-    mp=$(echo $target | perl -pe 's{/}{_}g;s{^_}{};')
-    boot2docker ssh "sudo modprobe vboxsf && sudo mkdir -p $target && sudo mount -t vboxsf $mp $target"
-  done
-}
-
-docker-registry () {
-  local m
-  local cmd=$1
-  typeset -A m
-  m=("list" 1 "delete" 2 "run" 3)
-  shift
-  if [ "$m[$cmd]" = "" ] ; then
-    echo no subcommand: $cmd
-    echo subcommands: run list delete
-
-  else
-    eval _docker-registry-$cmd "$@"
-  fi
-}
-
-_docker-registry-run () {
-  docker run -p 5000:5000 -d -v ~/docker_registry:/tmp/registry registry
-}
-
-_docker-registry-list () {
-    curl --dump-header - -X GET http://localhost:5000/v1/repositories/$1
-}
-
-_docker-registry-delete () {
-    curl --dump-header - -X DELETE http://localhost:5000/v1/repositories/$1
-}
-
-
-
 ###
 # other
 ###

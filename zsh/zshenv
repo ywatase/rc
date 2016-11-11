@@ -14,9 +14,6 @@ if whence -p /usr/local/bin/brew >/dev/null ; then
 	path=(/usr/local/opt/coreutils/libexec/gnubin(N-/) $path)
 fi
 
-# android sdk
-path=(/usr/local/ec2-api-tools/bin(N-/) $HOME/eclipse(N-/) $HOME/android-sdk(N-/) $path)
-
 # git-tasukete
 path=($HOME/.zsh/git-tasukete.git(N-/) $HOME/android-sdk(N-/) $path)
 
@@ -30,9 +27,6 @@ path=($HOME/.composer/vendor/bin(N-/) $path)
 
 # pythonbrew
 [[ -s "$HOME/.pythonbrew/etc/bashrc" ]] && source "$HOME/.pythonbrew/etc/bashrc"
-
-# perlbrew
-whence -p plenv >/dev/null || set_perlbrew_env
 
 # go
 export GOPATH=$HOME/go
@@ -55,7 +49,3 @@ if whence -p mkrenv >/dev/null ; then
 fi
 
 typeset -U path
-# if (which zprof > /dev/null) ;then
-#     zprof | less
-# fi
-

@@ -196,18 +196,8 @@ recovery_ssh_auth_sock_if_lost_sock () {
 # mac
 ###
 if is_mac ; then
-  install-homebrew () {
-    /usr/bin/ruby -e "$(curl -LfsS https://raw.github.com/mxcl/homebrew/master/Library/Contributions/install_homebrew.rb)"
-  }
   brew-make-alias-of-coreutils () {
     brew ls coreutils 2>&1| grep /bin/g | perl -lne 'chomp; m{/bin/g(\w+)$} and print sprintf q{alias %s=g%s}, $1, $1 ' >> ~/.zsh/zshenv_coreutils_alias
-  }
-  install-vim () {
-    brew install https://raw.github.com/AndrewVos/homebrew-alt/master/duplicates/vim.rb
-    mv /usr/bin/vim /usr/bin/vim72
-  }
-  install-q4m-dev () {
-    zsh -c "$(curl -fsSL https://raw.github.com/gist/1426403)"
   }
   guidiff() {
    if ! [ $# -eq 2 -a -e "${1}" -a -e "${2}" ]; then
@@ -304,20 +294,6 @@ elif is_tmux ; then
   compdef _man man_tmux=man
 fi
 
-# cdd
-source $HOME/.zsh/cdd
-function chpwd() {
-  if is_tmux ; then
-    _reg_pwd_screennum
-    tmux setenv TMUXPWD_$(tmux display -p "#I") $PWD
-  elif is_screen ; then
-    _reg_pwd_screennum
-  fi
-}
-# //cdd
-
-
-
 function ssh_resolve_cname () {
     TARGET=`host $1 | perl -e '$a=join q{},<>;$a=~m/is an alias for ([^\s]+)/; print $1'`
   if [ x$TARGET = x ] ; then
@@ -353,17 +329,12 @@ if is_mac  ; then
   fi
   export EDITOR=/usr/bin/vim
 else
-#  for nodelint-vim
-  if whence -p nodelint | grep '.nvm' >/dev/null 2>&1 ; then
-    export NODE_PATH=$(cd $(dirname $(which nodelint))/..;echo $(pwd -P)/lib/node_modules)
-  fi
   eval `dircolors -b` # set LS_COLORS
   export EDITOR=vim
 fi
 export PAGER=less
 export LESS='-R'
 export TZ=JST-9
-export CVS_RSH=ssh
 export SVN_SSH=ssh
 export WORDCHARS='i*?_-.[]~=&;!#$%^(){}<>'
 umask 022
@@ -440,12 +411,16 @@ compctl -l '' -x 'p[1]' -f -- . source
 compctl -g '(|.)*(-/)' rmdir dircmp rd mdcd mkdir
 compctl -x 'p[2]' -k "(wheel staff ftpadmin okoma)"  -- pubmd
 
-#if (which zprof > /dev/null) ;then
-#	zprof | less
-#fi
-
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
 
-# vim:set ts=2 sw=2 et si:
+# The next line updates PATH for the Google Cloud SDK.
+source '/Users/ywatase/google-cloud-sdk/path.zsh.inc'
 
+# The next line enables shell command completion for gcloud.
+source '/Users/ywatase/google-cloud-sdk/completion.zsh.inc'
+
+# added by travis gem
+[ -f /Users/ywatase/.travis/travis.sh ] && source /Users/ywatase/.travis/travis.sh
+
+# vim:set ts=2 sw=2 et si:

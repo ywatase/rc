@@ -7,9 +7,6 @@
 [submodule "zsh/zsh-perl-completions.git"]
 	path = zsh/zsh-perl-completions.git
 	url = https://github.com/syohex/zsh-perl-completions
-[submodule "zsh/z.git"]
-	path = zsh/z.git
-	url = https://github.com/rupa/z.git
 [submodule "zsh/git-tasukete.git"]
 	path = zsh/git-tasukete.git
 	url = https://github.com/rosylilly/git-tasukete.git
