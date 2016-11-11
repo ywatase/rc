@@ -411,12 +411,12 @@ compctl -x 'p[2]' -k "(wheel staff ftpadmin okoma)"  -- pubmd
 export PATH="/usr/local/heroku/bin:$PATH"
 
 # The next line updates PATH for the Google Cloud SDK.
-source '/Users/ywatase/google-cloud-sdk/path.zsh.inc'
+[ -f ~/google-cloud-sdk/path.zsh.inc ] && source ~/google-cloud-sdk/path.zsh.inc
 
 # The next line enables shell command completion for gcloud.
-source '/Users/ywatase/google-cloud-sdk/completion.zsh.inc'
+[ -f ~/google-cloud-sdk/completion.zsh.inc ] && source ~/google-cloud-sdk/completion.zsh.inc
 
 # added by travis gem
-[ -f /Users/ywatase/.travis/travis.sh ] && source /Users/ywatase/.travis/travis.sh
+[ -f ~/.travis/travis.sh ] && source ~/.travis/travis.sh
 
 # vim:set ts=2 sw=2 et si:
