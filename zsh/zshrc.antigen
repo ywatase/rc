@@ -4,47 +4,15 @@ antigen use oh-my-zsh
 
 compinit -i
 
-local brew os
-if is_mac ; then
-      os=osx
-    if which brew >/dev/null 2>&1 ; then
-         brew=brew
-    fi
-elif is_debian ; then
-    os=debian
-elif is_redhat && which yum >/dev/null 2>&1 ; then
-    os=yum
-fi
 antigen bundles <<EOBUNDLES
-$os
-$brew
-# ruby
-#rake
-#rbenv
-#ruby
-#bundler
-#capistrano
-#gem
-# perl
-cpanm
-#perl
-# javascript
-#node
-#npm
-# others
-#git
-#knife
-#vagrant
-#svn
 command-not-found
 ## Syntax highlighting bundle.
 zsh-users/zsh-syntax-highlighting
 EOBUNDLES
-
 antigen bundle docker
 antigen bundle git-flow
 
-antigen theme $HOME/.zsh themes/komachi
+antigen theme ywatase/zsh-themes komachi
 
 antigen apply
 
