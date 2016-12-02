@@ -10,6 +10,11 @@ setopt cdable_vars sh_word_split auto_param_keys
 # # (マルチバイト文字補完)
 setopt PRINT_EIGHT_BIT
 
+# set default keybind at first.
+# if EDITOR=vi, then automatically load as 'bindkey -v'
+bindkey -e # emacs key bindings
+#bindkey -v             # vi key bindings
+
 autoload -Uz is-at-least
 autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
 add-zsh-hook chpwd chpwd_recent_dirs
@@ -330,8 +335,6 @@ export SVN_SSH=ssh
 export WORDCHARS='i*?_-.[]~=&;!#$%^(){}<>'
 umask 022
 
-bindkey -e             # emacs key bindings
-#bindkey -v             # vi key bindings
 bindkey ' ' magic-space  # also do history expansion on space
 bindkey "^?" backward-delete-char # delete for debian
 
