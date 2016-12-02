@@ -1,0 +1,19 @@
+# https://github.com/zplug/zplug
+[[ -e ~/.zplug/init.zsh ]] || (curl -sL zplug.sh/installer | zsh)
+source ~/.zplug/init.zsh
+zplug "zsh-users/zsh-syntax-highlighting", nice:10
+zplug "zsh-users/zsh-completions"
+zplug "ywatase/zsh-themes", as:theme, use:komachi.zsh-theme
+zplug "b4b4r07/emoji-cli", if:"which jq"
+zplug "stedolan/jq", \
+	from:gh-r, \
+	as:command, \
+	rename-to:jq, \
+	on:"b4b4r07/emoji-cli"
+
+source_if_exist ~/.zsh/zshrc.zplug.local
+# Install plugins if there are plugins that have not been installed
+zplug check --verbose || zplug install
+# Then, source plugins and add commands to $PATH
+zplug load
+#zplug load --verbose

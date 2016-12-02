@@ -32,9 +32,10 @@ autoload -U compinit
 compinit
 
 ###
-# antigen
+# zplug
 ###
-source $HOME/.zsh/zshrc.antigen
+source $HOME/.zsh/zshrc.zplug
+#source $HOME/.zsh/zshrc.antigen
 
 ###
 # setting for peco

@@ -9,4 +9,6 @@ vim/recent.txt
 zsh/zshenv_coreutils_alias
 zsh/cdd_pwd_list
 zsh/cdd_pwd_list.t
+zsh/local/
+zsh/zshrc.*.local
 .DS_Store

@@ -1,4 +1,4 @@
-source $HOME/.zsh/antigen.git/antigen.zsh
+source ~/.zsh/antigen.git/antigen.zsh
 
 antigen use oh-my-zsh
 
@@ -13,7 +13,8 @@ antigen bundle docker
 antigen bundle git-flow
 
 antigen theme ywatase/zsh-themes komachi
+source_if_exist ~/.zsh/antigen.git/antigen.zsh.local
 
 antigen apply
 
-zstyle ':completion::complete:*' cache-path $HOME/.zcompcache
+zstyle ':completion::complete:*' cache-path ~/.zcompcache
