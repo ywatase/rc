@@ -81,7 +81,7 @@ repo = 'taglist.vim'
 repo = 'glidenote/memolist.vim'
 
 [[plugins]]
-repo = 'csexton/jekyll.vim'
+repo = 'parkr/vim-jekyll'
 
 [[plugins]]
 repo = 'tanabe/ToggleCase-vim'

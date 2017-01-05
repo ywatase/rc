@@ -557,9 +557,10 @@ let g:memolist_unite_option = '-start-insert'
 let g:memolist_qfixgrep = 1
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " jekyll
+" See :help jekyll-commands.
+" See :help jekyll-configuration.
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:jekyll_path = $HOME . '/git/github/ywatase/'
-
+let g:jekyll_post_extension = '.md'
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " ToggleCase
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
