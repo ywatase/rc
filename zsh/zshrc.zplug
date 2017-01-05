@@ -10,6 +10,11 @@ zplug "stedolan/jq", \
 	as:command, \
 	rename-to:jq, \
 	on:"b4b4r07/emoji-cli"
+zplug "mollifier/anyframe", if:"which ghq"
+zplug "motemen/ghq", \
+	from:gh-r, \
+	as:command, \
+	on:"mollifier/anyframe"
 
 source_if_exist ~/.zsh/zshrc.zplug.local
 # Install plugins if there are plugins that have not been installed

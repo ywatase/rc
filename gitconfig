@@ -1,5 +1,7 @@
 [include]
 	path = .gitconfig.local
+[ghq]
+	root = ~/git
 [github]
 	user = ywatase
 [user]
