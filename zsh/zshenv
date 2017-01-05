@@ -1,12 +1,5 @@
 # zmodload zsh/zprof && zprof
 setopt no_global_rcs
-source $HOME/.zsh/zshenv.functions
-source $HOME/.zsh/zshenv.xxenv
-
-MANPATH=
-export MANPATH=`manpath`
-export GISTY_DIR=$HOME/dev/gists
-
 # brew
 if whence -p /usr/local/bin/brew >/dev/null ; then
 	path=(/usr/local/bin(N-/) /usr/local/sbin(N-/) $path)
@@ -14,6 +7,12 @@ if whence -p /usr/local/bin/brew >/dev/null ; then
 	# /usr/local/opt/coreutils = $(brew --prefix coreutils)
 	path=(/usr/local/opt/coreutils/libexec/gnubin(N-/) $path)
 fi
+source $HOME/.zsh/zshenv.functions
+source $HOME/.zsh/zshenv.xxenv
+
+MANPATH=
+export MANPATH=`manpath`
+export GISTY_DIR=$HOME/dev/gists
 
 # git-tasukete
 path=($HOME/.zsh/git-tasukete.git(N-/) $HOME/android-sdk(N-/) $path)
