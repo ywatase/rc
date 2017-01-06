@@ -1,23 +1,33 @@
-#!/bin/sh
+#!/bin/sh -xe
 
-ruby -e "$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)"
+if ! [ -x "/usr/local/bin/brew" ] ; then
+	ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+fi
 
-taps=<<EOL
+while read pkg
+do
+	brew install $pkg
+done <<EOL
+zsh
+zsh-completions
+EOL
+
+while read tap
+do
+	brew tap $tap
+done <<EOL
 phinze/homebrew-cask
 PX4/homebrew-px4
 osx-cross/avr
+homebrew/dupes
 EOL
 
-for tap in $taps
+while read pkg
 do
-	brew tap $tap
-done
-
-brew_pkgs=<<EOL
+	brew install $pkg
+done <<EOL
 ansible
-avr-libc
-boot2docker
-brew-cask
+osx-cross/avr/avr-libc
 bsdmake
 cmake
 coreutils
@@ -34,7 +44,6 @@ gnu-sed
 gnu-tar
 go
 gobject-introspection
-grep
 groff
 harfbuzz
 htop-osx
@@ -83,27 +92,20 @@ tree
 wakeonlan
 watch
 wget
-zsh
-zsh-completions
 EOL
 
-for pkg in $brew_pkgs
-do
-	brew install $pkg
-done
 
-cask_pkgs=<<EOL
+while read pkg
+do
+	brew cask install $pkg
+done <<EOL
 alfred
 bettertouchtool
 firefox
 google-chrome
+iterm2
 qlmarkdown
 skype
 vagrant
 virtualbox
 EOL
-
-for pkg in $cask_pkgs
-do
-	brew cask install $pkg
-done
