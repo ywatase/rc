@@ -1,6 +1,7 @@
 # https://github.com/zplug/zplug
 [[ -e ~/.zplug/init.zsh ]] || (curl -sL zplug.sh/installer | zsh)
 source ~/.zplug/init.zsh
+zplug 'zplug/zplug', hook-build:"zplug --self-manage"
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "zsh-users/zsh-completions"
 zplug "ywatase/zsh-themes", as:theme, use:komachi.zsh-theme
