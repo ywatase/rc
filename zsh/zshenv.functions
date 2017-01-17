@@ -377,6 +377,20 @@ download-peco () {
     tar xzf peco_linux_amd64.tar.gz
   fi
 }
+###
+# vagrant
+###
+vagrant-upreload () {
+  local n
+  for n in "${@:-default}"
+  do
+    vagrant up --no-provision $n
+    vagrant vbguest $n
+    vagrant reload $n
+  done
+  vagrant provision
+
+}
 
 ###
 # mackerel
