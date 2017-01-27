@@ -1,4 +1,3 @@
-#zmodload zsh/zprof && zprof
 ###
 # Set shell options
 ##

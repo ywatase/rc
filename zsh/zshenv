@@ -1,4 +1,3 @@
-# zmodload zsh/zprof && zprof
 setopt no_global_rcs
 # brew
 if whence -p /usr/local/bin/brew >/dev/null ; then
