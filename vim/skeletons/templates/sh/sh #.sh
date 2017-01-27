@@ -13,7 +13,7 @@ MAILTO=
 VERSION=0.1
 
 main () {
-  init $@
+  init "$@"
 
   # write here
 }
@@ -24,11 +24,11 @@ init () {
     case $opt in
       D) FLAG_DEBUG=1
         ;;
-      m) MAILTO=$OPTARG 
+      m) MAILTO=$OPTARG
         ;;
-      v) show_version; usage 
+      v) show_version; usage
         ;;
-      *) usage 
+      *) usage
         ;;
     esac
   done
@@ -38,7 +38,7 @@ init () {
     usage
   fi
 
-  if [ "$MAILTO" != "" ] ; then 
+  if [ "$MAILTO" != "" ] ; then
     _send_mail
   fi
 }
@@ -63,6 +63,6 @@ show_version () {
 	echo -e `basename $0` Version: $VERSION
 }
 
-main $@
+main "$@"
 
 # vim:set ts=2 et sw=2 si:
