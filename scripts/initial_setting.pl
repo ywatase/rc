@@ -28,10 +28,6 @@ Skel - Skeleton of Perl Script
 
 =over 8
 
-=item B<-f> filename
-
-set filename
-
 =item B<-h>
 
 show help
@@ -77,7 +73,7 @@ my %hash = (
 main();
 
 sub main {
-    my $rh_args = &_init_args('f:');
+    my $rh_args = &_init_args();
     _clone_submodules();
     _symlink_dot_files();
     _add_zshenv($hash{'.zsh'});
@@ -197,14 +193,6 @@ sub _init_args {
 	if (exists $args{h}) { pod2usage(1); exit 0; }
   elsif (exists $args{m}) { pod2usage(-exitstatus => 0, -verbose => 2); exit 0;}
   elsif (exists $args{v}) { version(); exit 0; }
-  if (exists $args{f})
-  {
-    if (not -e $args{f})
-    {
-      print "Can't access file: $args{f}\n";
-      exit 1;
-    }
-  }
 	return \%args;
 }
 
