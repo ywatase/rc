@@ -77,7 +77,6 @@ sub main {
     _clone_submodules();
     _symlink_dot_files();
     _add_zshenv($hash{'.zsh'});
-#    _setup_autojump();
 }
 
 #################################################
@@ -142,18 +141,6 @@ sub _symlink_dot_files {
     while(my ($target, $src) = each %hash){
         _mk_symlink(realpath($src),File::Spec->catfile($ENV{HOME}, $target));
     }
-}
-
-=item B<_setup_autojump> - install autojump
-
-=cut
-
-sub _setup_autojump {
-    my $dir = getcwd;
-    chdir File::Spec->catfile($FindBin::Bin, qw(.. zsh autojump.git));
-    system('./install.sh', '--local');
-    make_path(File::Spec->catfile($ENV{HOME}, qw(.local share autojump)));
-    chdir $dir;
 }
 
 =item B<_init_args> - initialize arguments
