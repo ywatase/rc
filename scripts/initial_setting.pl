@@ -32,18 +32,6 @@ Skel - Skeleton of Perl Script
 
 set filename
 
-=item B<-V>
-
-verbose mode
-
-=item B<-d>
-
-debug mode. more verbose.
-
-=item B<-D>
-
-debug mode. In this mode, never run command. only 'login' and 'enable'.
-
 =item B<-h>
 
 show help
@@ -202,7 +190,7 @@ sub _setup_autojump {
 
 sub _init_args {
 	my $args_pattern = shift;
-	$args_pattern .= 'hvmDdV';
+	$args_pattern .= 'hvm';
 
 	my %args = ();
 	if ( not getopts($args_pattern, \%args)) {pod2usage(2); exit 0; }
