@@ -54,20 +54,25 @@ C<Getopt::Std>, C<Pod::Usage>
 =cut
 
 my %hash = (
-    '.vim'              => File::Spec->catfile($FindBin::Bin, qw(.. vim)),
-    '.vimrc'            => File::Spec->catfile($FindBin::Bin, qw(.. vim vimrc)),
-    '.gemrc'            => File::Spec->catfile($FindBin::Bin, qw(.. gemrc)),
-    '.gvimrc'           => File::Spec->catfile($FindBin::Bin, qw(.. vim gvimrc)),
-    '.gitconfig'        => File::Spec->catfile($FindBin::Bin, qw(.. gitconfig)),
-    '.zsh'              => File::Spec->catfile($FindBin::Bin, qw(.. zsh)),
-    '.zshrc'            => File::Spec->catfile($FindBin::Bin, qw(.. zsh zshrc)),
-    '.tmux.conf'        => File::Spec->catfile($FindBin::Bin, qw(.. tmux.conf)),
-    '.screenrc'         => File::Spec->catfile($FindBin::Bin, qw(.. screen screenrc)),
-    '.screen_setting'   => File::Spec->catfile($FindBin::Bin, qw(.. screen screen_setting.linux_utf8)),
-    '.perltidyrc'       => File::Spec->catfile($FindBin::Bin, qw(.. perl perltidyrc_critic)),
-    '.perlcriticrc'     => File::Spec->catfile($FindBin::Bin, qw(.. perl perlcriticrc)),
-    '.replyrc'          => File::Spec->catfile($FindBin::Bin, qw(.. perl replyrc)),
-    '.replyrc_vimshell' => File::Spec->catfile($FindBin::Bin, qw(.. perl replyrc_vimshell)),
+    '.vim'       => File::Spec->catfile( $FindBin::Bin, qw(.. vim) ),
+    '.vimrc'     => File::Spec->catfile( $FindBin::Bin, qw(.. vim vimrc) ),
+    '.gemrc'     => File::Spec->catfile( $FindBin::Bin, qw(.. gemrc) ),
+    '.gvimrc'    => File::Spec->catfile( $FindBin::Bin, qw(.. vim gvimrc) ),
+    '.gitconfig' => File::Spec->catfile( $FindBin::Bin, qw(.. gitconfig) ),
+    '.zsh'       => File::Spec->catfile( $FindBin::Bin, qw(.. zsh) ),
+    '.zshrc'     => File::Spec->catfile( $FindBin::Bin, qw(.. zsh zshrc) ),
+    '.tmux.conf' => File::Spec->catfile( $FindBin::Bin, qw(.. tmux.conf) ),
+    '.screenrc' => File::Spec->catfile( $FindBin::Bin, qw(.. screen screenrc) ),
+    '.screen_setting' => File::Spec->catfile(
+        $FindBin::Bin, qw(.. screen screen_setting.linux_utf8)
+    ),
+    '.perltidyrc' =>
+        File::Spec->catfile( $FindBin::Bin, qw(.. perl perltidyrc_critic) ),
+    '.perlcriticrc' =>
+        File::Spec->catfile( $FindBin::Bin, qw(.. perl perlcriticrc) ),
+    '.replyrc' => File::Spec->catfile( $FindBin::Bin, qw(.. perl replyrc) ),
+    '.replyrc_vimshell' =>
+        File::Spec->catfile( $FindBin::Bin, qw(.. perl replyrc_vimshell) ),
 );
 
 main();
@@ -76,7 +81,7 @@ sub main {
     my $rh_args = &_init_args();
     _clone_submodules();
     _symlink_dot_files();
-    _add_zshenv($hash{'.zsh'});
+    _add_zshenv( $hash{'.zsh'} );
 }
 
 #################################################
@@ -111,7 +116,7 @@ END
 
 sub _clone_submodules {
     my $dir = getcwd;
-    chdir File::Spec->catfile($FindBin::Bin, qw(..));
+    chdir File::Spec->catfile( $FindBin::Bin, qw(..) );
     system 'git submodule init';
     system 'git submodule update';
     chdir $dir;
@@ -122,12 +127,13 @@ sub _clone_submodules {
 =cut
 
 sub _mk_symlink {
-    my ($src, $target) = @_;
+    my ( $src, $target ) = @_;
     local $@;
-    eval{
-        symlink($src, $target) or warn "fail to create symlink: ln -s $src $target";
+    eval {
+        symlink( $src, $target )
+            or warn "fail to create symlink: ln -s $src $target";
     };
-    if($@){
+    if ($@) {
         die("fail to create symlink: ln -s $src $target\n$@");
     }
     return;
@@ -138,8 +144,9 @@ sub _mk_symlink {
 =cut
 
 sub _symlink_dot_files {
-    while(my ($target, $src) = each %hash){
-        _mk_symlink(realpath($src),File::Spec->catfile($ENV{HOME}, $target));
+    while ( my ( $target, $src ) = each %hash ) {
+        _mk_symlink( realpath($src),
+            File::Spec->catfile( $ENV{HOME}, $target ) );
     }
 }
 
@@ -158,15 +165,18 @@ sub _symlink_dot_files {
 =cut
 
 sub _init_args {
-	my $args_pattern = shift;
-	$args_pattern .= 'hvm';
+    my $args_pattern = shift;
+    $args_pattern .= 'hvm';
 
-	my %args = ();
-	if ( not getopts($args_pattern, \%args)) {pod2usage(2); exit 0; }
-	if (exists $args{h}) { pod2usage(1); exit 0; }
-  elsif (exists $args{m}) { pod2usage(-exitstatus => 0, -verbose => 2); exit 0;}
-  elsif (exists $args{v}) { version(); exit 0; }
-	return \%args;
+    my %args = ();
+    if ( not getopts( $args_pattern, \%args ) ) { pod2usage(2); exit 0; }
+    if ( exists $args{h} ) { pod2usage(1); exit 0; }
+    elsif ( exists $args{m} ) {
+        pod2usage( -exitstatus => 0, -verbose => 2 );
+        exit 0;
+    }
+    elsif ( exists $args{v} ) { version(); exit 0; }
+    return \%args;
 }
 
 =item B<version> - show version
@@ -181,7 +191,7 @@ sub _init_args {
 =cut
 
 sub version {
-	print <<EOS;
+    print <<EOS;
 VERSION: $VERSION
 EOS
 }
