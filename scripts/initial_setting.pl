@@ -12,14 +12,7 @@ use File::Path qw(make_path);
 use FindBin;
 use Cwd qw(realpath getcwd);
 
-
-use constant DEBUG_LEVEL_USUAL   => 0;
-use constant DEBUG_LEVEL_MESSAGE => 1;
-use constant DEBUG_LEVEL_VERBOSE => 2;
-use constant DEBUG_LEVEL_PRETEND => 3;    # not run command
-
 my $VERSION = 0.0;
-my $DEBUG   = DEBUG_LEVEL_USUAL;
 
 =pod
 
@@ -216,9 +209,6 @@ sub _init_args {
 	if (exists $args{h}) { pod2usage(1); exit 0; }
   elsif (exists $args{m}) { pod2usage(-exitstatus => 0, -verbose => 2); exit 0;}
   elsif (exists $args{v}) { version(); exit 0; }
-	if (exists $args{D}) { $DEBUG = DEBUG_LEVEL_PRETEND}
-	if (exists $args{d}) { $DEBUG = DEBUG_LEVEL_VERBOSE}
-	if (exists $args{V}) { $DEBUG = DEBUG_LEVEL_MESSAGE}
   if (exists $args{f})
   {
     if (not -e $args{f})
