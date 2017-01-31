@@ -139,6 +139,9 @@ alias sshv="$(whence -p ssh) -l vagrant -o 'NoHostAuthenticationForLocalhost=yes
 alias be="bundle exec"
 alias ce="carton exec"
 
+diary () { vim _posts/$(date '+%Y-%m-%d' --date "${1:-today}")-diary.md }
+diary_yesterday () { diary yesterday }
+
 # git
 if whence -p hub >/dev/null 2>/dev/null ; then
   eval "$(hub alias -s)"
