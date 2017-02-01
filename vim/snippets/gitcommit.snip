@@ -1,0 +1,68 @@
+snippet category
+    # 通常版
+    #
+    # fix：バグ修正
+    # hotfix：クリティカルなバグ修正
+    # add：新規（ファイル）機能追加
+    # update：機能修正（バグではない）
+    # change：仕様変更
+    # clean：整理（リファクタリング等）
+    # disable：無効化（コメントアウト等）
+    # remove：削除（ファイル）
+    # upgrade：バージョンアップ
+    # revert：変更取り消し
+    #
+    # ライト版
+    #
+    # fix：バグ修正
+    # add：新規（ファイル）機能追加
+    # update：機能修正（バグではない）
+    # remove：削除（ファイル）
+
+snippet rule1line
+    # 1行目: [コミット種別]チケット番号 要約
+    # 2行目: 空行
+    # 3行目: 概要
+    # [fix]refs #110 削除フラグが更新されない不具合の修正
+snippet rule3line
+    # 1行目: [コミット種別] 要約
+    # 2行目: 空行
+    # 3行目: チケット番号 概要
+    # [fix]削除フラグが更新されない不具合の修正
+    #
+    # refs #110 更新SQLの対象カラムに削除フラグが含まれていなかったため追加しました。
+
+snippet oshare
+    # http://qiita.com/ken_c_lo/items/4cb49f0fb74e8778804d
+    # undesirable 好ましくない
+    # avoid, circumvent   回避する
+    # retrieve    取りに行く(fetch / 「受け取る」よりもっと能動的に「取りに行く」ニュアンスを示す)
+    # revise  = fix
+    # tweak   微調整する
+    # in the sight of 〜  〜の視点で (point of view をわざと仰々しく言った感じ)
+    # refer   参照する
+    # disambiguate    曖昧さをなくす
+    # quite   とても（veryのかわりにつかえる
+    # literally   文字通り
+    # exactly まさに、確かに、イグザクトリー
+    # resurrect   よみがえらせる
+    # in favor of 〜に賛成して, 何かに沿って
+    # get rid of  好ましくないものを取り除く
+    # kick out    get rid of の強いバージョン、腹立たしさある
+    # introduce   導入する
+    # extract 抽出する
+    # no longer used  もはや使われてない
+    # R.I.P.  安らかに眠れ（もう使ってないコードを消す時などに。「Removeでは語りきれない思いがあるんだ」 by @idesaku ）
+    # defeat  倒す、打ち負かす
+    # :put_litter_in_its_place::put_litter_in_its_place:  ゴミはゴミ箱へ（不要なコメントやwhitespaceを消したときなど）
+    # cosmetic change, cosme  インデントを美しくした時など
+    # fruitful    みのりの多い〜, fruitful discussion など
+    # :golf::golf:    コードをより短くした（code golf）
+    # Take a cup of coffee    JS を CoffeeScript 化した, またはCoffeeをよりCoffeeらしく書いた
+    # kick in 効きはじめる, 適用される など（DHHが使っていたらしい。）
+    # A in B out  Bの変わりにAを導入（サッカー的な感じ。Gemの差し替えなどに使う）
+    # enable to work  動くようにした
+    # wipe out    拭い去る（get rid of, kick out の亜種）
+    # stop rendering 〜   〜を表示しない
+    # aesthetic   cosmetic の亜種（多分）
+    # Ooops! :scream:   しょうもないミスした時などに。 :scream_cat: :scream_cat: 使うとかわいみでる。
