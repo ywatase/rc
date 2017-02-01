@@ -1,7 +1,4 @@
 #!/usr/bin/env perl
-# Last Modified: 2015/02/10.
-# Author: Y.Watase <ywatase@gmail.com>
-
 use strict;
 use warnings;
 use Getopt::Std;
@@ -12,21 +9,25 @@ use File::Path qw(make_path);
 use FindBin;
 use Cwd qw(realpath getcwd);
 
-my $VERSION = 0.0;
+my $VERSION = 0.01;
 
 =pod
 
 =head1 NAME
 
-Skel - Skeleton of Perl Script
+initial_setting.pl - setup environment. cf) vim, zsh, tmux ...
 
 =head1 SYNOPSIS
 
-  skel.pl [options]
+  initial_setting.pl [options]
 
 =head1 OPTIONS
 
 =over 8
+
+=item B<-c>
+
+cleanup symlink
 
 =item B<-h>
 
@@ -53,32 +54,35 @@ C<Getopt::Std>, C<Pod::Usage>
 
 =cut
 
+sub cf {
+    return File::Spec->catfile( $FindBin::Bin, '..', @_ );
+}
+
 my %hash = (
-    '.vim'       => File::Spec->catfile( $FindBin::Bin, qw(.. vim) ),
-    '.vimrc'     => File::Spec->catfile( $FindBin::Bin, qw(.. vim vimrc) ),
-    '.gemrc'     => File::Spec->catfile( $FindBin::Bin, qw(.. gemrc) ),
-    '.gvimrc'    => File::Spec->catfile( $FindBin::Bin, qw(.. vim gvimrc) ),
-    '.gitconfig' => File::Spec->catfile( $FindBin::Bin, qw(.. gitconfig) ),
-    '.zsh'       => File::Spec->catfile( $FindBin::Bin, qw(.. zsh) ),
-    '.zshrc'     => File::Spec->catfile( $FindBin::Bin, qw(.. zsh zshrc) ),
-    '.tmux.conf' => File::Spec->catfile( $FindBin::Bin, qw(.. tmux.conf) ),
-    '.screenrc' => File::Spec->catfile( $FindBin::Bin, qw(.. screen screenrc) ),
-    '.screen_setting' => File::Spec->catfile(
-        $FindBin::Bin, qw(.. screen screen_setting.linux_utf8)
-    ),
-    '.perltidyrc' =>
-        File::Spec->catfile( $FindBin::Bin, qw(.. perl perltidyrc_critic) ),
-    '.perlcriticrc' =>
-        File::Spec->catfile( $FindBin::Bin, qw(.. perl perlcriticrc) ),
-    '.replyrc' => File::Spec->catfile( $FindBin::Bin, qw(.. perl replyrc) ),
-    '.replyrc_vimshell' =>
-        File::Spec->catfile( $FindBin::Bin, qw(.. perl replyrc_vimshell) ),
+    '.vim'              => cf(qw(vim)),
+    '.vimrc'            => cf(qw(vim vimrc)),
+    '.gemrc'            => cf(qw(gemrc)),
+    '.gvimrc'           => cf(qw(vim gvimrc)),
+    '.gitconfig'        => cf(qw(gitconfig)),
+    '.zsh'              => cf(qw(zsh)),
+    '.zshrc'            => cf(qw(zsh zshrc)),
+    '.tmux.conf'        => cf(qw(tmux.conf)),
+    '.screenrc'         => cf(qw(screen screenrc)),
+    '.screen_setting'   => cf(qw(screen screen_setting.linux_utf8)),
+    '.perltidyrc'       => cf(qw(perl perltidyrc_critic)),
+    '.perlcriticrc'     => cf(qw(perl perlcriticrc)),
+    '.replyrc'          => cf(qw(perl replyrc)),
+    '.replyrc_vimshell' => cf(qw(perl replyrc_vimshell)),
 );
 
 main();
 
 sub main {
     my $rh_args = &_init_args();
+    if ( $rh_args->{c} ) {
+        _cleanup_symlink();
+        return;
+    }
     _clone_submodules();
     _symlink_dot_files();
     _add_zshenv( $hash{'.zsh'} );
@@ -150,12 +154,19 @@ sub _symlink_dot_files {
     }
 }
 
+=item B<_cleanup_symlink> - cleanup dot files symbolic link
+
+=cut
+
+sub _cleanup_symlink {
+    while ( my ( $target, $src ) = each %hash ) {
+        unlink File::Spec->catfile( $ENV{HOME}, $target );
+    }
+}
+
 =item B<_init_args> - initialize arguments
 
-		args($sc1)
-
-		  $sc1    : scaler (arguments pattern for Getopt::getopts)
-
+		args(none)
 
 		return value
 
@@ -165,8 +176,7 @@ sub _symlink_dot_files {
 =cut
 
 sub _init_args {
-    my $args_pattern = shift;
-    $args_pattern .= 'hvm';
+    my $args_pattern = 'chvm';
 
     my %args = ();
     if ( not getopts( $args_pattern, \%args ) ) { pod2usage(2); exit 0; }
@@ -200,7 +210,7 @@ EOS
 
 =head1 Author
 
- Y.Watase <watase.yusuke@adways.net>
+ Y.Watase <ywatase@gmail.com>
 
 =cut
 
