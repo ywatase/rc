@@ -1,10 +1,7 @@
 package <+FILE DIRNAME+>::<+FILE NAME ROOT+>;
 use strict;
 use warnings;
-use Class::Accessor::Lite (
-    new => 1,
-    rw  => [qw()],
-);
+use Class::Tiny ();
 
 our $VERSION = "0.01";
 
@@ -38,7 +35,7 @@ hoge
 
 =head1 PREREQUISITES
 
-C<Class::Accessor::Lite>
+C<Class::Tiny>
 
 =head1 Author
 
