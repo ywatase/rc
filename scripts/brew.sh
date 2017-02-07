@@ -32,14 +32,13 @@ do
 	brew cask install $pkg
 done <<EOL
 alfred
-bettertouchtool
 firefox
 google-chrome
 iterm2
 qlmarkdown
-skype
 vagrant
 virtualbox
+xquartz
 EOL
 
 
@@ -52,10 +51,8 @@ ansible
 bsdmake
 cmake
 coreutils
-corkscrew
 ctags
 curl
-docker
 dfu-programmer
 gettext
 git
@@ -70,7 +67,6 @@ htop-osx
 hub
 imagemagick
 innotop
-lynx
 memcached
 mongodb
 msgpack
@@ -79,7 +75,6 @@ ngrep
 nikto
 nkf
 nmap
-openldap
 openssh
 openssl
 packer
@@ -91,7 +86,6 @@ plenv
 proctools
 pstree
 pyenv
-rdesktop
 reattach-to-user-namespace
 redis
 rename
@@ -103,6 +97,7 @@ tig
 tree
 wakeonlan
 watch
+w3m
 wget
 EOL
 
