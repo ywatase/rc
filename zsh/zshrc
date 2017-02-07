@@ -110,6 +110,10 @@ else
   alias ls="ls --color=auto --show-control-chars"
   alias keybord_us="sudo loadkeys us"
   alias keybord_jp="sudo loadkeys jp106"
+  if whence -p upower > /dev/null 2>&1 ; then
+    alias battery="upower -i $(upower -e | grep 'BAT') | grep -E 'state|to\ full|percentage'"
+  fi
+
 fi
 alias la="ls -aF"
 alias ll="ls -l"
