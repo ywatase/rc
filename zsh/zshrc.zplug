@@ -16,6 +16,10 @@ zplug "motemen/ghq", \
 	from:gh-r, \
 	as:command, \
 	on:"mollifier/anyframe"
+zplug "peco/peco", \
+	from:gh-r, \
+	as:command
+
 
 source_if_exist ~/.zsh/zshrc.zplug.local
 # Install plugins if there are plugins that have not been installed
