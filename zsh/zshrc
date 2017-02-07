@@ -326,6 +326,9 @@ if is_mac  ; then
     eval $(gdircolors ~/.zsh/dircolors-solarized.git/dircolors.256dark)
   fi
   export EDITOR=/usr/bin/vim
+elif [ -e ~/.dir_colors/dircolors ] ; then
+  eval `dircolors ~/.dir_colors/dircolors`
+  export EDITOR=vim
 else
   eval `dircolors -b` # set LS_COLORS
   export EDITOR=vim
