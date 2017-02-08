@@ -92,6 +92,7 @@ rename
 rpm2cpio
 sqlite
 subversion
+teensy_loader_cli
 the_silver_searcher
 tig
 tree
