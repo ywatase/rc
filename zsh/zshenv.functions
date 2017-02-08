@@ -260,6 +260,9 @@ json2yaml () {
   done
 }
 
+json2go () { open "https://mholt.github.io/json-to-go/"}
+curl2go () { open "https://mholt.github.io/curl-to-go/"}
+
 locallib () {
   echo "OLD PATH: $PATH"
   if [ "$1" = "" ] ; then
