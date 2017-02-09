@@ -108,8 +108,8 @@ if is_mac ; then
   }
 else
   alias ls="ls --color=auto --show-control-chars"
-  alias keybord_us="sudo loadkeys us; setxkbmap -layout us"
-  alias keybord_jp="sudo loadkeys jp106; setxkbmap -layout jp"
+  alias keyboard_us="sudo loadkeys us; setxkbmap -layout us -model pc104"
+  alias keyboard_jp="sudo loadkeys jp106; setxkbmap -layout jp -model pc106"
   if whence -p upower > /dev/null 2>&1 ; then
     alias battery="upower -i $(upower -e | grep 'BAT') | grep -E 'state|to\ full|percentage'"
   fi
