@@ -98,9 +98,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,--------------------------------------------------.           ,--------------------------------------------------.
  * | RESET  |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
  * |--------+------+------+------+------+-------------|           |------+------+------+------+------+------+--------|
- * |        |      |      | MsUp |      |      |      |           |      |      |      | C+Up |      |      |        |
+ * |        |      |      | MsUp |      |      |      |           |      |      |Cmd+<-|Ctl+Up|Cmd+->|      |        |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * |        |      |MsLeft|MsDown|MsRght|      |------|           |------|      |C+Left|C+Down|C+Right|      |        |
+ * |        |      |MsLeft|MsDown|MsRght|      |------|           |------|      |Ctl+<-|C+Down|Ctl+->|      |        |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
  * |        |      |      |      |      |      |      |           |      |      |      | Prev | Next |      |        |
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
@@ -126,7 +126,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                  KC_TRNS, KC_TRNS, KC_TRNS,
     // right hand
        KC_TRNS,  KC_TRNS, KC_TRNS,       KC_TRNS,       KC_TRNS,        KC_TRNS, KC_TRNS,
-       KC_TRNS,  KC_TRNS, KC_TRNS,       LCTL(KC_UP),   KC_TRNS,        KC_TRNS, KC_TRNS,
+       KC_TRNS,  KC_TRNS, LGUI(KC_LEFT), LCTL(KC_UP),   LGUI(KC_RIGHT), KC_TRNS, KC_TRNS,
                  KC_TRNS, LCTL(KC_LEFT), LCTL(KC_DOWN), LCTL(KC_RIGHT), KC_TRNS, KC_TRNS,
        KC_TRNS,  KC_TRNS, KC_TRNS,       KC_MPRV,       KC_MNXT,        KC_TRNS, KC_TRNS,
                           KC_VOLD,       KC_VOLU,       KC_MUTE,        KC_TRNS, KC_TRNS,
