@@ -19,6 +19,9 @@ zplug "motemen/ghq", \
 zplug "peco/peco", \
 	from:gh-r, \
 	as:command
+zplug "key-amb/shove", \
+	as:command, \
+	use:"bin/shove"
 
 
 source_if_exist ~/.zsh/zshrc.zplug.local
