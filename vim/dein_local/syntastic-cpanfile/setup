@@ -1,8 +1,0 @@
-#!/bin/bash
-
-CUR_DIR=$(cd $(dirname $0); pwd -P)
-PLUGIN_NAME=$(basename $CUR_DIR)
-PLUGIN_DIR=${CUR_DIR}/../../dein/repos/github.com/moznion/${PLUGIN_NAME}
-
-
-ln -sf $PLUGIN_DIR/syntax_checker/cpanfile ~/.vim/dein/repos/github.com/scrooloose/syntastic/syntax_checkers/

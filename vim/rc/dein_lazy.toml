@@ -42,10 +42,10 @@ repo  = 'moznion/vim-cpanfile'
 on_ft = ['cpanfile']
 
 [[plugins]]
-repo    = 'moznion/syntastic-cpanfile'
+#repo    = 'moznion/syntastic-cpanfile'
+repo    = 'ywatase/syntastic-cpanfile'
 on_ft   = ['cpanfile']
 depends = ['syntastic']
-build   = '../../../../../dein_local/syntastic-cpanfile/setup'
 
 ################################################################################
 # Go
