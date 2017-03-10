@@ -449,6 +449,24 @@ xquartz_if_not_running() {
 #	export DISPLAY=:0
 }
 
+autoload -U regexp-replace
+setopt re_match_pcre
+if whence -p ansible-lint >/dev/null 2>&1 ; then
+  ansible-lint () {
+    local arg
+    local -a args
+    for arg in "$@"
+    do
+      if [[ "$arg" =~ "\.ya?ml$" && -e "$arg" ]] ; then
+        arg=${arg:a}
+        regexp-replace arg '(files|templates|tasks|handlers|vars|defaults|meta)/[^/]+\.ya?ml' ''
+      fi
+      args=($args $arg)
+    done
+    $(whence -p ansible-lint) $args
+  }
+fi
+
 
 docker-run-x () {
 	xquartz_if_not_running

@@ -68,6 +68,7 @@ augroup MyVimrc
     autocmd BufRead,BufNewFile *.tmpl :set filetype=gohtmltmpl
     autocmd BufRead,BufNewFile *.go   :set filetype=go
     autocmd BufRead,BufNewFile *.clj  :set filetype=clojure
+    autocmd BufRead,BufNewFile main.yml :set filetype=ansible.yaml
 "    autocmd FileType go autocmd BufWritePre <buffer> Fmt
     autocmd BufRead,BufNewFile cpanfile call MyCpanfileSetting()
     autocmd FileType ruby,eruby call MyRubySettings()
