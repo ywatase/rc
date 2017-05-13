@@ -23,7 +23,6 @@ done <<EOL
 phinze/homebrew-cask
 PX4/homebrew-px4
 osx-cross/avr
-homebrew/dupes
 EOL
 
 # apps
