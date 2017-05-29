@@ -53,6 +53,7 @@ coreutils
 ctags
 curl
 dfu-programmer
+freetype
 gettext
 git
 git-flow
@@ -62,11 +63,13 @@ go
 gobject-introspection
 groff
 harfbuzz
+heroku
 htop-osx
 hub
 imagemagick
 innotop
 memcached
+minio
 mongodb
 msgpack
 mysql
@@ -85,6 +88,7 @@ plenv
 proctools
 pstree
 pyenv
+pyenv-virtualenv
 reattach-to-user-namespace
 redis
 rename
@@ -92,6 +96,7 @@ rpm2cpio
 sqlite
 subversion
 teensy_loader_cli
+terraform
 the_silver_searcher
 tig
 tree
