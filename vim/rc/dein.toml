@@ -57,25 +57,25 @@ on_source = ['unite.vim']
 repo = 'LeafCage/foldCC'
 
 [[plugins]]
-repo = 'Align'
+repo = 'vim-scripts/Align'
 
 [[plugins]]
 repo = 'rking/ag.vim'
 
 [[plugins]]
-repo = 'EnhCommentify.vim'
+repo = 'vim-scripts/EnhCommentify.vim'
 
 [[plugins]]
-repo = 'nginx.vim'
+repo = 'vim-scripts/nginx.vim'
 
 [[plugins]]
-repo = 'sudo.vim'
+repo = 'vim-scripts/sudo.vim'
 
 [[plugins]]
-repo = 'surround.vim'
+repo = 'vim-scripts/surround.vim'
 
 [[plugins]]
-repo = 'taglist.vim'
+repo = 'vim-scripts/taglist.vim'
 
 [[plugins]]
 repo = 'glidenote/memolist.vim'
