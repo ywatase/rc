@@ -84,9 +84,6 @@ repo = 'glidenote/memolist.vim'
 repo = 'parkr/vim-jekyll'
 
 [[plugins]]
-repo = 'tanabe/ToggleCase-vim'
-
-[[plugins]]
 repo = 'bronson/vim-trailing-whitespace'
 
 # reference viewer
@@ -144,13 +141,6 @@ repo = 'vim-jp/vimdoc-ja'
 # helpgrep {word}@en
 # 英語を優先したい場合
 # :set helplang=en,ja
-
-#[[plugins]]
-#repo = 'tsukkee/lingr-vim'
-
-# colorscheme
-[[plugins]]
-repo = 'yuroyoro/yuroyoro256.vim'
 
 [[plugins]]
 repo = 'tomasr/molokai'

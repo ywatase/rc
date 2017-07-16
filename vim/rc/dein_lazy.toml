@@ -134,22 +134,6 @@ repo = 'vim-scripts/jellybeans.vim'
 gui  = 1
 
 [[plugins]]
-repo = 'vim-scripts/moss'
-gui  = 1
-
-[[plugins]]
-repo = 'vim-scripts/tir_black'
-gui  = 1
-
-[[plugins]]
-repo = 'vim-scripts/softblue'
-gui  = 1
-
-[[plugins]]
-repo = 'vim-scripts/WuYe'
-gui  = 1
-
-[[plugins]]
 repo = 'vim-scripts/mrkn256.vim'
 gui  = 1
 
