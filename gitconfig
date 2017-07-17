@@ -65,6 +65,11 @@
   # grep関連
 	gr = grep
 	gn = grep -n
+  # stash
+	stsh    = stash --keep-index          # stash only unstaged changes to tracked files
+	staash  = stash --include-untracked   # stash untracked and tracked files
+	staaash = stash --all                 # stash ignored, untracked, and tracked files
+
 [tig]
 	vertical-split = no
 [tig "bind"]
