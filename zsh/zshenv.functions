@@ -506,6 +506,12 @@ docker-chrome-ja-with-full () {
   docker-run-x --rm  --privileged -v $HOME/Downloads:/root/Downloads -v "$HOME/Library/Application Support/Google/Chrome/:/data:ro" "$@" --name ywatachrome ywatase/chrome_ja
 }
 
+minio-run () {
+  [ -d ~/minio ] || mkdir ~/minio
+   docker run -p 9000:9000 -v ~/minio:/export -d --name minio minio/minio server /export
+   docker logs minio
+}
+
 vmpf () {
   port=$1
   vm=${2:-${C_DOCKER_MACHINE}}
