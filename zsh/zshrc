@@ -39,7 +39,6 @@ compinit
 # zplug
 ###
 source $HOME/.zsh/zshrc.zplug
-#source $HOME/.zsh/zshrc.antigen
 
 ###
 # setting for peco
@@ -123,7 +122,6 @@ alias rdesk_full="rdesk -f"
 alias git-submodule-pull="git submodule foreach 'git checkout master; git pull'"
 alias git-submodule-fetch="git submodule foreach 'git checkout master; git fetch'"
 alias get_viplugin="lftp -u viplugin,667well www.satokar.com"
-alias start_selenium_server='java -jar /home/watase/selenium-server/selenium-server.jar'
 alias make_patch='diff -u --strip-trailing-cr -B -w'
 alias delete_proxy_env='unset HTTP_PROXY HTTPS_PROX http_proxy https_proxyy'
 alias -g V='| vim -'
@@ -347,7 +345,6 @@ umask 022
 bindkey ' ' magic-space  # also do history expansion on space
 bindkey "^?" backward-delete-char # delete for debian
 
-
 ###
 # keybord-history
 ###
@@ -439,4 +436,5 @@ source_if_exist ~/google-cloud-sdk/completion.zsh.inc
 # added by travis gem
 source_if_exist ~/.travis/travis.sh
 
+true
 # vim:set ts=2 sw=2 et si:
