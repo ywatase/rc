@@ -149,6 +149,22 @@ if whence -p hub >/dev/null 2>/dev/null ; then
   eval "$(hub alias -s)"
 fi
 
+gitlab-changelog () {
+  local cmd="$1"
+  local opt=
+  if [ $# -gt 0 ] ; then
+    shift
+  fi
+  case $cmd in
+    create_note)
+      opt=" --gitlab-project-name=$(git config remote.origin.url | sed -e 's#^[^:]*:##' -e 's#^https?://[^/]*/##' -e 's#\.git$##')"
+      ;;
+    *)
+      ;;
+  esac
+  gitlab_awesome_release $cmd $opt "$@"
+}
+
 # mysql prompt
 export MYSQL_PS1='MySQL \v \u@\h(\d)>'
 # ssh agent
