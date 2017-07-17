@@ -480,7 +480,7 @@ nmap <F12> :Ref webdict<space>
 " TSkelton
 """"""""""""""""""""""""""""""
 let g:tskelDateFormat = '%Y/%m/%d'
-let g:tskelUserName   = 'Yusuke Wtase'
+let g:tskelUserName   = 'Yusuke Watase'
 let g:tskelUserEmail  = 'ywatase@gmail.com'
 let g:tskelUserWWW    = 'http://u-suke.org/'
 let g:tskelLicense    = 'apache'
