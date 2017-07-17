@@ -80,6 +80,7 @@ augroup MyVimrc
     autocmd FileType changelog,gitcommit,svn set spell
     autocmd FileType yaml set ai et nobackup
     autocmd FileType c set smartindent et
+    autocmd FileType coffee set smartindent et sw=2 ts=2 sts=2
     autocmd BufNewFile,BufRead Gemfile setl filetype=Gemfile
     autocmd BufWritePost Gemfile call vimproc#system('rbenv ctags')
 augroup END
