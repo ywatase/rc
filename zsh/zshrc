@@ -105,6 +105,7 @@ if is_mac ; then
     fi
     killall Dock
   }
+  alias docker-for-mac-shell='screen ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/tty'
 else
   alias ls="ls --color=auto --show-control-chars"
   alias keyboard_us="sudo loadkeys us; setxkbmap -layout us -model pc104"
@@ -454,3 +455,5 @@ source_if_exist ~/.travis/travis.sh
 
 true
 # vim:set ts=2 sw=2 et si:
+
+export PATH="$PATH:/Users/ywatase/.hexaville"
