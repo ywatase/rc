@@ -1,5 +1,8 @@
 # https://github.com/zplug/zplug
-[[ -e ~/.zplug/init.zsh ]] || (curl -sL zplug.sh/installer | zsh)
+[[ -e ~/.zplug/init.zsh ]] || \
+	( curl -sL --proto-redir -all,https \
+	https://raw.githubusercontent.com/zplug/installer/master/installer.zsh \
+	| zsh )
 source ~/.zplug/init.zsh
 #zplug 'zplug/zplug', hook-build:"zplug --self-manage"
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
