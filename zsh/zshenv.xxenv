@@ -4,3 +4,8 @@ do
   path=($HOME/.$xxenv/shims(N-/) $HOME/.$xxenv/bin(N-/) $path)
   whence -p $xxenv >/dev/null && eval "$($xxenv init -)"
 done
+
+if whence -p ndenv >/dev/null ; then
+	source_if_exist $(ndenv which node)/../../lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh
+	source_if_exist $(ndenv which node)/../../lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh
+fi
