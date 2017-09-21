@@ -157,7 +157,7 @@ gitlab-changelog () {
     shift
   fi
   case $cmd in
-    create_note)
+    create_*note)
       opt=" --gitlab-project-name=$(git config remote.origin.url | sed -e 's#^[^:]*:##' -e 's#^https?://[^/]*/##' -e 's#\.git$##')"
       ;;
     *)
@@ -456,4 +456,3 @@ source_if_exist ~/.travis/travis.sh
 true
 # vim:set ts=2 sw=2 et si:
 
-export PATH="$PATH:/Users/ywatase/.hexaville"
