@@ -334,7 +334,7 @@ install-ndenv () {
   cd plugins
   git clone https://github.com/riywo/ndenv.git
   exec
-  rbenv rehash
+  rdenv rehash
 }
 install-nodelibs () {
 # less
