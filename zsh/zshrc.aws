@@ -1,1 +1,11 @@
+if whence -p aws_zsh_completer.sh >/dev/null ; then
+  local p=$(whence -p aws_zsh_completer.sh)
+  if [[ $p =~ "pyenv/bin" ]] ;  then
+    p=$(pyenv which aws_zsh_completer.sh)
+  fi
+  source $p
+else
+  source_if_exist /usr/local/share/zsh/site-functions/_aws
+fi
+alias aws="https_proxy= aws"
 alias jq_ec2_instance="jq '.Reservations[].Instances | map(select(.KeyName==\"tech_pj_aws_watase\"))  | .[] | {InstanceId, State: .State.Name, PublicDnsName}'"
