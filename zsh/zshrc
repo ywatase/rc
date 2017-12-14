@@ -78,6 +78,13 @@ if is_mac ; then
   alias mac_set_tcp_delayed_ack_0="sudo sysctl -w net.inet.tcp.delayed_ack=0"
   alias mac_enable_timemachie="sudo tmutil enablelocal"
   alias mac_disable_timemachie="sudo tmutil disablelocal"
+  alias mac_get_volume_output='osascript -e "output volume of (get volume settings)"'
+  alias mac_get_volume='osascript -e "get volume settings"'
+  alias mac_mute='osascript -e "set Volume output volume 0"'
+
+  mac_set_volume_output() {
+    osascript -e "set Volume output volume ${1:0}"
+  }
   mac_dashboad_off() {
     echo "DASHBOARD OFF"
     mac_dashboard-toggle "true"
