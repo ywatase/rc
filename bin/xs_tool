@@ -143,6 +143,15 @@ has 'cobbler' => (
     handles    => ['get_profile', 'get_profile_list'],
 );
 
+has 'vnc' => (
+    metaclass  => 'NoGetopt',
+    is         => 'rw',
+    isa        => 'Str',
+    default    => 'vncviewer',
+    traits        => ['Getopt'],
+    documentation => 'vncviewr path',
+);
+
 no Mouse;
 
 sub _call_config_pit {
@@ -219,6 +228,15 @@ sub dump_config {
     YAML::Any::DumpFile( $self->configfile, \%conf );
 }
 
+sub get_vm_list {
+    my ($self) = @_;
+    my $res = $self->get_vncport_json;
+    my $json = join q{}, @$res;
+    my $array = JSON::Tiny::decode_json $json;
+    use Data::Dumper; warn Dumper $array;
+    my %hash = map {$_->{"name-label"} => $_} @$array;
+    return \%hash;
+}
 
 package XenServerTool::Cmd::Command::init;
 use Mouse;
@@ -366,7 +384,39 @@ sub abstract { return q{get list of XenServer vms vncport}; }
 sub execute {
     my ($self, $opt, $args) = @_;
     my $res = $self->get_vncport_json;
-    print join( "\n", sort @$res ), "\n";
+    print join( "\n", @$res ), "\n";
+}
+
+package XenServerTool::Cmd::Command::vnc;
+use Mouse;
+extends 'XenServerTool::Cmd::Command';
+
+has '+host'     => ( metaclass => 'Getopt', required => 1 );
+has '+user'     => ( metaclass => 'Getopt', required => 1 );
+has '+password' => ( metaclass => 'Getopt' );
+has '+vnc'      => ( metaclass => 'Getopt' );
+
+sub abstract { return q{run portforwarding and vncviewer}; }
+
+sub execute {
+    my ($self, $opt, $args) = @_;
+    my $vms = $self->get_vm_list;
+    my @cmd_opts;
+    my @vnc_commands;
+    my $vm = shift @$args;
+    my $vncport = $vms->{$vm}->{vncport};
+    push @cmd_opts, sprintf("-L%d:127.0.0.1:%d", ($vncport) x 2);
+    my $pid = fork;
+    die "fork() failed: $!" unless defined $pid;
+    if ($pid) {
+        system $self->vnc, sprintf("127.0.0.1:%s", $vncport);
+        print "child:$pid\n";
+        kill $pid;
+        wait;
+    }
+    else {
+        exec 'ssh', '-fCN', @cmd_opts, sprintf("%s@%s", $self->user, $self->host);
+    }
 }
 
 package XenServerTool::SSH;
@@ -516,9 +566,10 @@ sub connect {
 sub run_cmd {
     my ( $self, $cmd ) = @_;
     print STDERR "running: ", $cmd, "\n";
-    $self->expect->send($cmd);
+    $self->expect->send($cmd .';echo END_OF_XS_TOOL_CMD');
     my @res;
     while ( my $line = $self->expect->read_line(10) ) {
+        last if $line =~ /^END_OF_XS_TOOL_CMD$/smax;
         push @res, $line;
     }
     $self->expect->eat( $self->expect->peek(0) );    # removes whatever is on the input stream now
@@ -550,18 +601,31 @@ END
 
 sub get_vncport_json {
     my ($self) = @_;
-    my $cmd =<<'EOS';
-echo -e "[\n";  xe vm-list params=uuid,dom-id,name-label power-state=running | perl -ane '
-  if(m{uuid}){
-    printf qq|\n{"uuid":"%s"|, @F[4];
-  } elsif(m{name-label}){
-    printf qq|,"name-label":"%s"|, "@F[3..$#F]";
-  } elsif(m{dom-id}){
-    my $vncport = `xenstore-read /local/domain/@F[3]/console/vnc-port`;
-    chomp $vncport;
-    printf qq|,"dom-id":%s,"vncport":%s}|, @F[3], $vncport;
-  }' ; echo -e "\n]"
-EOS
+    my $cmd =<<'END';
+xe vm-list params=uuid,dom-id,name-label power-state=running | perl -e '
+  use strict; use warnings;
+  my $vm = q{};
+  my @vms;
+  while(my $l = <>) {
+    next if $l =~ /^\s*$/;
+    chomp $l;
+    my @F = split /\s*:\s*/, $l, 2;
+    if($l =~ m{uuid}){
+      push @vms, $vm if $vm;
+      $vm = sprintf qq|{"uuid":"%s"|, $F[1];
+    } elsif($l =~ m{name-label}){
+      $vm .= sprintf qq|,"name-label":"%s"|, $F[1];
+    } elsif($l =~ m{dom-id}){
+      my $vncport = `xenstore-read /local/domain/$F[1]/console/vnc-port`;
+      chomp $vncport;
+      $vm .= sprintf qq|,"dom-id":%s,"vncport":%s}|, $F[1], $vncport;
+    }
+  }
+  push @vms, $vm;
+  printf "[\n%s\n]\n", join ",\n", @vms;
+'
+END
+    $cmd =~ s/\n//gsmax;
     return $self->run_cmd($cmd)
 }
 

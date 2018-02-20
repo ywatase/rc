@@ -54,6 +54,10 @@ _get_profiles_from_cobbler () {
 	_profiles=(${(@f)"$( _call_program commands xs_tool list_profiles 2>/dev/null )"})
 }
 
+_get_nw_uuids_from_xenserver () {
+	_nw_uuids=(${(@f)"$(_call_program commands xs_tool list_nw_uuids --host=$host 2>/dev/null | awk '{print $1}')"})
+}
+
 _list_templates () {
     local cache_store
 	local -a _templates
