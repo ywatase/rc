@@ -3,6 +3,7 @@ screen/screen/
 vim/bundle/
 vim/dein/
 vim/cache/
+vim/plugged/
 vim/undo/
 vim/.netrwhist
 vim/recent.txt
