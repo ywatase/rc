@@ -3,7 +3,7 @@
 	( curl -sL --proto-redir -all,https \
 	https://raw.githubusercontent.com/zplug/installer/master/installer.zsh \
 	| zsh )
-source ~/.zplug/init.zsh
+source_if_exist ~/.zplug/init.zsh
 #zplug 'zplug/zplug', hook-build:"zplug --self-manage"
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
 zplug "zsh-users/zsh-completions"

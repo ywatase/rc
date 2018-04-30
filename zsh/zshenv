@@ -14,8 +14,8 @@ if whence -p /usr/local/bin/brew >/dev/null ; then
 	# /usr/local/opt/coreutils = $(brew --prefix coreutils)
 	path=(/usr/local/opt/coreutils/libexec/gnubin(N-/) $path)
 fi
-source $HOME/.zsh/zshenv.functions
-source $HOME/.zsh/zshenv.xxenv
+source_if_exist $HOME/.zsh/zshenv.functions
+source_if_exist $HOME/.zsh/zshenv.xxenv
 
 export LANG=ja_JP.UTF-8
 MANPATH=
@@ -30,7 +30,7 @@ path=($HOME/.zsh/git-tasukete.git(N-/) $HOME/android-sdk(N-/) $path)
 path=($HOME/.composer/vendor/bin(N-/) $path)
 
 # pythonbrew
-[[ -s "$HOME/.pythonbrew/etc/bashrc" ]] && source "$HOME/.pythonbrew/etc/bashrc"
+source_if_exist "$HOME/.pythonbrew/etc/bashrc"
 
 # go
 export GOPATH=$HOME/go

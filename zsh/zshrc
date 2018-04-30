@@ -45,7 +45,7 @@ source $HOME/.zsh/zshrc.zplug
 # setting for peco
 ###
 if whence -p peco >/dev/null ; then
-  for f (~/.zsh/peco/*.zsh) source "${f}" # load peco sources
+  for f (~/.zsh/peco/*.zsh) source_if_exist "${f}" # load peco sources
   bindkey '^r' peco-select-history
   bindkey '^@' peco-cdr
 fi
@@ -54,7 +54,7 @@ fi
 # aws-cli
 ###
 if which aws >/dev/null 2>&1 ; then
-  source $HOME/.zsh/zshrc.aws
+  source_if_exist $HOME/.zsh/zshrc.aws
 fi
 
 ###
@@ -174,7 +174,7 @@ if is_ssh_client && ! is_screen && ! is_tmux ; then
       keychain ~/.ssh/id_${type}
     fi
   done
-  source ~/.keychain/$HOST-sh
+  source_if_exist ~/.keychain/$HOST-sh
 fi
 agent="$HOME/tmp/ssh-agent-$USER"
 if [ -S "$SSH_AUTH_SOCK" ] ; then
