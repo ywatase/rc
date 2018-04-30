@@ -31,7 +31,14 @@ zplug "key-amb/shove", \
 
 source_if_exist ~/.zsh/zshrc.zplug.local
 # Install plugins if there are plugins that have not been installed
-zplug check --verbose || zplug install
+() {
+	local zplug_check_file=~/.zplug/last_zshrc_check_time
+	if [[ ! $zplug_check_file -nt ~/.zsh/zshrc.zplug || ! $zplug_check_file -nt ~/.zsh/zshrc.zplug ]] ; then
+		touch ~/.zplug/last_zshrc_check_time
+		zplug check --verbose || zplug install
+	fi
+}
+
 # Then, source plugins and add commands to $PATH
 zplug load
 #zplug load --verbose
