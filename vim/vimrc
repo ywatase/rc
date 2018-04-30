@@ -415,14 +415,11 @@ let g:user_emmet_settings = {
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " chrome
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let OSTYPE = system('uname')
-if OSTYPE =~# "Darwin\n"
-	command! -bar -nargs=1 -complete=file ChromeOpen silent !open -a "Google Chrome" <args>
-	command! -bar ChromeReload silent !osascript -e 'tell application "Google Chrome" to reload active tab of window 1'
-	command! -bar ChromeStartObserve autocmd BufWritePost <buffer> ChromeReload
-	command! -bar ChromeStartObserveOnce ChromeStopObserve | autocmd BufWritePost <buffer> ChromeReload
-	command! -bar ChromeStopObserve autocmd! BufWritePost <buffer>
-endif
+command! -bar -nargs=1 -complete=file ChromeOpen silent !open -a "Google Chrome" <args>
+command! -bar ChromeReload silent !osascript -e 'tell application "Google Chrome" to reload active tab of window 1'
+command! -bar ChromeStartObserve autocmd BufWritePost <buffer> ChromeReload
+command! -bar ChromeStartObserveOnce ChromeStopObserve | autocmd BufWritePost <buffer> ChromeReload
+command! -bar ChromeStopObserve autocmd! BufWritePost <buffer>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " memolist
