@@ -1,0 +1,778 @@
+#!/usr/bin/env perl
+#===============================================================================
+#Last Modified:  2012/08/09.
+#===============================================================================
+use v5.16;
+package XenServerTool;
+our $VERSION = "0.01";
+
+package XenServerTool::Cmd;
+use Mouse;
+extends 'MouseX::App::Cmd';
+
+package XenServerTool::Cmd::Command;
+use Mouse;
+extends 'MouseX::App::Cmd::Command';
+with 'MouseX::ConfigFromFile';
+
+use Config::Any;
+use Config::Pit;
+use YAML::Any;
+use Path::Class;
+use JSON::Tiny;
+
+has '+help_flag' => (metaclass => 'NoGetopt', traits => ['Getopt']);
+
+has '+configfile' => (
+    default => sub { file( $ENV{HOME}, '.xs_tool.yml' )->stringify },
+    documentation => 'config file (default: $HOME/.xs_tool.yml)',
+);
+
+has 'host' => (
+    metaclass     => 'NoGetopt',
+    is            => 'rw',
+    isa           => 'Str',
+    traits        => ['Getopt'],
+    cmd_aliases   => 'h',
+    documentation => 'XenServer Host',
+);
+
+has 'user' => (
+    metaclass     => 'NoGetopt',
+    is            => 'rw',
+    isa           => 'Str',
+    traits        => ['Getopt'],
+    cmd_aliases   => 'u',
+    documentation => 'XenServer User',
+    lazy_build    => 1,
+);
+
+has 'password' => (
+    metaclass     => 'NoGetopt',
+    is            => 'rw',
+    isa           => 'Str',
+    traits        => ['Getopt'],
+    cmd_aliases   => 'p',
+    documentation => 'XenServer Password',
+    lazy_build    => 1,
+);
+
+has 'sr_uuid' => (
+    metaclass     => 'NoGetopt',
+    is            => 'rw',
+    isa           => 'Str',
+    traits        => ['Getopt'],
+    cmd_aliases   => 'p',
+    documentation => 'XenServer SR UUID to install vm',
+    lazy_build    => 1,
+);
+
+has 'nw_uuid' => (
+    metaclass     => 'NoGetopt',
+    is            => 'rw',
+    isa           => 'Str',
+    traits        => ['Getopt'],
+    cmd_aliases   => 'p',
+    documentation => 'XenServer Network UUID to use kickstart',
+    lazy_build    => 1,
+);
+
+
+
+has 'cobbler_port' => (
+    metaclass     => 'NoGetopt',
+    is            => 'rw',
+    isa           => 'Int',
+    default       => 80,
+    traits        => ['Getopt'],
+    documentation => 'cobbler port',
+);
+
+has 'cobbler_server' => (
+    metaclass     => 'NoGetopt',
+    is            => 'rw',
+    isa           => 'Str',
+    traits        => ['Getopt'],
+    documentation => 'cobbler server',
+);
+
+has 'profile' => (
+    metaclass     => 'NoGetopt',
+    is            => 'rw',
+    isa           => 'Str',
+    traits        => ['Getopt'],
+    documentation => 'cobbler profile',
+);
+
+has 'template' => (
+    metaclass     => 'NoGetopt',
+    is            => 'rw',
+    isa           => 'Str',
+    traits        => ['Getopt'],
+    documentation => 'XenServer template',
+);
+
+has 'label' => (
+    metaclass     => 'NoGetopt',
+    is            => 'rw',
+    isa           => 'Str',
+    traits        => ['Getopt'],
+    documentation => 'VM name label',
+);
+
+has 'ssh' => (
+    metaclass  => 'NoGetopt',
+    is         => 'rw',
+    isa        => 'XenServerTool::SSH',
+    lazy_build => 1,
+    handles    => [qw(
+        get_network_list
+        get_nw_uuids_list
+        get_sr_uuids_of_lvm_list
+        get_template_list
+        get_vncport_json
+        )
+    ],
+);
+
+has 'cobbler' => (
+    metaclass  => 'NoGetopt',
+    is         => 'rw',
+    isa        => 'XenServerTool::Cobbler',
+    lazy_build => 1,
+    handles    => ['get_profile', 'get_profile_list'],
+);
+
+has 'vnc' => (
+    metaclass  => 'NoGetopt',
+    is         => 'rw',
+    isa        => 'Str',
+    default    => 'vncviewer',
+    traits        => ['Getopt'],
+    documentation => 'vncviewr path',
+);
+
+no Mouse;
+
+sub _call_config_pit {
+    my ( $self ) = @_;
+    Config::Pit::switch('xs_tool');
+    return pit_get($self->host, require => {
+            'user' => 'your username on ' . $self->host,
+            'password' => 'your password on ' . $self->host,
+        }
+    );
+
+}
+sub __build_attr {
+    my ( $self, $attr, $default ) = @_;
+    if ( $self->host ) {
+        my $config = $self->_call_config_pit;
+        return  $config->{$attr};
+    }
+    else {
+        return $default // '';
+    }
+}
+
+sub _build_password { $_[0]->__build_attr('password') }
+sub _build_user     { $_[0]->__build_attr('user', 'root') }
+sub _build_sr_uuid  { $_[0]->__build_attr('sr_uuid') }
+sub _build_nw_uuid  { $_[0]->__build_attr('nw_uuid') }
+sub _build_ssh {
+    my ($self) = @_;
+    my $ssh = XenServerTool::SSH->new(
+        {   password => $self->password,
+            host     => $self->host,
+            user     => $self->user,
+        }
+    );
+    $ssh->connect;
+    return $ssh;
+}
+
+sub _build_cobbler {
+    my ($self) = @_;
+    return XenServerTool::Cobbler->new(
+        {   server => $self->cobbler_server,
+            port   => $self->cobbler_port,
+        }
+    );
+}
+
+sub get_config_from_file {
+    my ( $self, $f ) = @_;
+    my $file = ref $f eq "CODE" ? $f->() : $f;
+
+    if ( !$file || !-f $file ) {
+        return {};
+    }
+
+    my $cfg = Config::Any->load_files(
+        {   files       => [$file],
+            use_ext     => 1,
+            driver_args => { General => { -LowerCaseNames => 1 } }
+        }
+    );
+    my $config  = $cfg->[0]->{$file} or die "Could not load $file";
+    return $config;
+}
+
+sub dump_config {
+    my ($self)    = @_;
+    my %conf      = ();
+    my @dump_attr = (qw(cobbler_server cobbler_port user template profile));
+    foreach my $n ( @dump_attr ) {
+        $conf{$n} = $self->$n;
+    }
+    YAML::Any::DumpFile( $self->configfile, \%conf );
+}
+
+sub get_vm_list {
+    my ($self) = @_;
+    my $res = $self->get_vncport_json;
+    my $json = join q{}, @$res;
+    my $array = JSON::Tiny::decode_json $json;
+    use Data::Dumper; warn Dumper $array;
+    my %hash = map {$_->{"name-label"} => $_} @$array;
+    return \%hash;
+}
+
+package XenServerTool::Cmd::Command::init;
+use Mouse;
+extends 'XenServerTool::Cmd::Command';
+
+has '+cobbler_server' => ( metaclass => 'Getopt' );
+has '+cobbler_port'   => ( metaclass => 'Getopt' );
+has '+user'           => ( metaclass => 'Getopt' );
+has '+template'       => ( metaclass => 'Getopt' );
+has '+profile'        => ( metaclass => 'Getopt' );
+
+sub abstract { return q{create config template}; }
+
+sub execute {
+    my ($self, $opt, $args) = @_;
+    my $res = $self->dump_config;
+}
+
+package XenServerTool::Cmd::Command::list_nw_uuids;
+use Mouse;
+extends 'XenServerTool::Cmd::Command';
+
+has '+host'     => ( metaclass => 'Getopt', required => 1 );
+has '+user'     => ( metaclass => 'Getopt', required => 1 );
+has '+password' => ( metaclass => 'Getopt' );
+
+sub abstract { return q{get list of XenServer network uuids}; }
+
+sub execute {
+    my ($self, $opt, $args) = @_;
+    my $res = $self->get_nw_uuids_list;
+    print STDERR "Network UUIDs\n";
+    print join( "\n", sort @$res ), "\n";
+}
+
+package XenServerTool::Cmd::Command::list_sr_uuids;
+use Mouse;
+extends 'XenServerTool::Cmd::Command';
+
+has '+host'     => ( metaclass => 'Getopt', required => 1 );
+has '+user'     => ( metaclass => 'Getopt', required => 1 );
+has '+password' => ( metaclass => 'Getopt' );
+
+sub abstract { return q{get list of Xenserver SR uuids (type: LVM)}; }
+
+sub execute {
+    my ($self, $opt, $args) = @_;
+    my $res = $self->get_sr_uuids_of_lvm_list;
+    print STDERR "Storage Resource UUIDs\n";
+    print join( "\n", sort @$res ), "\n";
+}
+
+package XenServerTool::Cmd::Command::list_templates;
+use Mouse;
+extends 'XenServerTool::Cmd::Command';
+
+has '+host'     => ( metaclass => 'Getopt', required => 1 );
+has '+user'     => ( metaclass => 'Getopt', required => 1 );
+has '+password' => ( metaclass => 'Getopt' );
+
+sub abstract { return q{get list of XenServer templates}; }
+
+sub execute {
+    my ($self, $opt, $args) = @_;
+    my $res = $self->get_template_list;
+    print STDERR "Template:\n";
+    print join( "\n", sort @$res ), "\n";
+}
+
+package XenServerTool::Cmd::Command::list_profiles;
+use Mouse;
+extends 'XenServerTool::Cmd::Command';
+
+has '+cobbler_server' => ( metaclass => 'Getopt', required => 1 );
+has '+cobbler_port'   => ( metaclass => 'Getopt', required => 1 );
+
+sub abstract { return q{get list of cobbler profiles}; }
+
+sub execute {
+    my ($self, $opt, $args) = @_;
+    my $res = $self->get_profile_list;
+    print STDERR "Profiles:\n";
+    print join( "\n", sort @$res ), "\n";
+}
+
+package XenServerTool::Cmd::Command::install;
+use Mouse;
+extends 'XenServerTool::Cmd::Command';
+
+has '+cobbler_server' => ( metaclass => 'Getopt', required => 1 );
+has '+cobbler_port'   => ( metaclass => 'Getopt', required => 1 );
+has '+host'           => ( metaclass => 'Getopt', required => 1 );
+has '+user'           => ( metaclass => 'Getopt', required => 1 );
+has '+password'       => ( metaclass => 'Getopt' );
+has '+template'       => ( metaclass => 'Getopt', required => 1 );
+has '+profile'        => ( metaclass => 'Getopt', required => 1 );
+has '+label'          => ( metaclass => 'Getopt', required => 1 );
+has '+sr_uuid'        => ( metaclass => 'Getopt' );
+has '+nw_uuid'        => ( metaclass => 'Getopt' );
+
+sub abstract { return q{install vm}; }
+
+sub execute {
+    my ($self, $opt, $args) = @_;
+    my $prof = $self->get_profile($self->profile);
+    use Data::Dumper;
+    warn Dumper $prof;
+
+    Config::Pit::switch('xs_tool');
+    my $config = Config::Pit::get($self->host);
+
+    unless ( $self->sr_uuid ) {
+        $self->sr_uuid($self->ssh->get_sr_uuid_to_install_vm);
+    }
+    unless ( $self->nw_uuid ) {
+        $self->nw_uuid($self->ssh->get_network_uuid);
+    }
+
+    Config::Pit::set($self->host, data => {
+            user     => $self->user,
+            password => $self->password,
+            nw_uuid  => $self->nw_uuid,
+            sr_uuid  => $self->sr_uuid,
+        },
+    );
+    $self->ssh->install_xenserver_vm(
+        {
+            template => $self->template, prof => $prof, label => $self->label,
+            nw_uuid  => $self->nw_uuid,
+            sr_uuid  => $self->sr_uuid,
+        }
+    );
+}
+
+package XenServerTool::Cmd::Command::list_vncport;
+use Mouse;
+extends 'XenServerTool::Cmd::Command';
+
+has '+host'     => ( metaclass => 'Getopt', required => 1 );
+has '+user'     => ( metaclass => 'Getopt', required => 1 );
+has '+password' => ( metaclass => 'Getopt' );
+
+sub abstract { return q{get list of XenServer vms vncport}; }
+
+sub execute {
+    my ($self, $opt, $args) = @_;
+    my $res = $self->get_vncport_json;
+    print join( "\n", @$res ), "\n";
+}
+
+package XenServerTool::Cmd::Command::vnc;
+use Mouse;
+extends 'XenServerTool::Cmd::Command';
+
+has '+host'     => ( metaclass => 'Getopt', required => 1 );
+has '+user'     => ( metaclass => 'Getopt', required => 1 );
+has '+password' => ( metaclass => 'Getopt' );
+has '+vnc'      => ( metaclass => 'Getopt' );
+
+sub abstract { return q{run portforwarding and vncviewer}; }
+
+sub execute {
+    my ($self, $opt, $args) = @_;
+    my $vms = $self->get_vm_list;
+    my @cmd_opts;
+    my @vnc_commands;
+    my $vm = shift @$args;
+    my $vncport = $vms->{$vm}->{vncport};
+    push @cmd_opts, sprintf("-L%d:127.0.0.1:%d", ($vncport) x 2);
+    my $pid = fork;
+    die "fork() failed: $!" unless defined $pid;
+    if ($pid) {
+        system $self->vnc, sprintf("127.0.0.1:%s", $vncport);
+        print "child:$pid\n";
+        kill $pid;
+        wait;
+    }
+    else {
+        exec 'ssh', '-fCN', @cmd_opts, sprintf("%s@%s", $self->user, $self->host);
+    }
+}
+
+package XenServerTool::SSH;
+use Mouse;
+use Net::SSH::Expect;
+use Carp;
+
+has 'password' => ( is => 'rw', isa => 'Maybe[Str]' );
+has 'host'     => ( is => 'rw', isa => 'Str', required => 1 );
+has 'user'     => ( is => 'rw', isa => 'Str', required => 1 );
+has 'expect'   => ( is => 'rw', isa => 'Net::SSH::Expect', lazy_build => 1 );
+has 'timeout'  => ( is => 'rw', isa => 'Int', default => 3 );
+has 'prompt'   => ( is => 'rw', isa => 'Regexp', default => sub {qr/\]#\s*\z/} );
+
+sub _build_expect {
+    my ($self) = @_;
+    my $expect = Net::SSH::Expect->new(
+        host     => $self->host,
+        password => $self->password,
+        user     => $self->user,
+        raw_pty  => 1,
+    );
+    return $expect;
+}
+
+sub get_pool_uuid {
+    my ($self, $opt ) = @_;
+    my $cmd = q{xe pool-list | perl -alne '$F[0] eq "uuid" and print $F[4];'};
+    my $res = $self->run_cmd($cmd);
+    my $pool_uuid = shift @$res or croak 'Fail to get host uuid';
+    return $pool_uuid;
+}
+
+sub get_sr_uuid_of_pool_default {
+    my ($self, $opt ) = @_;
+    my $cmd = sprintf q{xe pool-param-get param-name=default-SR uuid=%s}, $self->get_pool_uuid;
+    my $res = $self->run_cmd($cmd);
+    my $pool_default_sr = shift @$res or croak 'Fail to get sr uuid of default-SR of pool';
+    if ( $pool_default_sr =~ /<not in database>/ ) {
+        return;
+    }
+    else {
+        return $pool_default_sr;
+    }
+}
+
+sub get_sr_uuid_of_localstorage {
+    my ($self, $opt ) = @_;
+    # 複数のlvmがあるとうまく動かない
+    my $cmd = sprintf q{xe sr-list  host="%s" type=lvm params=uuid | perl -alne '$F[0] eq "uuid" and print $F[4];'}, $self->get_host_name_label;
+    my $res = $self->run_cmd($cmd);
+    my $sr_uuid = shift @$res or croak 'Fail to get sr uuid of local storage';
+    return $sr_uuid;
+}
+
+sub get_host_uuid {
+    my ($self, $opt ) = @_;
+    my $cmd = q{cat /etc/xensource-inventory |  perl -lne "/INSTALLATION_UUID='([^']+)'/ and print \$1;"};
+    my $res= $self->run_cmd($cmd);
+    my $host_uuid = shift @$res or croak 'Fail to get host uuid';
+    return $host_uuid;
+}
+
+sub get_xenserver_version {
+    my ($self, $opt ) = @_;
+    my $cmd = q{cat /etc/xensource-inventory |  perl -lne "/PRODUCT_VERSION='([^']+)'/ and print \$1;"};
+    my $res= $self->run_cmd($cmd);
+    my $xenserver_version= shift @$res or croak 'Fail to get xenserver version';
+    return $xenserver_version;
+}
+
+sub get_host_name_label {
+    my ($self, $opt ) = @_;
+    my $host_uuid = $self->get_host_uuid;
+    my $cmd = sprintf q{xe host-param-get param-name=name-label uuid=%s}, $host_uuid;
+    my $res= $self->run_cmd($cmd);
+    my $host_name_label = shift @$res or croak 'Fail to get host name-label';
+}
+
+sub get_sr_uuid_to_install_vm {
+    my ($self, $opt ) = @_;
+    my $sr_uuid = $self->get_sr_uuid_of_localstorage || $self->get_sr_uuid_of_pool_default
+        or croak "Fail to get sr uuid to install vm";
+    return $sr_uuid;
+}
+
+sub get_network_uuid {
+    my ( $self, $opt ) = @_;
+
+    # xe network-list : find tags=ksnet
+    my $xenserver_version = $self->get_xenserver_version;
+    if ($xenserver_version eq '5.6.0') {
+       croak "xenserver $xenserver_version doesn't support 'xe network-list tags='";
+    }
+    my $cmd = q{xe network-list tags=ksnet --minimal};
+    my $res = $self->run_cmd($cmd);
+    my $network_uuid = shift @$res or croak 'Fail to find tags=ksnet network. when you use this script, set tag "ksnet" to kickstart network';
+    return $network_uuid;
+}
+
+sub install_xenserver_vm {
+    my ( $self, $opt ) = @_;
+
+    # xe vm-install
+    my $cmd = sprintf q{xe vm-install template="%s" new-name-label="%s" sr-uuid=%s}, $opt->{template}, $opt->{label}, $opt->{sr_uuid};
+    my $res= $self->run_cmd($cmd);
+    my $uuid = shift @$res or croak 'Fail to make VM at "xe vm-install"';
+
+    # xe vm-paramset
+    $cmd = sprintf q{xe vm-param-set uuid=%s other-config:install-repository=%s}, $uuid, $opt->{prof}->{install_tree};
+    $res = $self->run_cmd($cmd);
+    $cmd = sprintf q{xe vm-param-set uuid=%s PV-args="%s"}, $uuid, $opt->{prof}->{kernel_options};
+    $res = $self->run_cmd($cmd);
+
+    # xe vif-create : add network interface of tags=ksnet
+    $cmd = sprintf q{xe vif-create vm-uuid=%s network-uuid=%s mac=random device=0}, $uuid, $opt->{nw_uuid};
+    $res = $self->run_cmd($cmd);
+
+    # xe vm-start : start kickstart
+    $cmd = sprintf q{xe vm-start uuid=%s}, $uuid;
+    $res = $self->run_cmd($cmd);
+}
+
+
+#xe vm-install template=<template-name> new-name-label=<lenny-vm>
+#xe vm-param-set uuid=<UUID> other-config:install-repository=<path_to_repository>
+#xe vm-param-set uuid=<vm_uuid> PV-args="ks=http://server/path ksdevice=eth0"
+#xe network-list bridge=xenbr0 --minimal
+#xe vif-create vm-uuid=<vm_uuid> network-uuid=<network_uuid> mac=random device=0
+#xe vm-start uuid=<UUID>
+
+sub connect {
+    my ($self) = @_;
+    my $prompt = $self->prompt;
+    my $login_output;
+
+    $self->expect->run_ssh or croak "SSH process couldn't start: $!";
+    $login_output = $self->expect->read_all( $self->timeout );
+    if ( $login_output !~ /$prompt/msx and $self->password ) {
+        $self->expect->close;
+        $self->expect( $self->_build_expect );
+        $login_output = $self->expect->login;
+    }
+    $self->expect->exec("stty raw -echo");
+}
+
+sub run_cmd {
+    my ( $self, $cmd ) = @_;
+    print STDERR "running: ", $cmd, "\n";
+    $self->expect->send($cmd .';echo END_OF_XS_TOOL_CMD');
+    my @res;
+    while ( my $line = $self->expect->read_line(10) ) {
+        last if $line =~ /^END_OF_XS_TOOL_CMD$/smax;
+        push @res, $line;
+    }
+    $self->expect->eat( $self->expect->peek(0) );    # removes whatever is on the input stream now
+    return \@res;
+}
+
+sub get_template_list {
+    my ($self) = @_;
+    return $self->run_cmd(q{xe template-list | grep name-label | perl -alne 'print "@F[3..$#F]"'});
+}
+
+sub get_network_list {
+    my ($self) = @_;
+    return $self->run_cmd(q{xe network-list});
+}
+
+sub get_nw_uuids_list {
+    my ($self) = @_;
+    return $self->run_cmd(q/xe network-list | perl -ane 'if(m{uuid}){print @F[4]}elsif(m{name-description}){print q{ "}, join(" ", @F[3..$#F]),qq{"\n}}'/ );
+}
+
+sub get_sr_uuids_of_lvm_list {
+    my ($self) = @_;
+    my $cmd = <<'END';
+xe sr-list params=uuid,host,name-label type=lvm | perl -ane 'if(/uuid/){ print @F[4] }elsif(/name-label/){ print q{ "}, join(" ", @F[3..$#F]),q{"} }elsif(/host/){ print q{ "}, join(" ", @F[3..$#F]),qq{"\n} }'
+END
+    return $self->run_cmd($cmd);
+}
+
+sub get_vncport_json {
+    my ($self) = @_;
+    my $cmd =<<'END';
+xe vm-list params=uuid,dom-id,name-label power-state=running | perl -e '
+  use strict; use warnings;
+  my $vm = q{};
+  my @vms;
+  while(my $l = <>) {
+    next if $l =~ /^\s*$/;
+    chomp $l;
+    my @F = split /\s*:\s*/, $l, 2;
+    if($l =~ m{uuid}){
+      push @vms, $vm if $vm;
+      $vm = sprintf qq|{"uuid":"%s"|, $F[1];
+    } elsif($l =~ m{name-label}){
+      $vm .= sprintf qq|,"name-label":"%s"|, $F[1];
+    } elsif($l =~ m{dom-id}){
+      my $vncport = `xenstore-read /local/domain/$F[1]/console/vnc-port`;
+      chomp $vncport;
+      $vm .= sprintf qq|,"dom-id":%s,"vncport":%s}|, $F[1], $vncport;
+    }
+  }
+  push @vms, $vm;
+  printf "[\n%s\n]\n", join ",\n", @vms;
+'
+END
+    $cmd =~ s/\n//gsmax;
+    return $self->run_cmd($cmd)
+}
+
+package XenServerTool::Cobbler;
+use Mouse;
+use IPC::Open2;
+
+has 'server'    => ( is => 'rw', isa => 'Str',           required   => 1 );
+has 'port'      => ( is => 'rw', isa => 'Int',           default    => 80 );
+has 'koan_path' => ( is => 'rw', isa => 'Str',           lazy_build => 1 );
+has 'koan_cmd'  => ( is => 'rw', isa => 'ArrayRef[Str]', lazy_build => 1 );
+
+sub _build_koan_path {
+    foreach my $path (qw(/usr/local/bin/koan)) {
+        return $path if -e $path;
+    }
+    return '/usr/bin/koan';
+}
+sub _build_koan_cmd {
+    my ($self) = @_;
+    return [ "sudo", $self->koan_path, "--server=" . $self->server, "--port=" . $self->port ];
+}
+
+sub run_koan {
+    my ( $self, $cmd ) = @_;
+    my ( $child_out, $child_in );
+    my $pid = open2( $child_out, $child_in, @{ $self->koan_cmd }, @$cmd );
+    close($child_in);
+    my @result = map { chomp; $_; } <$child_out>;
+    close($child_out);
+    waitpid( $pid, 0 );
+    my $child_exit_status = $? >> 8;
+    return \@result;
+}
+
+sub get_profile {
+    my ( $self, $profile ) = @_;
+    my $res = $self->run_koan( [ "--display", "--profile=$profile" ] );
+    my %conf;
+    foreach my $line (@$res) {
+        chomp $line;
+        if ( $line =~ /\s+([[:alnum:]_]+)\s+:\s+(.*)/msx ) {
+            my $k = $1;
+            ( my $v = $2 ) =~ s/(?:\A\s+|\s+\z)//g;
+            $conf{$k} = $v;
+        }
+    }
+    return \%conf;
+}
+
+sub get_profile_list {
+    my ($self) = @_;
+    my $res = $self->run_koan( ['--list=profiles'] );
+    shift @$res;
+    return $res;
+}
+
+package main;
+use Pod::Usage;
+use Getopt::Long qw(:config bundling auto_version);
+
+my %args;
+
+my $app = XenServerTool::Cmd->new;
+$app->run;
+__END__
+else {
+    $app->install_xenserver_vm;
+}
+
+sub init_args {
+    my @args_pattern = @_;
+    push @args_pattern, ( 'user|u=s', 'template|t=s', 'list-templates', );
+
+    %args = (
+        user     => 'root',
+        template => "centos-6-64bit",
+        profile  => "centos-6.2-x86_64",
+    );
+    if ( not exists $args{host} ) {
+        print STDERR "need '--host' option\n";
+        return;
+    }
+    return 1;
+}
+
+1;
+
+__END__
+
+=pod
+
+=head1 NAME
+
+install_xenserver_vm.pl - install xenserver VM by kickstart
+
+=head1 SYNOPSIS
+
+  install_xenserver_vm.pl [options]
+
+=head1 OPTIONS
+
+=over 8
+
+=item B<--host|-h> host
+
+set Xen server hostname
+
+=item B<--user|-h> user
+
+set Xen server username [default: root]
+
+=item B<--help>
+
+show help
+
+=item B<--verbose>
+
+verbose mode
+
+=item B<--manual>
+
+show manual
+
+=item B<--version>
+
+show version
+
+=back
+
+=head1 DESCRIPTION
+
+This is skelton of perl script.
+
+=head1 PREREQUISITES
+
+This script requires the C<Mouse>, C<MouseX::Getopt>
+C<MouseX::ConifgFromFile>, C<Net::SSH::Expect>
+
+=head1 Known Problem
+
+poolのdefault-SRが定義されていない時に、xenserverのlocalstrageを利用するが、複数lvmが存在する場合、どちらを使用するか決まっていない。
+
+=head1 Author
+
+ Yusuke Watase <ywatase@gmail.com>
+
+=cut
+
+
