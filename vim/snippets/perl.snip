@@ -94,6 +94,17 @@ options head
 	    $_[0]->{_$1} = $_[1] if $_[1];
 	    return $_[0]->{_$1}
 	}
+
+snippet accessor2
+options head
+  for my $m (qw()) {
+    my $c = sub {
+      $_[0]->{"_$m"} = $_[1] if $_[1];
+      return $_[0]->{"_$m"}
+    }
+    no strict 'refs';
+    *{$m} = $c;
+  }
 # Read File
 snippet slurp
 	my $${1:var};
