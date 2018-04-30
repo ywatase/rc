@@ -25,6 +25,7 @@ zplug "peco/peco", \
 zplug "mackerelio/mkr", \
 	from:gh-r, \
 	as:command
+zplug "sachaos/todoist", if:"which peco"
 
 source_if_exist ~/.zsh/zshrc.zplug.local
 # Install plugins if there are plugins that have not been installed
