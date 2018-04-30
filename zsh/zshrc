@@ -451,6 +451,9 @@ source_if_exist ~/google-cloud-sdk/completion.zsh.inc
 # added by travis gem
 source_if_exist ~/.travis/travis.sh
 
+if ($ZPROFILE && which zprof > /dev/null 2>&1) ;then
+  zprof
+fi
+
 true
 # vim:set ts=2 sw=2 et si:
-
