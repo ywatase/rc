@@ -364,10 +364,6 @@ let g:tskelUserEmail  = 'ywatase@gmail.com'
 let g:tskelUserWWW    = 'http://u-suke.org/'
 let g:tskelLicense    = 'apache'
 """"""""""""""""""""""""""""""
-" Vimfiler
-""""""""""""""""""""""""""""""
-let g:vimfiler_as_default_explorer = 1
-""""""""""""""""""""""""""""""
 " errormaker.vim
 """"""""""""""""""""""""""""""
 nnoremap <silent> <Leader>em :ErrorAtCursor<CR>
