@@ -160,6 +160,7 @@ gitlab-changelog () {
   case $cmd in
     create_*note)
       opt=" --gitlab-project-name=$(git config remote.origin.url | sed -e 's#^[^:]*:##' -e 's#^https?://[^/]*/##' -e 's#\.git$##')"
+      opt="$opt --gitlab-api-endpoint=$(git config remote.origin.url | sed -e 's#^\(https?://[^/]*\)/.*#\1#' -e 's#^git@\([^:]*\):.*#https://\1#')/api/v4"
       ;;
     *)
       ;;
