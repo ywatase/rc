@@ -1,3 +1,4 @@
+*.zwc
 perl-modules.list
 screen/screen/
 vim/bundle/
