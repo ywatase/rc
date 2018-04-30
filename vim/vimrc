@@ -406,6 +406,7 @@ let g:quickhl_manual_keywords = [
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Emmet
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:user_emmet_leader_key='<C-y>'
 let g:user_emmet_settings = {
   \  'lang' : 'ja',
   \  'custom_expands1' : {
