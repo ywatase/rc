@@ -32,14 +32,17 @@ fi
 
 typeset -U fpath
 typeset -U path
-autoload -U compinit
-compinit
 
 ###
 # zplug
 ###
 export ZPLUG_LOADFILE=~/.zsh/zplug-packages.zsh
 source $HOME/.zsh/zshrc.zplug
+# compinit is called in zplug
+if ! whence -p zplug >/dev/null ; then
+  autoload -U compinit
+  compinit
+fi
 
 ###
 # setting for peco
