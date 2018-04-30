@@ -454,6 +454,17 @@ source_if_exist ~/google-cloud-sdk/completion.zsh.inc
 # added by travis gem
 source_if_exist ~/.travis/travis.sh
 
+# fzf
+# source_if_exist ~/.fzf.zsh
+
+zcomple_zshrc () {
+  local zshrc=~/.zshrc
+  if [ $zshrc:A -nt ~/.zshrc.zwc ]; then
+    zcompile $zshrc
+  fi
+
+}
+
 if ([[ ! -z $ZPROFILE ]] && which zprof > /dev/null 2>&1) ;then
   zprof
 fi
