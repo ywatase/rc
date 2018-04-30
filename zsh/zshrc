@@ -38,6 +38,7 @@ compinit
 ###
 # zplug
 ###
+export ZPLUG_LOADFILE=~/.zsh/zplug-packages.zsh
 source $HOME/.zsh/zshrc.zplug
 
 ###
