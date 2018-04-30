@@ -33,16 +33,16 @@ localvim () {
 ###
 # Check Command
 ###
-can ()           { where "$1" >/dev/null 2>&1              }
-is_linux ()      { [ `uname` = "Linux" ]                   }
-is_mac ()        { [ `uname` = "Darwin" ]                  }
-is_debian ()     { [ -e '/etc/debian-release' ]            }
-is_redhat ()     { [ -e '/etc/redhat-release' ]            }
-is_cygwin ()     { [ "$CYGWIN" ]                           }
-is_screen ()     { [ "$TERM" = "screen" ] && ! is_tmux     }
-is_tmux ()       { [ "$TMUX" != "" ]                       }
-is_host ()       { [ ${${(A)${(s:.:)HOST}}[(w)1]} = "$1" ] }
-is_ssh_client () { ! [ "$SSH_TTY" ]                        }
+can ()           { where "$1" >/dev/null 2>&1                }
+is_linux ()      { ${__IS_LINUX:=$([[ `uname` = "Linux" ]])} }
+is_mac ()        { ${__IS_MAC:=$([[ `uname` = "Darwin" ]])}  }
+is_debian ()     { [[ -e '/etc/debian-release' ]]            }
+is_redhat ()     { [[ -e '/etc/redhat-release' ]]            }
+is_cygwin ()     { [[ "$CYGWIN" ]]                           }
+is_screen ()     { [[ "$TERM" = "screen" ]] && ! is_tmux     }
+is_tmux ()       { [[ "$TMUX" != "" ]]                       }
+is_host ()       { [[ ${${(A)${(s:.:)HOST}}[(w)1]} = "$1" ]] }
+is_ssh_client () { ! [[ "$SSH_TTY" ]]                        }
 source_if_exist () { [ -f "$1" ] && source "$1" }
 
 get_myip () {
