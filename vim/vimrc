@@ -275,8 +275,10 @@ let g:html_no_pre = 1
 nnoremap <silent> ,ua :<C-u>Ag
 " バッファ一覧
 nnoremap <silent> ,ub :<C-u>Buffers<CR>
-" ファイル一覧
-nnoremap <silent> ,uf :<C-u>Files<Space>
+" ファイル一覧(Vaffle)
+nnoremap ,uf :<C-u>Vaffle<CR>
+" ファイル一覧(fzf)
+nnoremap ,uF :<C-u>Files<Space>
 " カラー一覧
 nnoremap <silent> ,uc :<C-u>Colors<CR>
 " レジスタ一覧

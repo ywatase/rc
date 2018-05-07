@@ -3,7 +3,7 @@ Plug 'mattn/benchvimrc-vim', { 'on': 'BenchVimrc' }
 Plug 'tpope/vim-fugitive'
 
 " filer
-Plug 'justinmk/vim-dirvish'
+Plug 'cocopon/vaffle.vim'
 
 " 最後のコミット以降の変更行が見れる。
 Plug 'airblade/vim-gitgutter'
