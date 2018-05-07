@@ -6,32 +6,19 @@
 "       CREATED:  2012/12/21
 "   DESCRIPTION:  
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let s:colorroller_default_colors = [
-			\ 'default',
-			\ 'blue',
-			\ 'darkblue',
-			\ 'delek',
-			\ 'desert',
-			\ 'elflord',
-			\ 'evening',
-			\ 'koehler',
-			\ 'morning',
-			\ 'murphy',
-			\ 'pablo',
-			\ 'peachpuff',
-			\ 'ron',
-			\ 'shine',
-			\ 'slate',
-			\ 'torte',
-			\ 'zellner',
-			\ ]
-let s:colors = exists('g:colorroller_colors') ? g:colorroller_colors : s:colorroller_default_colors
+function! colorRoller#colors ()
+	let s:colorroller_default_colors = split(globpath(&rtp, "colors/*.vim"), "\n")
+	let s:colors = map(exists('g:colorroller_colors') ? g:colorroller_colors : s:colorroller_default_colors, "substitute(fnamemodify(v:val, ':t'), '\\..\\{-}$', '', '')")
+endfunc
 
 function! colorRoller#change()
    let color = get(s:colors, 0)
    silent exe "colorscheme " . color
    redraw
    echo s:colors
+endfunction
+function! colorRoller#reset()
+	call colorRoller#colors()
 endfunction
 function! colorRoller#roll()
    let item = remove(s:colors, 0)
@@ -43,3 +30,5 @@ function! colorRoller#unroll()
    call insert(s:colors, item, 0)
    call colorRoller#change()
 endfunction
+
+call colorRoller#colors()
