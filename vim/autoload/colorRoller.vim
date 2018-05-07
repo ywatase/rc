@@ -6,10 +6,19 @@
 "       CREATED:  2012/12/21
 "   DESCRIPTION:  
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-function! colorRoller#colors ()
-	let s:colorroller_default_colors = split(globpath(&rtp, "colors/*.vim"), "\n")
-	let s:colors = map(exists('g:colorroller_colors') ? g:colorroller_colors : s:colorroller_default_colors, "substitute(fnamemodify(v:val, ':t'), '\\..\\{-}$', '', '')")
-endfunc
+function! colorRoller#defaults()
+	let s:colorroller_default_colors = uniq(sort(map(split(globpath(&rtp, "colors/*.vim"), "\n"), "substitute(fnamemodify(v:val, ':t'), '\\..\\{-}$', '', '')")))
+	let s:colorroller_toggler = 'all'
+	let s:colors = uniq(sort(exists('g:colorroller_colors') ? g:colorroller_colors : s:colorroller_default_colors))
+endfunction
+function! colorRoller#all()
+	let s:colorroller_toggler = 'defaults'
+	let s:colors = s:colorroller_default_colors
+endfunction
+function! colorRoller#toggle()
+	call colorRoller#{s:colorroller_toggler}()
+	echo s:colors
+endfunction
 
 function! colorRoller#change()
    let color = get(s:colors, 0)
@@ -18,7 +27,7 @@ function! colorRoller#change()
    echo s:colors
 endfunction
 function! colorRoller#reset()
-	call colorRoller#colors()
+	call colorRoller#default()
 endfunction
 function! colorRoller#roll()
    let item = remove(s:colors, 0)
@@ -31,4 +40,4 @@ function! colorRoller#unroll()
    call colorRoller#change()
 endfunction
 
-call colorRoller#colors()
+call colorRoller#defaults()

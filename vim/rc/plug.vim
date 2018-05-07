@@ -54,11 +54,6 @@ Plug 'vim-jp/vimdoc-ja'
 " 英語を優先したい場合
 " :set helplang=en,ja
 
-Plug 'tomasr/molokai'
-Plug 'altercation/vim-colors-solarized'
-Plug 'w0ng/vim-hybrid'
-
-" toml
 Plug 'cespare/vim-toml', { 'for': 'toml' }
 " カーソル位置のコンテキストのファイルタイプを判定する
 Plug 'osyo-manga/vim-precious', { 'for': 'toml' }
@@ -105,8 +100,8 @@ Plug 'Glench/Vim-Jinja2-Syntax' , { 'for': ['jinjahtml', 'jinja'] }
 Plug 'jondistad/vimclojure', { 'for': 'clojure' }
 
 " colorscheme
+Plug 'altercation/vim-colors-solarized'
+Plug 'jacoborus/tender.vim'
 Plug 'vim-scripts/jellybeans.vim'
 Plug 'vim-scripts/mrkn256.vim'
-Plug 'vim-scripts/desert256.vim'
-Plug 'vim-scripts/wombat256.vim'
 call plug#end()
