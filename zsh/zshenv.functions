@@ -41,6 +41,7 @@ is_redhat ()     { [[ -e '/etc/redhat-release' ]]            }
 is_cygwin ()     { [[ "$CYGWIN" ]]                           }
 is_screen ()     { [[ "$TERM" = "screen" ]] && ! is_tmux     }
 is_tmux ()       { [[ "$TMUX" != "" ]]                       }
+is_vim ()        { [[ "$VIM" != "" ]]                        }
 is_host ()       { [[ ${${(A)${(s:.:)HOST}}[(w)1]} = "$1" ]] }
 is_ssh_client () { ! [[ "$SSH_TTY" ]]                        }
 
