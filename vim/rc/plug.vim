@@ -56,8 +56,9 @@ Plug 'vim-jp/vimdoc-ja'
 
 Plug 'cespare/vim-toml', { 'for': 'toml' }
 " カーソル位置のコンテキストのファイルタイプを判定する
-Plug 'osyo-manga/vim-precious', { 'for': 'toml' }
-Plug 'Shougo/context_filetype.vim', { 'for': 'toml' }
+let g:vim_precious_enable = ['toml', 'jinja', 'markdown']
+Plug 'osyo-manga/vim-precious', { 'for': g:vim_precious_enable }
+Plug 'Shougo/context_filetype.vim', { 'for': g:vim_precious_enable }
 
 " Perl
 Plug 'vim-perl/vim-perl', { 'for': 'perl' }
