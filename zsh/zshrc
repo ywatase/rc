@@ -184,7 +184,7 @@ fi
 agent="$HOME/tmp/ssh-agent-$USER"
 if [ -S "$SSH_AUTH_SOCK" ] ; then
   case $SSH_AUTH_SOCK in
-    /tmp/*/agent.[0-9]*)
+    /tmp/*/agent.[0-9]*|/var/folders/*/agent.[0-9]*)
       if ! [ -e "$HOME/tmp" ] ; then
         mkdir "$HOME/tmp"
       fi
