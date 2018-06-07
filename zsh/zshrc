@@ -142,6 +142,7 @@ alias dstat-disk='dstat -Tcldr'
 alias sshv="$(whence -p ssh) -l vagrant -o 'NoHostAuthenticationForLocalhost=yes' -i ~/.vagrant.d/insecure_private_key"
 alias be="bundle exec"
 alias ce="carton exec"
+whence -p jsonlint >/dev/null && alias lint-json=jsonlint
 
 diary () { vim _posts/$(date '+%Y-%m-%d' --date "${1:-today}")-diary.md }
 diary_yesterday () { diary yesterday }
