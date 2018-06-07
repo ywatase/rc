@@ -73,6 +73,61 @@ noremap! <C-j> <Esc>
 
 nmap <F4> :vertical diffsplit
 
+" completion
+"
+inoremap <Plug>(my-complete) <Nop>
+imap ,x <Plug>(my-complete)
+
+" 行(全体)補完: CTRL-X CTRL-L
+" 検索対象はcompleteオプションで設定可能
+nnoremap <silent> <Plug>(my-complete)l <C-X><C-L>
+
+" 局所キーワード補完: CTRL-X CTRL-N / CTRL-X CTRL-P
+nnoremap <silent> <Plug>(my-complete)n <C-X><C-N>
+nnoremap <silent> <Plug>(my-complete)p <C-X><C-P>
+
+"辞書補完: CTRL-X CTRL-K
+"dictionaryオプションで設定したファイルから twist で始まる単語を補完
+"dictionaryオプションに使用するファイルを設定する必要がある(デフォルトは未設定)
+" set dictionary=/usr/share/dict/words
+nnoremap <silent> <Plug>(my-complete)k <C-X><C-K>
+
+"シソーラス補完: CTRL-X CTRL-T
+" thesaurusオプションに使用するファイルを設定する必要がある(デフォルトは未設定)
+" set thesaurus=/usr/share/mythes/th_en_US_v2.dat
+nnoremap <silent> <Plug>(my-complete)T <C-X><C-T>
+
+" パスパターン補完: CTRL-X CTRL-I
+" インクルードしているSocket.pmから getpr で始まるキーワードを補完(perl)
+" 検索対象はincludeオプションとpathオプションで設定可能
+nnoremap <silent> <Plug>(my-complete)i <C-X><C-I>
+
+" タグ補完: CTRL-X CTRL-]
+" 読み込むtagsファイルをtagsオプションで設定可能
+nnoremap <silent> <Plug>(my-complete)] <C-X><C-]>
+
+" ファイル名補完: CTRL-X CTRL-F
+nnoremap <silent> <Plug>(my-complete)f <C-X><C-f>
+
+" 定義補完: CTRL-X CTRL-D
+" mixinを補完(sass)
+" 検索対象はdefineオプションとincludeオプションとpathオプションで設定可能
+nnoremap <silent> <Plug>(my-complete)f <C-X><C-D>
+
+" コマンドライン補完: CTRL-X CTRL-V
+" vimのコマンドと関数を補完
+nnoremap <silent> <Plug>(my-complete)v <C-X><C-V>
+
+" ユーザー定義補完: CTRL-X CTRL-U
+" completefuncオプションを設定したCompleteMonthsで月の名前を補完
+" omnifuncオプションに設定されたjavascriptcomplete#CompleteJSでDate型のメソッドを補完(javascript)
+nnoremap <silent> <Plug>(my-complete)u <C-X><C-U>
+
+" オムニ補完: CTRL-X CTRL-O
+nnoremap <silent> <Plug>(my-complete)o <C-X><C-O>
+" スペリング補完: CTRL-X s / CTRL-X CTRL-S
+" 頭文字が大文字になっていない単語と綴りが間違っている単語の修正候補を補完
+nnoremap <silent> <Plug>(my-complete)s <C-X><C-S>
 """"""""""""""""""""""""""""""
 " changelog
 "
@@ -278,7 +333,7 @@ nnoremap <silent> ,ub :<C-u>Buffers<CR>
 " ファイル一覧(Vaffle)
 nnoremap ,uf :<C-u>Vaffle<CR>
 " ファイル一覧(fzf)
-nnoremap ,uF :<C-u>Files<Space>
+nnoremap ,uF :<C-u>Files<Space>%:p:h
 " カラー一覧
 nnoremap <silent> ,uc :<C-u>Colors<CR>
 " レジスタ一覧
@@ -289,23 +344,65 @@ nnoremap <silent> ,ut :<C-u>Tags
 nnoremap <silent> ,uh :<C-u>History<CR>
 " MRU
 nnoremap <silent> ,uu :<C-u>History<CR>
-" git status
-nnoremap <silent> ,gs :<C-u>GFiles?<CR>
-" git ls-files
-nnoremap <silent> ,gf :<C-u>GFiles<CR>
+nnoremap ,uo :<C-u>cd %:p:h<CR>
 
 """"""""""""""""""""""""""""""
 " fugitive.vim
 """"""""""""""""""""""""""""""
-nnoremap ,gt :!tig
-nnoremap ,gs :Gstatus
-nnoremap ,gd :Gdiff
-nnoremap ,ga :Git! add
-nnoremap ,gc :Gcommit
-nnoremap ,gb :Gblame
-nnoremap ,gw :Gwrite
-nnoremap ,go :Gread
+nnoremap <Plug>(my-git) <Nop>
+nmap <Leader>g <Plug>(my-git)
+nnoremap <silent> <Plug>(my-git)t :!tig
+nnoremap <silent> <Plug>(my-git)S :Gstatus
+nnoremap <silent> <Plug>(my-git)d :Gdiff
+nnoremap <silent> <Plug>(my-git)a :Git! add
+nnoremap <silent> <Plug>(my-git)c :Gcommit
+nnoremap <silent> <Plug>(my-git)b :Gblame
+nnoremap <silent> <Plug>(my-git)w :Gwrite
+nnoremap <silent> <Plug>(my-git)o :Gread
 
+" git status
+nnoremap <silent> <Plug>(my-git)s :<C-u>GFiles?<CR>
+" git ls-files
+nnoremap <silent> <Plug>(my-git)f :<C-u>GFiles<CR>
+
+""""""""""""""""""""""""""""""
+" switch
+""""""""""""""""""""""""""""""
+nnoremap <Plug>(my-switch) <Nop>
+nmap <Leader>s <Plug>(my-switch)
+nnoremap <silent> <Plug>(my-switch)s :<C-u>setl spell! spell?<CR>
+nnoremap <silent> <Plug>(my-switch)l :<C-u>setl list! list?<CR>
+nnoremap <silent> <Plug>(my-switch)t :<C-u>setl expandtab! expandtab?<CR>
+nnoremap <silent> <Plug>(my-switch)w :<C-u>setl wrap! wrap?<CR>
+nnoremap <silent> <Plug>(my-switch)p :<C-u>setl paste! paste?<CR>
+nnoremap <silent> <Plug>(my-switch)b :<C-u>setl scrollbind! scrollbind?<CR>
+nnoremap <silent> <Plug>(my-switch)y :call <SID>toggle_syntax()<CR>
+function! s:toggle_syntax() abort
+  if exists('g:syntax_on')
+    syntax off
+    redraw
+    echo 'syntax off'
+  else
+    syntax on
+    redraw
+    echo 'syntax on'
+  endif
+endfunction
+""""""""""""""""""""""""""""""
+" reload vimrc
+""""""""""""""""""""""""""""""
+if has('vim_starting')
+  function s:reload_vimrc() abort
+    execute printf('source %s', $MYVIMRC)
+    if has('gui_running')
+      execute printf('source %s', $MYGVIMRC)
+    endif
+    redraw
+    echo printf('.vimrc/.gvimrc has reloaded (%s).', strftime('%c'))
+  endfunction
+endif
+nmap <silent> <Plug>(my-reload-vimrc) :<C-u>call <SID>reload_vimrc()<CR>
+nmap <Leader><Leader>r <Plug>(my-reload-vimrc)
 """"""""""""""""""""""""""""""
 " keisen.vim
 """"""""""""""""""""""""""""""
