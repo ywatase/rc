@@ -85,7 +85,14 @@ if is_mac ; then
   alias mac_get_volume_output='osascript -e "output volume of (get volume settings)"'
   alias mac_get_volume='osascript -e "get volume settings"'
   alias mac_mute='osascript -e "set Volume output volume 0"'
-
+  alias mac_show_pmset='sudo pmset -g'
+  mac_lid_sleep () {
+    case $1 in
+      enable)  sudo pmset -a lidwake 1 ;;
+      disable) sudo pmset -a lidwake 0 ;;
+      *) echo 'mac_lid_sleep [disable|enable]' ;;
+    esac
+  }
   mac_set_volume_output() {
     osascript -e "set Volume output volume ${1:0}"
   }
