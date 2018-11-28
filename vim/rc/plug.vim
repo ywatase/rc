@@ -100,6 +100,9 @@ Plug 'Glench/Vim-Jinja2-Syntax' , { 'for': ['jinjahtml', 'jinja'] }
 " Clojure
 Plug 'jondistad/vimclojure', { 'for': 'clojure' }
 
+" bats
+Plug 'vim-scripts/bats.vim', { 'for': 'bats' }
+
 " cloudformation
 Plug 'lunarxlark/aws-cfn-snippet.vim', { 'for': 'cloudformation' }
 
