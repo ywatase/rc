@@ -30,6 +30,9 @@ snippet case
 		${2:pattern})
 			${3};;
 	esac
+snippet script_dir
+	SCRIPT_DIR=$(cd $(dirname \$0); pwd -P)
+
 snippet getopts
     init () {
       while getopts 'Dm:v' opt
