@@ -100,6 +100,9 @@ Plug 'Glench/Vim-Jinja2-Syntax' , { 'for': ['jinjahtml', 'jinja'] }
 " Clojure
 Plug 'jondistad/vimclojure', { 'for': 'clojure' }
 
+" cloudformation
+Plug 'lunarxlark/aws-cfn-snippet.vim', { 'for': 'cloudformation' }
+
 " colorscheme
 Plug 'altercation/vim-colors-solarized'
 Plug 'jacoborus/tender.vim'
