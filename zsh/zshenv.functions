@@ -234,7 +234,7 @@ lint-gitlab-ci-yml () {
     return
   fi
   ruby -e "require 'yaml'; require 'json'; puts JSON.generate({'content' => JSON.generate(YAML.load(ARGF.read)) })" .gitlab-ci.yml > .gitlab-ci.json
-  curl --header "Content-Type: application/json" https://gitlab.com/api/v3/ci/lint --data @.gitlab-ci.json
+  curl --header "Content-Type: application/json" https://gitlab.com/api/v4/ci/lint --data @.gitlab-ci.json
   [ -e .gitlab-ci.json ] && rm .gitlab-ci.json
 }
 
