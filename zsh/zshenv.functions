@@ -331,6 +331,19 @@ install-pyenv () {
   pyenv rehash
 }
 
+jinja2dump () {
+  python -c '
+import sys, yaml, jinja2
+_loader         = jinja2.FileSystemLoader("./", encoding="utf-8")
+_environment    = jinja2.Environment(loader=_loader)
+_template       = _environment.get_template(sys.argv[1])
+dict = {}
+if len(sys.argv) == 3 :
+  dict = yaml.load(open(sys.argv[2], "r+"))
+sys.stdout.write(_template.render(dict))
+' "$@"
+}
+
 ###
 # node.js
 ###
