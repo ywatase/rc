@@ -66,6 +66,15 @@ wakeup () {
 }
 
 ###
+# CSS minify
+###
+minify-css () {
+  local file=$1
+  local bname=$(basename .css)
+  curl -X POST -s --data-urlencode "input@$bname.css" https://cssminifier.com/raw > $bname.min.css
+}
+
+###
 # Perl
 ###
 git-delete-merged-branch () {
