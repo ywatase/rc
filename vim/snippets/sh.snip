@@ -1,4 +1,4 @@
-# #!/bin/bash
+ #!/bin/bash
 snippet #!
 	#!/bin/bash
 snippet if
@@ -32,6 +32,36 @@ snippet case
 	esac
 snippet script_dir
 	SCRIPT_DIR=$(cd $(dirname \$0); pwd -P)
+snippet debug
+    # bashの疑似シグナルDEBUGを用いたデバッグ
+    # DEBUG: シェルが文を実行した
+    trap 'read -p "\$0($LINENO) $BASH_COMMAND"' DEBUG
+    trap - DEBUG
+snippet err
+    # bashの疑似シグナルERRを用いたエラーハンドリング
+    # ERR: コマンド、シェル関数から0ではない終了ステータスが返された
+    errtrap() {
+      errcode=$?
+      echo "error line \$1: command exited with status $errcode."
+    }
+    trap 'errtrap $LINENO' ERR
+snippet exit
+    # bashの疑似シグナルEXITを用いた終了処理
+    # EXIT: シェルがスクリプトを終了した
+    exittrap() {
+      # 終了処理
+      exitcode=$?
+      echo "script exit line: \$1"
+    }
+    trap 'exittrap $LINENO' EXIT
+snippet return
+    # bashの疑似シグナルRETURNを用いた割込処理
+    # RETURN: source または . で実行されたシェル関数/スクリプトが終了した
+    sourcetrap() {
+      # 割込処理
+      echo "source return line: \$1"
+    }
+    trap 'sourcetrap $LINENO' RETURN
 
 snippet getopts
     init () {
