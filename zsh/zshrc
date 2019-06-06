@@ -34,15 +34,16 @@ typeset -U fpath
 typeset -U path
 
 ###
-# zplug
+# zplugin
 ###
-export ZPLUG_LOADFILE=~/.zsh/zplug-packages.zsh
-source $HOME/.zsh/zshrc.zplug
-# compinit is called in zplug
-if ! whence -p zplug >/dev/null ; then
-  autoload -U compinit
-  compinit
-fi
+autoload -U compinit
+compinit
+### Added by Zplugin's installer
+source ~/.zplugin/bin/zplugin.zsh
+autoload -Uz _zplugin
+(( ${+_comps} )) && _comps[zplugin]=_zplugin
+#### End of Zplugin's installer chunk
+source $HOME/.zsh/zshrc.zplugin
 
 ###
 # setting for peco
