@@ -1,4 +1,41 @@
 ###
+# zsh
+###
+## man zshall
+# zman [search word]
+zman() {
+    if [[ -n $1 ]]; then
+        PAGER="less -g -s '+/"$1"'" man zshall
+        echo "Search word: $1"
+    else
+        man zshall
+    fi
+}
+
+# zsh 用語検索
+# http://qiita.com/mollifier/items/14bbea7503910300b3ba
+zwman() {
+    zman "^       $1"
+}
+
+# zsh フラグ検索
+zfman() {
+    local w='^'
+    w=${(r:8:)w}
+    w="$w${(r:7:)1}|$w$1(\[.*\].*)|$w$1:.*:|$w$1/.*/.*"
+    zman "$w"
+}
+
+zprof_function () {
+  if zmodload zsh/zprof ; then
+    zprof
+    "$@"
+    zprof
+    zmodload -u zsh/zprof
+  fi
+}
+
+###
 # profile
 ###
 profile_vimscript () {
