@@ -330,6 +330,10 @@ locallib_delete () {
   unset PERL_LOCAL_LIB_ROOT PERL_MB_OPT PERL_MM_OPT PERL5LIB
 }
 
+tai64nlocal () {
+  perl -p -MTime::TAI64 -e 's/(^[^\s]+)/Time::TAI64::tai64nlocal($1)||$1/e'
+}
+
 ###
 # ruby
 ###
