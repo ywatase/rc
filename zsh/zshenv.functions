@@ -70,9 +70,11 @@ localvim () {
 ###
 # Check Command
 ###
+__IS_LINUX=$([[ `command uname` = "Linux" ]])
+__IS_MAC=$([[ `command uname` = "Darwin" ]])
 can ()           { where "$1" >/dev/null 2>&1                }
-is_linux ()      { ${__IS_LINUX:=$([[ `uname` = "Linux" ]])} }
-is_mac ()        { ${__IS_MAC:=$([[ `uname` = "Darwin" ]])}  }
+is_linux ()      { $__IS_LINUX                               }
+is_mac ()        { $__IS_MAC                                 }
 is_debian ()     { [[ -e '/etc/debian-release' ]]            }
 is_redhat ()     { [[ -e '/etc/redhat-release' ]]            }
 is_cygwin ()     { [[ "$CYGWIN" ]]                           }
