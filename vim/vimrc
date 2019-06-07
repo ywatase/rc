@@ -35,6 +35,7 @@ augroup MyVimrc
 "    autocmd FileType go autocmd BufWritePre <buffer> Fmt
     autocmd BufRead,BufNewFile cpanfile call MyCpanfileSetting()
     autocmd FileType ruby,eruby call MyRubySettings()
+    autocmd FileType python call MyPythonSettings()
     autocmd FileType markdown call MyFoldingSettingOn()
     autocmd FileType javascript call MyJavaScriptSettings()
     autocmd Filetype java call MyJavaSettings()
@@ -271,6 +272,11 @@ endf
 func! MyRubySettings()
     compiler ruby
     set autoindent expandtab sw=2 ts=2 sts=2
+endf
+""""""""""""""""""""""""""""""
+" Python
+func! MyPythonSettings()
+    set autoindent expandtab sw=4 ts=4 sts=4
 endf
 """"""""""""""""""""""""""""""
 " その他
