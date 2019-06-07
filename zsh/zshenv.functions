@@ -389,21 +389,6 @@ install-ndenv () {
   exec
   rdenv rehash
 }
-install-nodelibs () {
-# less
-  npm install -g less
-# js minify tool
-  npm install -g uglify-js
-# testacular https://github.com/vojtajina/testacular
-  npm install -g testacular
-# testacular https://github.com/vojtajina/testacular
-  npm install -g nodelint
-  if is_mac ; then
-    brew install phantomjs
-  else
-    echo 'download phantomjs from http://phantomjs.org/download.html'
-  fi
-}
 
 ###
 # mysql download
