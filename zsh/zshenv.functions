@@ -457,6 +457,14 @@ github_repositories () {
   git_user=${1:=ywatase}
   curl https://api.github.com/users/$git_user/repos\?per_page\=100 | jq  '.[].name'
 }
+
+###
+# docker - dry
+###
+install-dry () {
+  curl -sSf https://moncho.github.io/dry/dryup.sh | sudo sh
+  sudo chmod 755 /usr/local/bin/dry
+}
 ###
 # other
 ###
@@ -472,25 +480,6 @@ clear_cache () {
     echo canceled.
   fi
 
-}
-
-xquartz_if_not_running() {
-	v_nolisten_tcp=$(defaults read org.macosforge.xquartz.X11 nolisten_tcp)
-	v_xquartz_app=$(defaults read org.macosforge.xquartz.X11 app_to_run)
-
-	if [[ $v_nolisten_tcp == "1" ]]; then
-		defaults write org.macosforge.xquartz.X11 nolisten_tcp 0
-	fi
-
-	if [[ $v_xquartz_app != "/usr/bin/true" ]]; then
-		defaults write org.macosforge.xquartz.X11 app_to_run /usr/bin/true
-	fi
-
-	netstat -an | grep 6000 &> /dev/null || open -a XQuartz
-	while ! netstat -an \| grep 6000 &> /dev/null; do
-		sleep 2
-	done
-#	export DISPLAY=:0
 }
 
 autoload -U regexp-replace
@@ -511,38 +500,6 @@ if whence -p ansible-lint >/dev/null 2>&1 ; then
   }
 fi
 
-
-docker-run-x () {
-	xquartz_if_not_running
-	docker_if_not_running
-	xhost +$(docker-machine ip ${C_DOCKER_MACHINE})
-
-  socat TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:\"$DISPLAY\" &
-  local CHILD_PID=$!
-	docker run \
-		-e DISPLAY=$(docker-machine inspect ${C_DOCKER_MACHINE} --format={{.Driver.HostOnlyCIDR}} | cut -d'/' -f1):0 \
-    "$@"
-  kill $CHILD_PID
-  fg
-}
-
-docker-chrome () {
-  docker-run-x --rm  --privileged "$@" --name jesschrome jess/chrome
-}
-docker-chrome-ja () {
-  docker-run-x --rm  --privileged "$@" --name ywatachrome ywatase/chrome_ja
-}
-
-docker-chrome-ja-with-ro-userdata () {
-  local DATA_CONTAINER_ID=$(docker run -dit -v /data --name data ubuntu:14.04 /bin/bash)
-  docker run --rm --volumes-from data -v "$HOME/Library/Application Support/Google/Chrome/:/userdata:ro" ubuntu:14.04 cp -r /userdata/Default /data
-  docker-run-x --rm  --privileged --volumes-from data "$@" --name ywatachrome ywatase/chrome_ja
-  docker kill ${DATA_CONTAINER_ID}
-}
-
-docker-chrome-ja-with-full () {
-  docker-run-x --rm  --privileged -v $HOME/Downloads:/root/Downloads -v "$HOME/Library/Application Support/Google/Chrome/:/data:ro" "$@" --name ywatachrome ywatase/chrome_ja
-}
 
 minio-run () {
   [ -d ~/minio ] || mkdir ~/minio
