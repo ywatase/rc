@@ -218,6 +218,32 @@ set number
 " シンタックスハイライトを使用する
 syntax on
 
+" タブの表示
+set list
+set listchars=tab:»-,trail:-,extends:»,precedes:«,nbsp:%
+" set listchars=tab:»-,trail:-,eol:↲,extends:»,precedes:«,nbsp:%
+
+" 全角スペースが見えないフォントのときに設定する
+function! ActivateInvisibleIndicator()
+    if g:highlight_invisivle_indicator == 1
+        " 下の行の"　"は全角スペース
+        syntax match InvisibleJISX0208Space "　" display containedin=ALL
+        highlight InvisibleJISX0208Space term=underline ctermbg=Blue guibg=darkgray gui=underline
+    else
+        syntax clear
+        syntax on
+    endif
+endfunction
+let g:highlight_invisivle_indicator = 0
+function! s:toggle_invisible_indicator()
+    let g:highlight_invisivle_indicator = xor(g:highlight_invisivle_indicator, 1)
+    call ActivateInvisibleIndicator()
+endfunction
+augroup cs
+    autocmd!
+    autocmd ColorScheme * :call ActivateInvisibleIndicator()
+augroup END
+
 " Highlight Cursor Line
 "set cursorline
 
@@ -384,6 +410,7 @@ nnoremap <silent> <Plug>(my-switch)w :<C-u>setl wrap! wrap?<CR>
 nnoremap <silent> <Plug>(my-switch)p :<C-u>setl paste! paste?<CR>
 nnoremap <silent> <Plug>(my-switch)b :<C-u>setl scrollbind! scrollbind?<CR>
 nnoremap <silent> <Plug>(my-switch)y :call <SID>toggle_syntax()<CR>
+nnoremap <silent> <Plug>(my-switch)z :call <SID>toggle_invisible_indicator()<CR>
 function! s:toggle_syntax() abort
   if exists('g:syntax_on')
     syntax off
