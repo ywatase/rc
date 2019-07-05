@@ -25,7 +25,7 @@ runtime! rc/plug.vim
 filetype plugin indent on
 
 augroup MyVimrc
-	autocmd!
+    autocmd!
     autocmd BufRead,BufNewFile *.pl,*.pm,*.cgi,*.t,*psgi :set filetype=perl
     autocmd BufRead,BufNewFile *.tx   :set filetype=xslate
     autocmd BufRead,BufNewFile *.tmpl :set filetype=gohtmltmpl
@@ -63,7 +63,7 @@ noremap! <C-j> <Esc>
 " global
 "nmap <C-n> :cn<CR>
 "nmap <C-p> :cp<CR>
-"nmap 	   :GtagsCursor<CR>
+"nmap     :GtagsCursor<CR>
 "nmap     :Gtags -r <CR>
 " // global
 :cnoremap <C-a> <Home>
@@ -190,13 +190,13 @@ hi Folded gui=bold term=standout ctermbg=LightGrey ctermfg=DarkBlue guibg=Grey30
 hi FoldColumn gui=bold term=standout ctermbg=LightGrey ctermfg=DarkBlue guibg=Grey guifg=DarkBlue
 
 func! MyFoldingSettingOn ()
-	set foldtext=FoldCCtext()
-	set foldcolumn=5
+    set foldtext=FoldCCtext()
+    set foldcolumn=5
 endf
 
 func! MyFoldingSettingOff ()
-	set foldcolumn=0
-	set foldtext=foldtext()
+    set foldcolumn=0
+    set foldtext=foldtext()
 endf
 
 " Align plugin for multibyte charactor
@@ -204,8 +204,8 @@ let g:Align_xstrlen=3
 
 " 80カラム目を色付け
 if (exists('+colorcolumn'))
-	set colorcolumn=80
-	highlight ColorColumn ctermbg=9
+    set colorcolumn=80
+    highlight ColorColumn ctermbg=9
 endif
 
 """"""""""""""""""""""""""""""
@@ -263,8 +263,8 @@ let g:clj_paren_rainbow = 1
 " Perl
 " 他の設定は ~/.vim/ftplugin/perl/init.vim
 func! MyCpanfileSetting ()
-	set filetype=cpanfile
-	set syntax=perl.cpanfile
+    set filetype=cpanfile
+    set syntax=perl.cpanfile
 endf
 
 """"""""""""""""""""""""""""""
@@ -284,9 +284,9 @@ func! MyJavaScriptSettings ()
   set smartindent et sw=2 ts=2 sts=2
 endf
 func! MyJavaSettings ()
-	set makeprg=javac\ %
-	set grepprg=java\ `basename\ %\ .java`
-	set smartindent et
+    set makeprg=javac\ %
+    set grepprg=java\ `basename\ %\ .java`
+    set smartindent et
 endf
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -317,7 +317,7 @@ smap <expr><c-b> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expan
 
 " For snippet_complete marker
 if has('conceal')
-	set conceallevel=2 concealcursor=i
+    set conceallevel=2 concealcursor=i
 endif
 
 let g:snips_author = 'Yusuke Watase'
