@@ -1,6 +1,7 @@
 call plug#begin('~/.vim/plugged')
 Plug 'mattn/benchvimrc-vim', { 'on': 'BenchVimrc' }
 Plug 'tpope/vim-fugitive'
+Plug 'mtth/scratch.vim'
 
 " filer
 Plug 'cocopon/vaffle.vim'
