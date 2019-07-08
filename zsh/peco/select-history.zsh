@@ -7,7 +7,8 @@ function peco-select-history() {
     fi
     BUFFER=$(\history -n 1 | \
         eval $tac | \
-		ruby -e '$stdin.readlines.uniq.each{|l| print l}' | \
+		grep -vE '^(cd|ls$|fg$|vim$)' |
+		awk '!a[$0]++' | \
         peco --query "$LBUFFER")
     CURSOR=$#BUFFER
 #    zle clear-screen
