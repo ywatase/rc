@@ -41,4 +41,7 @@ zplugin light ywatase/zsh-themes
 zplugin ice wait'!0' has'jq'
 zplugin light b4b4r07/emoji-cli
 
+zplugin ice wait'!0' as"program" pick"bin/fzfyml"; zplugin light cm-hirano-shigetoshi/fzfyml
+zplugin ice wait'!0' src"fzf-aws-help.zsh"; zplugin light cm-hirano-shigetoshi/fzf-aws-help
+
 source_if_exist ~/.zsh/zshrc.zplugin.local
