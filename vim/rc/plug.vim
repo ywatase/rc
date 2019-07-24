@@ -61,6 +61,14 @@ let g:vim_precious_enable = ['toml', 'jinja', 'markdown']
 Plug 'osyo-manga/vim-precious', { 'for': g:vim_precious_enable }
 Plug 'Shougo/context_filetype.vim', { 'for': g:vim_precious_enable }
 
+" Language server protocol
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'natebosch/vim-lsc'
+let g:lsp_async_completion = 1
+
 " Perl
 Plug 'vim-perl/vim-perl', { 'for': 'perl' }
 Plug 'ywatase/perldoc-vim', { 'for': 'perl' }
