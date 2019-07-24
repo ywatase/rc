@@ -99,7 +99,7 @@ Plug 'pearofducks/ansible-vim', { 'for': ['yaml', 'ansible'] }
 Plug 'Glench/Vim-Jinja2-Syntax' , { 'for': ['jinjahtml', 'jinja'] }
 
 " Clojure
-Plug 'jondistad/vimclojure', { 'for': 'clojure' }
+" Plug 'jondistad/vimclojure', { 'for': 'clojure' }
 
 " bats
 Plug 'vim-scripts/bats.vim', { 'for': 'bats' }
