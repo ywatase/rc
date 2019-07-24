@@ -21,7 +21,7 @@ Plug 'junegunn/fzf.vim'
 " folding
 Plug 'LeafCage/foldCC'
 Plug 'vim-scripts/Align'
-Plug 'vim-scripts/EnhCommentify.vim'
+Plug 'scrooloose/nerdcommenter'
 
 Plug 'vim-scripts/sudo.vim'
 Plug 'vim-scripts/surround.vim'
