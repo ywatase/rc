@@ -1,0 +1,83 @@
+#compdef todoist
+
+local version="todoist version 0.13.0"
+if [[ $(todoist -v) != $version ]] ; then
+  print "$(command todoist -v). but function for v0.13.0. update function"
+fi
+
+_todoist_all_items() {
+  _values 'items' "$(command todoist --namespace --project-namespace list)"
+}
+
+_todoist_projects () {
+  _values 'projects' ${(@f)"$(todoist --project-namespace --csv projects|while read line ; do echo $line |sed -e 's/,/[/' -e 's/$/]/'; done)"}
+}
+_todoist_label_ids () {
+  _values 'label ids' "$(todoist --project-namespace projects)"
+}
+
+local -a _1st_arguments
+_1st_arguments=(
+  'list:Show all tasks'
+  'show:Show task detail'
+  'completed-list:Show all completed tasks (only premium user)'
+  'add:Add task'
+  'modify:Modify task'
+  'close:Close task'
+  'delete:Delete task'
+  'labels:Show all labels'
+  'projects:Show all projects'
+  'karma:Show karma'
+  'sync:Sync cache'
+  'quick:Quick add a task'
+  'help:Shows a list of commands or help for one command'
+)
+
+local expl
+local -a formulae installed_formulae
+
+_arguments \
+  '(- *)'{-v,--version}'[print the version]' \
+  '(--indent)--indent[display children task with indent]' \
+  '(- *)'{-h,--help}'[show help]' \
+  '(--header)--header[output with header]' \
+  '(--color)--color[colorize output]' \
+  '(--csv)--csv[output in CSV format]' \
+  '(--debug)--debug[output logs]' \
+  '(--namespace)--namespace[display parent task like namespace]' \
+  '(--project-namespace)--project-namespace[display parent project like namespace]' \
+  '*:: :->subcmds' && return 0
+
+if (( CURRENT == 1 )); then
+  _describe -t commands "todoist subcommands" _1st_arguments
+  return
+fi
+
+
+
+case "$words[1]" in
+  list) ;;
+# https://github.com/sachaos/todoist/issues/15#issuecomment-334140101
+#    _arguments \
+#      '(--filter -f)'{--filter,-f}'+[filter expression]' ;;
+  add)
+    _arguments \
+      '(--priority -f)'{--priority,-p}'[priority (1-4) (default: 1)]:priority:(1 2 3 4)' \
+      '(--label-ids  -L)'{--label-ids,-L}'[label ids (separated by ,)]:label ids:_todoist_label_ids' \
+      '(--project-id -P)'{--project-id,-P}'[project id (default: 0)]:project id:_todoist_projects' \
+      '(--project-name -N)'{--project-name,-N}'[project name]:project name' \
+      '(--date -d)'{--date,-d}'[date string (today, 2016/10/02, 2016/09/02 18:00)]:date string (today, 2016/10/02, 2016/09/02 18:00)' \
+      '(--reminder -r)'{--remider,-r}'[set reminder (only premium users)]' ;;
+#  'show:Show task detail'
+#  'completed-list:Show all completed tasks (only premium user)'
+#  'add:Add task'
+#  'modify:Modify task'
+#  'close:Close task'
+#  'delete:Delete task'
+#  'labels:Show all labels'
+#  'projects:Show all projects'
+#  'karma:Show karma'
+#  'sync:Sync cache'
+#  'quick:Quick add a task'
+#  'help:Shows a list of commands or help for one command'
+esac
