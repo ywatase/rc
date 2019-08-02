@@ -339,11 +339,7 @@ ec2_get_metadata () {
 }
 
 r() {
-  local f
-  f=(~/.zsh/functions/*(.))
-  unfunction $f:t 2> /dev/null
-  autoload -U $f:t
-  compinit -u
+  zload ~/.zsh/functions/*(.)
 }
 
 ###
