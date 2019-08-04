@@ -70,6 +70,10 @@
 	staash  = stash --include-untracked   # stash untracked and tracked files
 	staaash = stash --all                 # stash ignored, untracked, and tracked files
 
+	n  = now --all --stat
+	r1 = reset HEAD~1
+	r2 = reset HEAD~2
+
 [tig]
 	vertical-split = no
 [tig "bind"]
