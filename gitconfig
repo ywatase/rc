@@ -77,6 +77,15 @@
 	generic = G move-last-line
 	generic = <Ctrl-F> move-page-down
 	generic = <Ctrl-B> move-page-up
+	main    = R !git rebase -i %(commit)
+	diff    = R !git rebase -i %(commit)
+	# ` で commit ID をクリップボードにコピー(Mac用)
+	generic = ` @bash -c "echo -n '%(commit)' | pbcopy"
+	# ` でファイルパスをクリップボードにコピー (Mac用)
+	stage   = ` @bash -c "echo -n '%(file)' | pbcopy"
+	status  = ` @bash -c "echo -n '%(file)' | pbcopy"
+	tree    = ` @bash -c "echo -n '%(file)' | pbcopy"
+	blob    = ` @bash -c "echo -n '%(file)' | pbcopy"
 
 #[merge]
 #	ff = false
