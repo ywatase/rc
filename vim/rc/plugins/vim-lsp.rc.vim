@@ -6,16 +6,6 @@ let g:lsp_log_file = expand('~/.cache/tmp/vim-lsp.log')  " ログ出力のPATH�
 
 " 言語用Serverの設定
 augroup MyLsp
-  autocmd!
-  if executable('gopls')
-    autocmd User lsp_setup call lsp#register_server({
-          \ 'name': 'gopls',
-          \ 'cmd': {server_info->['gopls', '-mode', 'stdio']},
-          \ 'whitelist': ['go'],
-          \ })
-    autocmd BufWritePre *.go LspDocumentFormatSync
-    autocmd FileType go call s:configure_lsp()
-  endif
   " pip install python-language-server
   if executable('pyls')
     " Python用の設定を記載
