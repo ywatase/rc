@@ -4,7 +4,7 @@ typeset -A opt_args
 local context state line
 
 _arguments -C \
-  '(- 1 *)--version[show program\'s version number and exit]' \
+  "(- 1 *)--version[show program's version number and exit]" \
   '(- 1 *){-h,--help}[Show help]' \
   '-D=-[pass through switches to the perl Configure script]' \
   '(-as)'-as+'[Install a given perl under an alias.]:alias name' \
