@@ -10,6 +10,7 @@ set modelines=5
 set scrolloff=5
 set display=lastline
 set pumheight=10
+let mapleader = ','
 
 """"""""""""""""""""""""""""""
 " vundle
@@ -78,7 +79,7 @@ nmap <F4> :vertical diffsplit
 " completion
 "
 inoremap <Plug>(my-complete) <Nop>
-imap ,x <Plug>(my-complete)
+imap <Leader>x <Plug>(my-complete)
 
 " 行(全体)補完: CTRL-X CTRL-L
 " 検索対象はcompleteオプションで設定可能
@@ -359,25 +360,27 @@ let g:html_no_pre = 1
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " fzf
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nnoremap <Plug>(my-unite) <Nop>
+nmap <Leader>u <Plug>(my-unite)
 " ag
-nnoremap <silent> ,ua :<C-u>Ag
+nnoremap <silent> <Plug>(my-unite)a :<C-u>Ag
 " バッファ一覧
-nnoremap <silent> ,ub :<C-u>Buffers<CR>
+nnoremap <silent> <Plug>(my-unite)b :<C-u>Buffers<CR>
 " ファイル一覧(Vaffle)
-nnoremap ,uf :<C-u>Vaffle<CR>
+nnoremap <Plug>(my-unite)f :<C-u>Vaffle<CR>
 " ファイル一覧(fzf)
-nnoremap ,uF :<C-u>Files<Space>%:p:h
+nnoremap <Plug>(my-unite)F :<C-u>Files<Space>%:p:h
 " カラー一覧
-nnoremap <silent> ,uc :<C-u>Colors<CR>
+nnoremap <silent> <Plug>(my-unite)c :<C-u>Colors<CR>
 " レジスタ一覧
-"nnoremap <silent> ,ur :<C-u>
+"nnoremap <silent> <Plug>(my-unite)r :<C-u>
 " タグ一覧
-nnoremap <silent> ,ut :<C-u>Tags
+nnoremap <silent> <Plug>(my-unite)t :<C-u>Tags
 " ヒストリ
-nnoremap <silent> ,uh :<C-u>History<CR>
+nnoremap <silent> <Plug>(my-unite)h :<C-u>History<CR>
 " MRU
-nnoremap <silent> ,uu :<C-u>History<CR>
-nnoremap ,uo :<C-u>cd %:p:h<CR>
+nnoremap <silent> <Plug>(my-unite)u :<C-u>History<CR>
+nnoremap <Plug>(my-unite)o :<C-u>cd %:p:h<CR>
 
 """"""""""""""""""""""""""""""
 " fugitive.vim
@@ -448,8 +451,6 @@ let autodate_keyword_pre = '\cLast Modified:'
 " taglist.vim : define the title texts for Perl
 """"""""""""""""""""""""""""""
 noremap  <silent> <leader> l    :TlistToggle<CR>
-noremap  <silent> <F11>         :Tlist<CR>
-inoremap <silent> <F11>  <C-C>  :Tlist<CR>
 let Tlist_Ctags_Cmd = '/usr/local/bin/ctags'  " ctagsのコマンド
 let Tlist_perl_settings  = 'perl;c:constants;l:labels;p:package;s:subroutines;d:POD'
 let Tlist_Show_One_File = 1
