@@ -115,6 +115,9 @@ if is_mac ; then
     killall Dock
   }
   alias docker-for-mac-shell='screen ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/tty'
+  ifconfig_localhost () {
+     for IP in 127.0.0.{2..4} ; do sudo ifconfig lo0 alias $IP ; done
+  }
 else
   alias ls="ls --color=auto --show-control-chars"
   alias keyboard_us="sudo loadkeys us; setxkbmap -layout us -model pc104"
