@@ -284,10 +284,6 @@ filetype plugin indent on
 " Load matchit (% to bounce from do to end, etc.)
 runtime! macros/matchit.vim
 """"""""""""""""""""""""""""""
-" ClojureVim
-let g:clj_highlight_builtins = 1
-let g:clj_paren_rainbow = 1
-""""""""""""""""""""""""""""""
 " Perl
 " 他の設定は ~/.vim/ftplugin/perl/init.vim
 func! MyCpanfileSetting ()
