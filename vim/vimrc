@@ -237,7 +237,7 @@ function! ActivateInvisibleIndicator()
     endif
 endfunction
 let g:highlight_invisivle_indicator = 0
-function! s:toggle_invisible_indicator()
+function! Toggle_invisible_indicator()
     let g:highlight_invisivle_indicator = xor(g:highlight_invisivle_indicator, 1)
     call ActivateInvisibleIndicator()
 endfunction
@@ -408,7 +408,7 @@ nnoremap <silent> <Plug>(my-switch)w :<C-u>setl wrap! wrap?<CR>
 nnoremap <silent> <Plug>(my-switch)p :<C-u>setl paste! paste?<CR>
 nnoremap <silent> <Plug>(my-switch)b :<C-u>setl scrollbind! scrollbind?<CR>
 nnoremap <silent> <Plug>(my-switch)y :call <SID>toggle_syntax()<CR>
-nnoremap <silent> <Plug>(my-switch)z :call <SID>toggle_invisible_indicator()<CR>
+nnoremap <silent> <Plug>(my-switch)z :call Toggle_invisible_indicator()<CR>
 function! s:toggle_syntax() abort
   if exists('g:syntax_on')
     syntax off
