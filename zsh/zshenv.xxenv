@@ -2,7 +2,7 @@
 : ${XXENV_CACHE_DIR:=~/.zxxenv_cache}
 xxenv_load () {
 	[[ -d $XXENV_CACHE_DIR ]] || mkdir $XXENV_CACHE_DIR
-	for xxenv in rbenv pyenv plenv ndenv phpenv
+	for xxenv in rbenv pyenv plenv ndenv nodenv phpenv
 	do
 		path=($HOME/.$xxenv/shims(N-/) $HOME/.$xxenv/bin(N-/) $path)
 		whence -p $xxenv >/dev/null && xxenv_load_cache $xxenv
@@ -13,7 +13,7 @@ xxenv_load_cache () {
 	local xxenv=$1
 	local xxenv_init_cache=$XXENV_CACHE_DIR/$xxenv.init.sh
 	if [[ ! -f $xxenv_init_cache || $(whence -p $xxenv) -nt $xxenv_init_cache ]] ; then
-		$xxenv init - | sed -e '/source /source_if_exist /' > $xxenv_init_cache
+		$xxenv init - | sed -e 's/source /source_if_exist /' > $xxenv_init_cache
 	fi
 	source_if_exist $xxenv_init_cache
 }
