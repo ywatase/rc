@@ -260,9 +260,9 @@ lint-gitlab-ci-yml () {
     echo .gitlab-ci.yml is not found >&2
     return
   fi
-  ruby -e "require 'yaml'; require 'json'; puts JSON.generate({'content' => JSON.generate(YAML.load(ARGF.read)) })" .gitlab-ci.yml > .gitlab-ci.json
-  curl --header "Content-Type: application/json" https://gitlab.com/api/v4/ci/lint --data @.gitlab-ci.json
-  [ -e .gitlab-ci.json ] && rm .gitlab-ci.json
+  curl -sS --header "Content-Type: application/json" \
+    --data @<(python -c 'import sys, yaml, json; y=yaml.safe_load(open(sys.argv[1], "r")); print(json.dumps({"content": json.dumps(y)}))' .gitlab-ci.yml) \
+    ${GITLAB_API_ENDOPOINT:-https://gitlab.com/api/v4}/ci/lint
 }
 
 yaml2json () {
