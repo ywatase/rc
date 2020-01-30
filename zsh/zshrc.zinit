@@ -21,6 +21,9 @@ zinit load peco/peco
 zinit ice from"gh-r" as"program" bpick"" pick'mkr*/mkr'
 zinit load mackerelio/mkr
 
+zinit ice from"gh-r" as"program" bpick"" pick'ssllabs-scan'
+zinit load ssllabs/ssllabs-scan
+
 zinit ice pick'todoist_functions.sh' wait'!0' has'peco'
 zinit load "sachaos/todoist"
 
