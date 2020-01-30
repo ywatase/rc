@@ -1,0 +1,9 @@
+#compdef googleauthenticator
+
+_googleauthenticator () {
+    local -a list
+    if (( CURRENT == 2 )); then
+        list=( $(googleauthenticator --list) )
+        _describe -t 2fa "2FA List" list
+    fi
+}
