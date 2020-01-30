@@ -9,10 +9,10 @@ zcompile_if_newer () { [[ ! -f "$1.zwc" || "${1:A}" -nt "$1.zwc" ]] && zcompile 
 
 # brew
 if whence -p /usr/local/bin/brew >/dev/null ; then
-	path=(/usr/local/bin(N-/) /usr/local/sbin(N-/) $path)
-	# tuning
-	# /usr/local/opt/coreutils = $(brew --prefix coreutils)
-	path=(/usr/local/opt/coreutils/libexec/gnubin(N-/) $path)
+  path=(/usr/local/bin(N-/) /usr/local/sbin(N-/) $path)
+  # tuning
+  # /usr/local/opt/coreutils = $(brew --prefix coreutils)
+  path=(/usr/local/opt/coreutils/libexec/gnubin(N-/) $path)
 fi
 source_if_exist $HOME/.zsh/zshenv.functions
 source_if_exist $HOME/.zsh/zshenv.xxenv
