@@ -116,7 +116,7 @@ if is_mac ; then
   }
   alias docker-for-mac-shell='screen ~/Library/Containers/com.docker.docker/Data/com.docker.driver.amd64-linux/tty'
   ifconfig_localhost () {
-     for IP in 127.0.0.{2..4} ; do sudo ifconfig lo0 alias $IP ; done
+     for IP in 127.0.0.{2..5} ; do sudo ifconfig lo0 alias $IP ; done
   }
 else
   alias ls="ls --color=auto --show-control-chars"
