@@ -13,7 +13,7 @@ zinit ice from'gh-r' as'program' mv'jq* -> jq'
 zinit load stedolan/jq
 
 zinit ice from'gh-r' as'program' pick'ghq*/ghq'
-zinit load motemen/ghq
+zinit load x-motemen/ghq
 
 zinit ice from"gh-r" as"program" pick'peco*/peco'
 zinit load peco/peco
