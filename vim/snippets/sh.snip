@@ -31,7 +31,20 @@ snippet case
 			${3};;
 	esac
 snippet script_dir
-	SCRIPT_DIR=$(cd $(dirname \$0); pwd -P)
+	SCRIPT_DIR=$(cd $(readlink -f \$0 || echo \$0); pwd -P)
+snippet abs_dirname
+    abs_dirname() {
+      local cwd="$(pwd)"
+      local path="\$1"
+      while [ -n "$path" ]; do
+        cd "${path%/*}"
+        local name="${path##*/}"
+        path="$(readlink "$name" || true)"
+      done
+      pwd -P
+      cd "$cwd"
+    }
+    script_dir="$(abs_dirname "\$0")"
 snippet debug
     # bashの疑似シグナルDEBUGを用いたデバッグ
     # DEBUG: シェルが文を実行した
