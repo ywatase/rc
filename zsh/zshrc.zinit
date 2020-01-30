@@ -41,9 +41,6 @@ zinit light ywatase/zsh-themes
 zinit ice wait'!0' has'jq'
 zinit light b4b4r07/emoji-cli
 
-zinit ice wait'!0' as"program" pick"bin/fzfyml"; zinit light cm-hirano-shigetoshi/fzfyml
-zinit ice wait'!0' src"fzf-aws-help.zsh"; zinit light cm-hirano-shigetoshi/fzf-aws-help
-
 zinit ice wait'!0'
 zinit light mollifier/zload
 
