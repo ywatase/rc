@@ -1,0 +1,50 @@
+[[ -e ~/.zinit/bin/zinit.zsh ]] || \
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/zdharma/zinit/master/doc/install.sh)"
+# zinit のコマンド補完をロードします。
+autoload -Uz _zinit
+#
+# # プラグインが使うコマンドをこのタイミングで autoload しておきます。
+autoload -Uz add-zsh-hook
+autoload -Uz cdr
+autoload -Uz chpwd_recent_dirs
+
+# binary
+zinit ice from'gh-r' as'program' mv'jq* -> jq'
+zinit load stedolan/jq
+
+zinit ice from'gh-r' as'program' pick'ghq*/ghq'
+zinit load motemen/ghq
+
+zinit ice from"gh-r" as"program" pick'peco*/peco'
+zinit load peco/peco
+
+zinit ice from"gh-r" as"program" bpick"" pick'mkr*/mkr'
+zinit load mackerelio/mkr
+
+zinit ice pick'todoist_functions.sh' wait'!0' has'peco'
+zinit load "sachaos/todoist"
+
+# plugins
+
+zinit ice has'ghq'
+zinit light vintersnow/anyframe
+
+zinit ice wait'!0'
+zinit light zsh-users/zsh-completions
+
+zinit ice wait'!0' atinit'zpcompinit; zpcdreplay'
+zinit light zsh-users/zsh-syntax-highlighting
+
+zinit ice wait'!0' pick'komachi.zsh-theme'
+zinit light ywatase/zsh-themes
+
+zinit ice wait'!0' has'jq'
+zinit light b4b4r07/emoji-cli
+
+zinit ice wait'!0' as"program" pick"bin/fzfyml"; zinit light cm-hirano-shigetoshi/fzfyml
+zinit ice wait'!0' src"fzf-aws-help.zsh"; zinit light cm-hirano-shigetoshi/fzf-aws-help
+
+zinit ice wait'!0'
+zinit light mollifier/zload
+
+source_if_exist ~/.zsh/zshrc.zinit.local
