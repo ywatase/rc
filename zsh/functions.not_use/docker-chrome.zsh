@@ -18,17 +18,9 @@ xquartz_if_not_running() {
 }
 
 docker-run-x () {
-	xquartz_if_not_running
-	docker_if_not_running
-	xhost +$(docker-machine ip ${C_DOCKER_MACHINE})
-
-  socat TCP-LISTEN:6000,reuseaddr,fork UNIX-CLIENT:\"$DISPLAY\" &
-  local CHILD_PID=$!
-	docker run \
-		-e DISPLAY=$(docker-machine inspect ${C_DOCKER_MACHINE} --format={{.Driver.HostOnlyCIDR}} | cut -d'/' -f1):0 \
-    "$@"
-  kill $CHILD_PID
-  fg
+  xquartz_if_not_running
+  xhost + 127.0.0.1
+  docker run -e DISPLAY=docker.for.mac.localhost:0 "$@"
 }
 
 docker-chrome () {
