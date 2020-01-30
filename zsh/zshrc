@@ -460,6 +460,9 @@ source_if_exist ~/google-cloud-sdk/path.zsh.inc
 # The next line enables shell command completion for gcloud.
 source_if_exist ~/google-cloud-sdk/completion.zsh.inc
 
+# kubectl completion
+whence -p kubectl >/dev/null 2>/dev/null && source <(kubectl completion zsh)
+
 # added by travis gem
 source_if_exist ~/.travis/travis.sh
 
