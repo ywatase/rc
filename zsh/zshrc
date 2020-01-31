@@ -48,7 +48,7 @@ source $HOME/.zsh/zshrc.zinit
 ###
 # setting for peco
 ###
-if whence -p peco >/dev/null ; then
+if [[ $commands[peco] ]] ; then
   for f (~/.zsh/peco/*.zsh) source_if_exist "${f}" # load peco sources
   bindkey '^r' peco-select-history
   bindkey '^@' peco-cdr
@@ -57,21 +57,19 @@ fi
 ###
 # aws-cli
 ###
-if which aws >/dev/null 2>&1 ; then
-  source_if_exist $HOME/.zsh/zshrc.aws
-fi
+[[ $commands[aws] ]] && source_if_exist $HOME/.zsh/zshrc.aws
 
 ###
 # Alias
 ###
 alias l=ls
 if is_mac ; then
-  if which gls >/dev/null 2>&1 ; then
+  if [[ $commands[gls] ]] ; then
     alias ls="gls --color=auto --show-control-chars"
   else
     alias ls="ls -G"
   fi
-  if which gtar >/dev/null 2>&1 ; then
+  if [[ $commands[gtar] ]] ; then
     alias tar=gtar
   fi
   alias tagit='open -a Tagit'
@@ -153,15 +151,13 @@ alias dstat-disk='dstat -Tcldr'
 alias sshv="$(whence -p ssh) -l vagrant -o 'NoHostAuthenticationForLocalhost=yes' -i ~/.vagrant.d/insecure_private_key"
 alias be="bundle exec"
 alias ce="carton exec"
-whence -p jsonlint >/dev/null && alias lint-json=jsonlint
+[[ $commands[jsonlint] ]] && alias lint-json=jsonlint
 
 diary () { vim _posts/$(date '+%Y-%m-%d' --date "${1:-today}")-diary.md }
 diary_yesterday () { diary yesterday }
 
 # git
-if whence -p hub >/dev/null 2>/dev/null ; then
-  eval "$(hub alias -s)"
-fi
+[[ $commands[hub] ]] && eval "$(hub alias -s)"
 
 gitlab-changelog () {
   local cmd="$1"
@@ -351,7 +347,7 @@ r() {
 if is_mac  ; then
 # avoid "/usr/bin/vim" exit code bug.
 # if setting EDITOR=vim, /usr/bin/vim sometimes return 1 and fail to edit cron, commit log and so on
-  if whence -p gdircolors >/dev/null 2>&1 ; then
+  if [[ $commands[gdircolors] ]] ; then
     eval $(gdircolors ~/.zsh/dircolors-solarized.git/dircolors.256dark)
   fi
   export EDITOR=/usr/bin/vim
@@ -460,8 +456,8 @@ source_if_exist ~/google-cloud-sdk/path.zsh.inc
 # The next line enables shell command completion for gcloud.
 source_if_exist ~/google-cloud-sdk/completion.zsh.inc
 
-# kubectl completion
-whence -p kubectl >/dev/null 2>/dev/null && source <(kubectl completion zsh)
+# kubectl
+[[ $commands[kubectl] ]] && source <(kubectl completion zsh)
 
 # added by travis gem
 source_if_exist ~/.travis/travis.sh
