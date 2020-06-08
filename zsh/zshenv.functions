@@ -114,7 +114,7 @@ minify-css () {
 }
 
 ###
-# Perl
+# git
 ###
 git-delete-merged-branch () {
   local reply
@@ -132,6 +132,27 @@ git-delete-merged-branch () {
   fi
 }
 
+gwt() {
+  local git_cdup_dir=$(command git rev-parse --show-cdup)
+  local cmd="git worktree add ${git_cdup_dir}git-worktrees/$1 -b $1"
+  echo $cmd
+  $cmd
+  cd ${git_cdup_dir}git-worktrees/$1
+}
+
+
+###
+# github
+###
+github_repositories () {
+  local git_user
+  git_user=${1:=ywatase}
+  curl https://api.github.com/users/$git_user/repos\?per_page\=100 | jq  '.[].name'
+}
+
+###
+# Perl
+###
 alias perlpath="perldoc -l"
 alias plackup_indexes="plackup -MPlack::App::Directory -e 'Plack::App::Directory->new->to_app'"
 alias plackup_markdown="plackup -MPlack::App::Directory::Markdown \
