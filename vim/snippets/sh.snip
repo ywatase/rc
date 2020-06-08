@@ -8,6 +8,10 @@ snippet if
 snippet elif
 	elif [[ ${1:condition} ]]; then
 		${2:#statements}
+snippet ifundef
+	if [[ "\${${1:var}+set}" ]]; then
+		${2:#statements}
+	fi
 snippet for
 	for (( ${2:i} = 0; $2 < ${1:count}; $2++ )); do
 		${3:#statements}
