@@ -431,20 +431,6 @@ rpm_extract () {
 }
 
 ###
-# peco
-###
-download-peco () {
-  local version
-  if is_mac ; then
-    brew install peco
-  elif is_linux ; then
-    [[ "$(curl https://github.com/peco/peco/releases/latest)" =~ releases/tag/([^\']+)\"\> ]];
-    version=${match[1]}
-    curl -LO https://github.com/peco/peco/releases/download/$version/peco_linux_amd64.tar.gz
-    tar xzf peco_linux_amd64.tar.gz
-  fi
-}
-###
 # vagrant
 ###
 vagrant-upreload () {
