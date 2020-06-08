@@ -293,9 +293,18 @@ yaml2json () {
   do
     BASENAME=$(basename $FILE .yaml)
     BASENAME=$(basename $BASENAME .yml)
-    ruby -e "require 'yaml'; require 'json'; puts JSON.pretty_generate YAML.load ARGF.read" $FILE > $BASENAME.json
+    python -c 'import sys, yaml, json; y=yaml.safe_load(open(sys.argv[1], "r")); print(json.dumps(y))' $FILE > $BASENAME.json
+#    ruby -e "require 'yaml'; require 'json'; puts JSON.pretty_generate YAML.load ARGF.read" $FILE > $BASENAME.json
   done
 }
+yaml2json-filter() {
+  cat "$@" | python -c 'import sys, yaml, json; y=yaml.safe_load(sys.stdin.read()); print(json.dumps(y))' "$@"
+}
+
+yaml2yaml() {
+  cat "$@" | python -c 'import sys, yaml; y=yaml.safe_load(sys.stdin.read()); print(yaml.dump(y))'
+}
+
 
 xml2yaml () {
   local FILE
