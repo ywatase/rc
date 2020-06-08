@@ -20,8 +20,12 @@ augroup MyLsp
           \   'pycodestyle': {'enabled': v:false},
           \   'jedi_definition': {'follow_imports': v:true, 'follow_builtin_imports': v:true},}}}
           \})
-    autocmd FileType python call s:configure_lsp()
   endif
+
+  autocmd FileType dockerfile call s:configure_lsp()
+  autocmd FileType python call s:configure_lsp()
+  autocmd FileType sh call s:configure_lsp()
+
 augroup END
 " 言語ごとにServerが実行されたらする設定を関数化
 function! s:configure_lsp() abort
