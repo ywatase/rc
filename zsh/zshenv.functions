@@ -471,15 +471,6 @@ vuls_setup () {
 alias mkr_kernel='mkr hosts -v | jq -r '"'"'.[] | {"name": .name, "kernel": .meta.kernel.release}'"'"
 
 ###
-# github
-###
-github_repositories () {
-  local git_user
-  git_user=${1:=ywatase}
-  curl https://api.github.com/users/$git_user/repos\?per_page\=100 | jq  '.[].name'
-}
-
-###
 # docker - dry
 ###
 install-dry () {
