@@ -12,6 +12,10 @@ autoload -Uz chpwd_recent_dirs
 zinit ice from'gh-r' as'program' mv'jq* -> jq'
 zinit load stedolan/jq
 
+# YAML aliases expander
+zinit ice from'gh-r' as'program' pick'yqe'
+zinit load shin1x1/yae
+
 zinit ice from'gh-r' as'program' pick'ghq*/ghq'
 zinit load x-motemen/ghq
 
