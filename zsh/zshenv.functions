@@ -448,6 +448,15 @@ rpm_extract () {
 }
 
 ###
+# Swagger / OpenAPI
+###
+alias openapi-generator-cli-go="openapi-generator-cli generate -g go -o out/go -i openapi.yml"
+openapi-generator-cli () {
+  [[ -n $OPEN_API_UPDATE ]] && docker pull openapitools/openapi-generator-cli:latest
+  docker run -w /local -v ${PWD}:/local openapitools/openapi-generator-cli:latest $@
+}
+
+###
 # vagrant
 ###
 vagrant-upreload () {
