@@ -329,6 +329,14 @@ json2yaml () {
 json2go () { open "https://mholt.github.io/json-to-go/"}
 curl2go () { open "https://mholt.github.io/curl-to-go/"}
 
+ldif2json () {
+  perl -wpe 'BEGIN{print qq{---\n}}
+    s/\A([^:]*)\:\:? (.*)\z/  $1: $2/gmsx;
+    s/ssh\-rsa (.*) (.*)\z/ssh-rsa $1/gmsx;
+    s/\A(\s*)dn(.*)\z/- dn$2/gmsx;
+  ' | yaml2json-filter
+}
+
 locallib () {
   echo "OLD PATH: $PATH"
   if [ "$1" = "" ] ; then
