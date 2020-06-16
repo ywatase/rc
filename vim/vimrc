@@ -464,7 +464,7 @@ let autodate_keyword_pre = '\cLast Modified:'
 " taglist.vim : toggle the taglist window
 " taglist.vim : define the title texts for Perl
 """"""""""""""""""""""""""""""
-noremap  <silent> <leader> l    :TlistToggle<CR>
+noremap  <silent><leader>tl    :TlistToggle<CR>
 let Tlist_Ctags_Cmd = '/usr/local/bin/ctags'  " ctagsのコマンド
 let Tlist_perl_settings  = 'perl;c:constants;l:labels;p:package;s:subroutines;d:POD'
 let Tlist_Show_One_File = 1
