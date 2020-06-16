@@ -69,6 +69,8 @@ Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'mattn/vim-lsp-settings'
 Plug 'mattn/vim-lsp-icons'
 
+Plug 'hrsh7th/vim-vsnip'
+Plug 'hrsh7th/vim-vsnip-integ'
 let g:lsp_async_completion = 1
 
 " Perl
@@ -79,9 +81,6 @@ Plug 'moznion/vim-cpanfile', { 'for': 'cpanfile' }
 
 "Plug 'moznion/syntastic-cpanfile'
 "Plug 'ywatase/syntastic-cpanfile', { 'for': 'cpanfile', }
-
-" Go
-Plug 'fatih/vim-go', { 'for': ['go', 'gohtmltmpl'], 'do': 'cp gosnippets/snippets/go.snip ~/.vim/snippets' }
 
 " Ruby
 Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
