@@ -51,6 +51,7 @@ augroup MyVimrc
     autocmd BufNewFile,BufRead Gemfile setl filetype=Gemfile
     autocmd BufWritePost Gemfile call system('rbenv ctags')
     autocmd BufWritePost .gitlab-ci.yml echo system('lint-gitlab-ci-yml')
+    autocmd BufWritePost python :<C-u>%!autopep8 -ai
     autocmd FileType cloudformation,cloudformation.yaml set dictionary=~/.vim/dict/cloudformation.dict iskeyword+=:
 augroup END
 
@@ -303,6 +304,19 @@ endf
 " Python
 func! MyPythonSettings()
     set autoindent expandtab sw=4 ts=4 sts=4
+    function! Autopep8()
+        call inputsave()
+        let retval = input("reformat whole file [y/n/Esc] : ", "y")
+        call inputrestore()
+        if retval != "y"
+            return
+        endif
+        let pos1  = line(".")
+        execute ':silent %!autopep8 -'
+        execute ':'.pos1
+    endfunction
+    map   <buffer>  <silent>  ,ry   :call Autopep8()<CR>
+    vmap  <buffer>  <silent>  ,ry   <C-C>:call Autopep8()<CR>
 endf
 """"""""""""""""""""""""""""""
 " Golang
