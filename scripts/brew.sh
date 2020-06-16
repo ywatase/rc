@@ -1,119 +1,31 @@
 #!/bin/sh -xe
 
 if ! [ -x "/usr/local/bin/brew" ] ; then
-	ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 fi
 
 # High Priority
-while read pkg
-do
-	brew install $pkg
-done <<EOL
+brew install $(cat <<EOS | xargs
 zsh
 zsh-completions
 keychain
 readline
 tmux
-EOL
+EOS
+)
 
-while read tap
-do
-	brew tap $tap
-done <<EOL
-phinze/homebrew-cask
-PX4/homebrew-px4
-osx-cross/avr
-EOL
+brew tap $(cat <<EOS | xargs
+homebrew/cask-versions
+heroku/brew
+sachaos/todoist
+EOS
+)
 
 # apps
-while read pkg
+for pkg in $(cat brew.cask.list|xargs)
 do
-	brew cask install $pkg
-done <<EOL
-alfred
-firefox
-google-chrome
-iterm2
-qlmarkdown
-vagrant
-virtualbox
-xquartz
-EOL
-
+  brew cask install  $pkg
+done
 
 # utilities
-while read pkg
-do
-	brew install $pkg
-done <<EOL
-ansible
-bsdmake
-cmake
-coreutils
-ctags
-curl
-dfu-programmer
-freetype
-gettext
-git
-git-flow
-gnu-sed
-gnu-tar
-go
-gobject-introspection
-groff
-harfbuzz
-heroku
-htop-osx
-hub
-imagemagick
-innotop
-memcached
-minio
-mongodb
-msgpack
-mysql
-ngrep
-nikto
-nkf
-nmap
-openssh
-openssl
-packer
-percona-toolkit
-perl-build
-phantomjs
-pidof
-plenv
-proctools
-pstree
-pyenv
-pyenv-virtualenv
-reattach-to-user-namespace
-redis
-rename
-rpm2cpio
-sqlite
-subversion
-teensy_loader_cli
-terraform
-the_silver_searcher
-tig
-tree
-wakeonlan
-watch
-w3m
-wget
-EOL
-
-
-# need compile
-brew install vim --with-lua
-
-while read pkg
-do
-	brew install $pkg
-done <<EOL
-osx-cross/avr/avr-libc
-gcc-arm-none-eabi
-EOL
+brew install $(cat brew.list|xargs)
