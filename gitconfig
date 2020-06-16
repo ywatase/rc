@@ -74,6 +74,9 @@
 	r1 = reset HEAD~1
 	r2 = reset HEAD~2
 
+[commit]
+	template = ~/.gitmessage
+
 [tig]
 	vertical-split = no
 [tig "bind"]
