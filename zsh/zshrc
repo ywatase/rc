@@ -377,7 +377,8 @@ SAVEHIST=100000                       # 保存される履歴の数
 setopt extended_history               # 履歴ファイルに時刻を記録
 setopt share_history
 setopt hist_no_store
-setopt hist_ignore_dups hist_ignore_space
+setopt hist_ignore_dups
+setopt hist_ignore_space
 function history-all { history -E 1 } # 全履歴の一覧を出力する
 autoload history-search-end
 zle -N history-beginning-search-backward-end history-search-end
