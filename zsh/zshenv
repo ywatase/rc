@@ -26,6 +26,8 @@ export DOCKER_BUILDKIT=1
 # git-tasukete
 path=($HOME/.zsh/git-tasukete.git(N-/) $HOME/android-sdk(N-/) $path)
 
+# openjdk
+path=(/usr/local/opt/openjdk/bin(N-/) $path)
 
 # php composer
 path=($HOME/.composer/vendor/bin(N-/) $path)
