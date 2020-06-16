@@ -1,9 +1,4 @@
 " vim: et ts=2 sts=2 sw=2
-" デバッグ用設定
-let g:lsp_log_verbose = 1  " デバッグ用ログを出力
-let g:lsp_log_file = expand('~/.cache/tmp/vim-lsp.log')  " ログ出力のPATHを設定
-
-
 " 言語用Serverの設定
 augroup MyLsp
   " デバッグ用設定
