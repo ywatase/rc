@@ -12,7 +12,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'itchyny/lightline.vim'
 Plug 'thinca/vim-localrc'
 
-Plug 'w0rp/ale'
+Plug 'w0rp/ale', { 'for': ['perl'] }
 
 " fzf
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
