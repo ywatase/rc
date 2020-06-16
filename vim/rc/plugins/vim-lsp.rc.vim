@@ -6,7 +6,37 @@ let g:lsp_log_file = expand('~/.cache/tmp/vim-lsp.log')  " ログ出力のPATH�
 
 " 言語用Serverの設定
 augroup MyLsp
-  " pip install python-language-server
+  " デバッグ用設定
+  let g:lsp_log_verbose = 1  " デバッグ用ログを出力
+  let g:lsp_log_file = expand('~/.cache/tmp/vim-lsp.log')  " ログ出力のPATHを設定
+
+  let g:lsp_diagnostics_enabled = 1
+  let g:lsp_diagnostics_echo_cursor = 1
+  let g:asyncomplete_auto_popup = 1
+  let g:asyncomplete_auto_completeopt = 1
+  let g:asyncomplete_popup_delay = 200
+  let g:lsp_text_edit_enabled = 1
+
+  let g:lsp_settings = {
+        \  'perl-languageserver': {
+        \    'disabled': 0,
+        \   },
+        \  'yaml-language-server1': {
+        \    'workspace_config': {
+        \      'yaml': {
+        \        'schemas': {
+        \          'https://mattn.github.io/efm-langserver/schema.json': '/efm-langserver/config.yaml'
+        \        },
+        \        'completion': v:true,
+        \        'hover': v:true,
+        \        'validate': v:true,
+        \      }
+        \    }
+        \  },
+        \}
+
+
+
   if executable('pyls')
     " Python用の設定を記載
     " workspace_configで以下の設定を記載
@@ -34,6 +64,7 @@ function! s:configure_lsp() abort
   nnoremap <Plug>(my-lsp) <Nop>
   nmap <Leader>l <Plug>(my-lsp)
   nnoremap <buffer> <C-]> :<C-u>LspDefinition<CR>
+  nnoremap <buffer> <plug>(my-lsp)c :<C-u>LspCodeAction<CR>
   nnoremap <buffer> <plug>(my-lsp)d :<C-u>LspDefinition<CR>
   nnoremap <buffer> <plug>(my-lsp)D :<C-u>LspReferences<CR>
   nnoremap <buffer> <plug>(my-lsp)s :<C-u>LspDocumentSymbol<CR>
