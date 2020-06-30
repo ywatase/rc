@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 
 from __future__ import print_function
+
 import configparser
 import os
+import re
 import sys
 
 # Track all ENV variables that we may set so we know what to unset later"
@@ -15,6 +17,7 @@ aws_dict = {
     'AWS_SSH_KEY_PATH': 'aws_ssh_key_path',
     'AWS_ACCESS_KEY': 'aws_access_key_id',
     'AWS_SECRET_KEY': 'aws_secret_access_key',
+    'AWS_PROFILE': 'aws_profile',
     'AWS_VAGRANT_SUBNET_ID': 'aws_vagrant_subnet_id',
     'AWS_VAGRANT_SECURITY_GROUP': 'aws_vagrant_security_group',
 }
@@ -48,7 +51,68 @@ def show_env(config):
 
 def unset_values():
     """return string representation of command to unset environment vars"""
-    return "unset {0}; ".format(' '.join(list(aws_dict.keys()) + ['AWS_PROFILE']))
+    return "unset {0}; ".format(' '.join(aws_dict.keys()))
+
+
+def parse_config():
+    if os.environ.get('AWS_CONFIG_FILE'):
+        config_files.append(
+            os.path.expanduser(
+                os.environ.get('AWS_CONFIG_FILE')))
+    else:
+        config_files.append(os.path.expanduser('~/.aws/config'))
+
+    config_files.append(os.path.expanduser('~/.aws/credentials'))
+
+    if not config_files:
+        exit_out("Error: no valid AWS config file(s) found", True)
+
+    config = configparser.ConfigParser()
+    config.read(config_files, encoding='utf8')
+    return config
+
+
+def list_commands():
+    commands = ["unset", "set", "commands", "list", "completions"]
+    return "{0}".format('\n'.join(list(commands)))
+
+
+def list_profiles():
+    config = parse_config()
+    profiles = map(
+        lambda s: re.sub(
+            r'^\s*profile\s+',
+            '',
+            s),
+        config.sections())
+    return "{0}".format('\n'.join(list(profiles)))
+
+
+def output_completion(command):
+    if command is None:
+        return '''
+if [[ ! -o interactive ]]; then
+    return
+fi
+
+compctl -K _awsenv awsenv setaws
+
+_awsenv() {
+  local words completions
+  read -cA words
+
+  if [ "${#words}" -eq 2 ]; then
+    completions="$(awsenv commands)"
+  else
+    completions="$(awsenv completions ${words[2,-2]})"
+  fi
+
+  reply=("${(ps:\n:)completions}")
+}
+'''[1:-1]
+    elif command == 'set':
+        return list_profiles()
+    return ''
 
 
 def exit_out(message, error=False):
@@ -61,23 +125,23 @@ profile = ''
 config_files = []
 
 if len(sys.argv) > 1:
-    if sys.argv[1] == '--unset':
+    if sys.argv[1] == 'unset':
         exit_out(unset_values())
+    elif sys.argv[1] == 'list':
+        exit_out(list_profiles())
+    elif sys.argv[1] == 'commands':
+        exit_out(list_commands())
+    elif sys.argv[1] == 'completions':
+        if len(sys.argv) == 2:
+            exit_out(output_completion(None))
+        else:
+            exit_out(output_completion(sys.argv[2]))
+    elif sys.argv[1] == 'set':
+        profile = sys.argv[2]
     else:
         profile = sys.argv[1]
 
-if os.environ.get('AWS_CONFIG_FILE'):
-    config_files.append(os.path.expanduser(os.environ.get('AWS_CONFIG_FILE')))
-else:
-    config_files.append(os.path.expanduser('~/.aws/config'))
-
-config_files.append(os.path.expanduser('~/.aws/credentials'))
-
-if not config_files:
-    exit_out("Error: no valid AWS config file(s) found", True)
-
-config = configparser.ConfigParser()
-config.read(config_files, encoding='utf8')
+config = parse_config()
 
 if not profile:
     show_env(config)
@@ -85,6 +149,7 @@ if not profile:
 
 settings = {}
 if config.has_section('profile ' + profile) or config.has_section(profile):
+    settings['AWS_PROFILE'] = profile
     for env_setting, ini_opt in aws_dict.items():
         if profile != 'default':
             # Profiles in ~/.aws/config begin with "profile ", except default
@@ -96,8 +161,6 @@ if config.has_section('profile ' + profile) or config.has_section(profile):
             value = get_option(config, profile, ini_opt)
             if value:
                 settings[env_setting] = value
-            settings['AWS_PROFILE'] = profile
-
 else:
     exit_out("Error: profile {0} not found.".format(profile), True)
 

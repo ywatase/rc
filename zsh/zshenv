@@ -43,8 +43,16 @@ path=($HOME/bin/*(N-/) $HOME/bin(N-/) $path)
 
 # awsenv
 if whence -p awsenv >/dev/null ; then
+  . <(awsenv completions)
   setaws () {
-    [[ $# -gt 0 ]] && eval "$(awsenv $@)"
+      case $1 in
+          unset|set)
+              eval "$(awsenv $@)"
+              ;;
+          *)
+              awsenv $@
+              ;;
+      esac
   }
 fi
 
