@@ -35,7 +35,9 @@ snippet case
 			${3};;
 	esac
 snippet script_dir
-	SCRIPT_DIR=$(cd $(readlink -f \$0 || echo \$0); pwd -P)
+	SCRIPT_DIR=$(cd $(dirname $(readlink -f \$0 || echo \$0)); pwd -P)
+snippet app_home
+	APP_HOME=$(cd $(dirname $(readlink -f \$0 || echo \$0))/..; pwd -P)
 snippet abs_dirname
     abs_dirname() {
       local cwd="$(pwd)"
