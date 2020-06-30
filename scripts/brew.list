@@ -20,6 +20,8 @@ hub
 iftop
 imagemagick
 innotop
+# Golangのクロスコンパイル用
+mingw-w64
 minio
 mysql
 ngrep
