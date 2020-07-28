@@ -153,37 +153,39 @@ snippet open3
 
 snippet querylog
     require DBIx::QueryLog; my $guard = DBIx::QueryLog->guard();
-snippet dump 
+snippet dump
+	use Data::Dumper; warn Dumper ${1:$var};
+snippet dumper
 	use Data::Dumper; warn Dumper ${1:$var};
 snippet reply
 	use Carp::Reply; Carp::Reply::repl();
-snippet say 
+snippet say
 	print ${1:$var}, "\n";
 	${2}
-snippet self 
+snippet self
 	my ($self${1:, $var}) = @_;
 	${2}
-snippet data 
-	my $data = do { 
-		local $/; 
-		<DATA> 
+snippet data
+	my $data = do {
+		local $/;
+		<DATA>
 	};
 	${1}
-snippet argf 
+snippet argf
 	while (<>) {
 		chomp;
 		${1}
 	}
 	${2}
-snippet isa 
+snippet isa
 	if (blessed ${1:$var} and ${2:$var}->isa('${3:Class}')) {
 		${4}
 	}
 	${5}
-snippet readcsv 
+snippet readcsv
 	use IO::File;
 	use Text::CSV_XS;
- 
+	
 	my $fh = IO::File->new('${1:filename}') or die 'cannot open file.';
 	my $csv = Text::CSV_XS->new({ sep_char => "\t", binary => 1 });
 	until ($fh->eof) {
@@ -196,85 +198,85 @@ snippet readcsv
 	}
 	$fh->close;
 	${3}
- 
+
 #class-C3
-snippet next 
+snippet next
 	$self->next::method(@_);
 	${1}
-snippet maybe 
+snippet maybe
 	$self->maybe::next::method(@_);
 	${1}
- 
+
 #Catalyst
-snippet debug 
+snippet debugc
 	$c->log->debug('${1:[ debug ]}: '. ${2:$var});
 	${3}
-snippet warn 
+snippet warnc
 	$c->log->warn('${1:[ warn ]}: '. ${2:$var});
 	${3}
-snippet dumper 
+snippet dumperc
 	use Data::Dumper; $c->log->debug('${1:[ dumper ]}: '. Dumper ${2:$var});
 	${3}
-snippet model 
+snippet model
 	$c->model('${1:model}')
 	${2}
-snippet view 
+snippet view
 	$c->view('${1:view}')
 	${2}
-snippet template 
+snippet template
 	$c->view('View::TT')->template('${1:name}');
 	${2}
-snippet config 
+snippet config
 	$c->config->{${1:name}}
 	${2}
-snippet controller 
+snippet controller
 	sub ${1:func} : ${2:Attribute} {
 		my ($self, $c) = @_;
 		${3}
 	}
 	${4}
-snippet begin 
+snippet begin
 	sub begin : Private {
 		my ($self, $c) = @_;
 		${1}
 		1;
 	}
 	${2}
-snippet auto 
+snippet auto
 	sub auto : Private {
 		my ($self, $c) = @_;
 		${1}
 		1;
 	}
 	${2}
-snippet detach 
+snippet detach
 	$c->detach('${1:name}');
 	${2}
-snippet forward 
+snippet forward
 	$c->forward('${1:name}');
 	${2}
-snippet stash 
+snippet stash
 	$c->stash->{${1:var}}${2}
-snippet flash 
+snippet flash
 	$c->flash->{${1:var}}${2}
-snippet session 
+snippet session
 	$c->session->{${1:var}}${2}
-snippet sstash 
+snippet sstash
 	$c->stash->{${1:var}} = ${2};
 	${3}
-snippet sflash 
+snippet sflash
 	$c->flash->{${1:var}} = ${2};
 	${3}
-snippet ssession 
+snippet ssession
 	$c->session->{${1:var}} = ${2};
 	${3}
-snippet rs 
+snippet rs
 	$c->model('DBIC::${1:Source}')
 	${2}
-snippet redirect 
+snippet redirect
 	$c->response->redirect($c->uri_for('${1:uri}'));
 	${2}
-snippet param 
+snippet param
 	$c->request->param('${1:param}')
 	${2}
 # Getopt::Long
@@ -322,7 +324,7 @@ snippet benchmark
 snippet benchmark2
 	use strict;
 	use Time::HiRes;
-
+	
 	my $start_time = currentTime ();
 	
 	&main();
