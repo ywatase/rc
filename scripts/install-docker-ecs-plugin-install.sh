@@ -31,9 +31,11 @@ disable () {
 }
 
 verify () {
-  docker help | grep ecs
-  docker ecs version
-  cat ~/.docker/config.json
+  docker ecs version || true
+  cat <<EOS
+# docker config check (jq -r '.experimental' ~/.docker/config.json)
+experimental: $(jq -r '.experimental' ~/.docker/config.json)
+EOS
 }
 
 commands () {
