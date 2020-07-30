@@ -326,6 +326,10 @@ json2yaml () {
   done
 }
 
+json2yaml-filter() {
+  cat "$@" | python -c 'import sys, yaml; y=yaml.safe_load(sys.stdin.read()); print(yaml.dump(y))' "$@"
+}
+
 json2go () { open "https://mholt.github.io/json-to-go/"}
 curl2go () { open "https://mholt.github.io/curl-to-go/"}
 
