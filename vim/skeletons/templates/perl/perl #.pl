@@ -1,4 +1,4 @@
-#!/usr/bin/env perl 
+#!/usr/bin/env perl
 #===============================================================================
 #Last Modified:  <+DATE+>
 #===============================================================================
@@ -35,14 +35,14 @@ sub init {
             return;
         }
     }
-#  if (not @ARGV) 
+#  if (not @ARGV)
 #  {
 #    print "You must input args\n";
 #    pod2usage(1);
 #  }
     return \%args;
 }
-  
+
 1;
 
 __END__
@@ -94,5 +94,5 @@ This script requires the C<Getopt::Long>, C<Pod::Usage>
 =head1 Author
 
  <+AUTHOR+> <<+EMAIL+>>
-  
+
 =cut
