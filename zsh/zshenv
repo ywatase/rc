@@ -32,9 +32,6 @@ path=(/usr/local/opt/openjdk/bin(N-/) $path)
 # php composer
 path=($HOME/.composer/vendor/bin(N-/) $path)
 
-# pythonbrew
-source_if_exist "$HOME/.pythonbrew/etc/bashrc"
-
 # go
 export GOPATH=$HOME/go
 path=($HOME/go/bin(N-/) $path)
