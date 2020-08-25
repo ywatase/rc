@@ -22,6 +22,13 @@ Plug 'junegunn/fzf.vim'
 Plug 'LeafCage/foldCC'
 Plug 'scrooloose/nerdcommenter'
 
+" surround
+Plug 'kana/vim-textobj-user'
+Plug 'rhysd/vim-textobj-anyblock'
+Plug 'thinca/vim-textobj-between'
+Plug 'kana/vim-operator-user'
+Plug 'rhysd/vim-operator-surround'
+
 Plug 'vim-scripts/sudo.vim'
 Plug 'glidenote/memolist.vim'
 
