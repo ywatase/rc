@@ -341,25 +341,6 @@ ldif2json () {
   ' | yaml2json-filter
 }
 
-locallib () {
-  echo "OLD PATH: $PATH"
-  if [ "$1" = "" ] ; then
-    echo 'usage: locallib [locallib path]'
-  elif [ -d $1 ] ; then
-    if [ "x$PERL_LOCAL_LIB_ROOT" != "x" ] ; then
-      PATH=$(echo $PATH | sed "s#\(^\|:\)$PERL_LOCAL_LIB_ROOT\/bin:##")
-    fi
-    eval $(perl -Mlocal::lib=$1)
-  else
-    echo "$1 doen't exit"
-  fi
-  echo "NEW PATH: $PATH"
-}
-
-locallib_delete () {
-  unset PERL_LOCAL_LIB_ROOT PERL_MB_OPT PERL_MM_OPT PERL5LIB
-}
-
 tai64nlocal () {
   perl -p -MTime::TAI64 -e 's/(^[^\s]+)/Time::TAI64::tai64nlocal($1)||$1/e'
 }
