@@ -85,6 +85,8 @@ if is_mac ; then
   alias mac_get_volume='osascript -e "get volume settings"'
   alias mac_mute='osascript -e "set Volume output volume 0"'
   alias mac_show_pmset='sudo pmset -g'
+  alias mac_mirrordisplays=/Applications/MirrorDisplays.app/Contents/MacOS/mirror
+  alias mirrordisplays=/Applications/MirrorDisplays.app/Contents/MacOS/mirror
   mac_lid_sleep () {
     case $1 in
       enable)  sudo pmset -a lidwake 1 ;;
