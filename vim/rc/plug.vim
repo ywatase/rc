@@ -20,12 +20,9 @@ Plug 'junegunn/fzf.vim'
 
 " folding
 Plug 'LeafCage/foldCC'
-Plug 'vim-scripts/Align'
 Plug 'scrooloose/nerdcommenter'
 
 Plug 'vim-scripts/sudo.vim'
-Plug 'vim-scripts/surround.vim'
-Plug 'vim-scripts/taglist.vim'
 Plug 'glidenote/memolist.vim'
 
 Plug 'bronson/vim-trailing-whitespace'
@@ -106,9 +103,6 @@ Plug 'pearofducks/ansible-vim', { 'for': ['yaml', 'ansible'] }
 
 " jinja2
 Plug 'Glench/Vim-Jinja2-Syntax' , { 'for': ['jinjahtml', 'jinja'] }
-
-" Clojure
-" Plug 'jondistad/vimclojure', { 'for': 'clojure' }
 
 " bats
 Plug 'vim-scripts/bats.vim', { 'for': 'bats' }
