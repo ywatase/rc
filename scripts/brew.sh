@@ -14,12 +14,10 @@ tmux
 EOS
 )
 
-brew tap $(cat <<EOS | xargs
-homebrew/cask-versions
-heroku/brew
-sachaos/todoist
-EOS
-)
+# tap
+brew tap homebrew/cask-versions
+brew tap heroku/brew
+brew tap sachaos/todoist
 
 # apps
 for pkg in $(cat brew.cask.list|xargs)
