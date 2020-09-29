@@ -142,9 +142,11 @@ alias -g V='| vim -'
 alias -g G='| grep '
 alias -g L='| less'
 alias -g T='| tail -f'
+alias -g P='pbpaste |'
+alias -g C='| pbcopy'
 alias -g SPLIT="| perl -le 'map{chomp;print+join\"\\n\",split/\$ARGV[0]/}<STDIN>'"
 alias -g JOIN="| perl -le 'print+join\"\$ARGV[0]\",(map{chomp;\$_}<STDIN>)'"
-alias -g C='| colorize-http-status.sed'
+alias -g CH='| colorize-http-status.sed'
 
 alias dstat-full='dstat -Tclmdrn'
 alias dstat-mem='dstat -Tclm'
