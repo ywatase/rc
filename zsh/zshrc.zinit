@@ -16,7 +16,7 @@ zinit load stedolan/jq
 zinit ice from'gh-r' as'program' pick'yqe'
 zinit load shin1x1/yae
 
-zinit ice from'gh-r' as'program' pick'ghq*/ghq'
+zinit ice from'gh-r' as'program' bpick"" pick'ghq*/ghq'
 zinit load x-motemen/ghq
 
 zinit ice from"gh-r" as"program" pick'peco*/peco'
