@@ -14,6 +14,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include QMK_KEYBOARD_H
+#define LCG_T(kc)  MT(MOD_LCTL | MOD_LGUI, kc)  // Mod tap: kc when tapped, CTL+GUI when held.
 
 enum meishi2_layers {
     _BASE,
@@ -22,7 +23,8 @@ enum meishi2_layers {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [_BASE] = LAYOUT( /* Base */
-    HYPR(KC_M), KC_LANG1, KC_LANG2, LT(_LOWER,KC_MPLY) \
+/*    HYPR(KC_M), KC_LANG1, KC_LANG2, LT(_LOWER,KC_MPLY) \ */
+    HYPR(KC_M), HYPR(KC_M), LCG_T(KC_F), LT(_LOWER,KC_LANG2) \
   ),
   [_LOWER] = LAYOUT( /* Base */
     KC_TRNS, KC_VOLD, KC_VOLU, KC_TRNS \
