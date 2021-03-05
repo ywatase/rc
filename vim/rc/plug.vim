@@ -117,6 +117,8 @@ Plug 'vim-scripts/bats.vim', { 'for': 'bats' }
 " cloudformation
 Plug 'lunarxlark/aws-cfn-snippet.vim', { 'for': 'cloudformation' }
 
+Plug 'hashivim/vim-terraform', { 'for': 'tf' }
+
 " colorscheme
 Plug 'altercation/vim-colors-solarized'
 Plug 'jacoborus/tender.vim'
