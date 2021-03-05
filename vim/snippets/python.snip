@@ -84,3 +84,45 @@ snippet ifmain
 # __magic__
 snippet _
 	__${1:init}__${2}
+
+snippet config
+	#! env python
+	# -*- coding: utf-8 -*-
+	
+	import os
+	import sys
+	import time
+	import configparser
+	
+	
+	class Config(object):
+	    def __init__(self, path="config.ini", section="default", value={}, encode="utf-8"):
+	        self.path = path
+	        self.section = section
+	        self.data = value
+	        self.encode = encode
+	        self.read()
+	        pass
+	
+	    def read(self):
+	        """
+	        ファイル読み込み
+	        """
+	        if not os.path.exists(self.path):
+	            self.write()
+	            return
+	        cfp = configparser.ConfigParser()
+	        cfp.read(self.path, self.encode)
+	        cfp[self.section]
+	
+	    def write(self):
+	        """
+	        ファイル書き出し
+	        """
+	        if len(self.data) != 0 and self.path != "":
+	            cfp = configparser.ConfigParser()
+	            if os.path.exists(self.path):
+	                cfp.read(self.path, self.encode)
+	            cfp[self.section] = self.data
+	            with open(self.path, 'w', encoding=self.encode) as config_file:
+	                cfp.write(config_file)
