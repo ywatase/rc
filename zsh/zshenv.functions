@@ -456,12 +456,6 @@ vagrant-upreload () {
   vagrant provision
 
 }
-###
-# vuls
-###
-vuls_setup () {
-  docker rmi vuls/go-cve-dictionary
-}
 
 ###
 # mackerel
