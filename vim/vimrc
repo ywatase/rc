@@ -42,7 +42,6 @@ augroup MyVimrc
     autocmd FileType markdown call MyFoldingSettingOn()
     autocmd FileType javascript call MyJavaScriptSettings()
     autocmd Filetype java call MyJavaSettings()
-    autocmd FileType sql call MySQLSettings()
     autocmd BufNewFile,BufRead Changes setf changelog
     autocmd FileType changelog,gitcommit,svn set spell
     autocmd FileType gitcommit DiffGitCached
