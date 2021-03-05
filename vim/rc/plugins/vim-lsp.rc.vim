@@ -59,6 +59,8 @@ augroup MyLsp
   autocmd FileType dockerfile call s:configure_lsp()
   autocmd FileType python call s:configure_lsp()
   autocmd FileType sh call s:configure_lsp()
+  autocmd FileType go call s:configure_lsp()
+  autocmd FileType tf call s:configure_lsp()
 
 augroup END
 " 言語ごとにServerが実行されたらする設定を関数化
