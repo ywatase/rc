@@ -465,6 +465,12 @@ source_if_exist ~/google-cloud-sdk/completion.zsh.inc
 # kubectl
 [[ $commands[kubectl] ]] && source <(kubectl completion zsh)
 
+# terraform
+if whence -p terraform >/dev/null 2>&1 ; then
+  autoload -U +X bashcompinit && bashcompinit
+  complete -o nospace -C =terraform terraform
+fi
+
 # added by travis gem
 source_if_exist ~/.travis/travis.sh
 
