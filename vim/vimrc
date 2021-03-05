@@ -312,11 +312,9 @@ func! MyPythonSettings()
             return
         endif
         let pos1  = line(".")
-        execute ':silent %!autopep8 -'
+        execute ':silent %!pycodestyle -'
         execute ':'.pos1
     endfunction
-    map   <buffer>  <silent>  ,ry   :call Autopep8()<CR>
-    vmap  <buffer>  <silent>  ,ry   <C-C>:call Autopep8()<CR>
 endf
 """"""""""""""""""""""""""""""
 " Golang

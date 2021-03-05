@@ -39,12 +39,21 @@ augroup MyLsp
     " - jediの定義ジャンプで一部無効になっている設定を有効化
     autocmd User lsp_setup call lsp#register_server({
           \ 'name': 'pyls',
-          \ 'cmd': { server_info -> ['pyls'] },
+          \ 'cmd': {server_info->['pyls']},
           \ 'whitelist': ['python'],
           \ 'workspace_config': {'pyls': {'plugins': {
-          \   'pycodestyle': {'enabled': v:false},
-          \   'jedi_definition': {'follow_imports': v:true, 'follow_builtin_imports': v:true},}}}
-          \})
+          \   'pycodestyle': {'enabled': v:true},
+          \   'pydocstyle': {'enabled': v:false},
+          \   'pylint': {'enabled': v:false},
+          \   'flake8': {'enabled': v:true},
+          \   'isort':  {'enabled': v:true},
+          \   'black':  {'enabled': v:true},
+          \   'jedi_definition': {
+          \     'follow_imports': v:true,
+          \     'follow_builtin_imports': v:true,
+          \   },
+          \ }}}
+          \ })
   endif
 
   autocmd FileType dockerfile call s:configure_lsp()
