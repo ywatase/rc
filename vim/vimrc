@@ -393,6 +393,7 @@ nnoremap <silent> <Plug>(my-unite)t :<C-u>Tags
 nnoremap <silent> <Plug>(my-unite)h :<C-u>History<CR>
 " MRU
 nnoremap <silent> <Plug>(my-unite)u :<C-u>History<CR>
+" 開いているファイルのディレクトリに移動
 nnoremap <Plug>(my-unite)o :<C-u>cd %:p:h<CR>
 
 """"""""""""""""""""""""""""""
