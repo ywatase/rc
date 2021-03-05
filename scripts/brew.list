@@ -12,6 +12,7 @@ git
 git-flow
 gnu-sed
 gnu-tar
+git-secrets
 go
 gobject-introspection
 groff

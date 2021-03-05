@@ -1,6 +1,7 @@
 alfred
 appcleaner
 cheatsheet
+discord
 docker
 docker-toolbox
 enpass
@@ -10,8 +11,10 @@ google-chrome-canary
 google-japanese-ime
 iterm2
 macvim
+mactex-no-gui
 mirrordisplays
 mysqlworkbench
+pomodone
 vagrant
 virtualbox
 virtualbox-extension-pack
