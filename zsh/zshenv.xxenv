@@ -4,7 +4,7 @@ xxenv_load () {
 	[[ -d $XXENV_CACHE_DIR ]] || mkdir $XXENV_CACHE_DIR
 	for xxenv in rbenv pyenv plenv ndenv nodenv phpenv
 	do
-		path=($HOME/.$xxenv/shims(N-/) $HOME/.$xxenv/bin(N-/) $path)
+		path=($HOME/.$xxenv/shims(N-/) $HOME/.$xxenv/bin(N-/) /usr/local/var/$xxenv/shims(N-) $path)
 		whence -p $xxenv >/dev/null && xxenv_load_cache $xxenv
 	done
 }

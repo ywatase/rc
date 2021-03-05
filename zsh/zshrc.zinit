@@ -34,6 +34,10 @@ zinit load Arkweid/lefthook
 zinit ice pick'todoist_functions.sh' wait'!0' has'peco'
 zinit load "sachaos/todoist"
 
+# Render markdown on the CLI
+zinit ice from"gh-r" as"program" pick"" pick'glow*/glow'
+zinit load "charmbracelet/glow"
+
 # plugins
 
 zinit ice has'ghq'
