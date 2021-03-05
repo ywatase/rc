@@ -79,3 +79,6 @@ function! s:configure_lsp() abort
   nnoremap <buffer> <F1> :<C-u>LspImplementation<CR>
   nnoremap <buffer> <F2> :<C-u>LspRename<CR>
 endfunction
+
+nnoremap <buffer> <Leader>ry :<C-u>LspDocumentFormat<CR>
+vnoremap <buffer> <Leader>ry <C-C>:LspDocumentFormat<CR>
