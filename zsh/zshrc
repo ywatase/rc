@@ -477,6 +477,9 @@ source_if_exist ~/.travis/travis.sh
 # fzf
 # source_if_exist ~/.fzf.zsh
 
+# pipenv
+whence -p pipenv >/dev/null 2>&1 && eval "$(pipenv --completion)"
+
 zcomple_zshrc () {
   local zshrc=~/.zshrc
   if [ $zshrc:A -nt ~/.zshrc.zwc ]; then
