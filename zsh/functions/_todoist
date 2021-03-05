@@ -1,8 +1,8 @@
 #compdef todoist
 
-local version="todoist version 0.13.0"
+local version="todoist version 0.15.0"
 if [[ $(todoist -v) != $version ]] ; then
-  print "$(command todoist -v). but function for v0.13.0. update function"
+  print "$(command todoist -v). but function for v0.15.0. update function"
 fi
 
 _todoist_all_items() {
