@@ -1,7 +1,4 @@
 #!/usr/bin/env perl
-#===============================================================================
-#Last Modified:  <+DATE+>
-#===============================================================================
 use strict;
 use warnings;
 
@@ -51,11 +48,11 @@ __END__
 
 =head1 NAME
 
-<+FILE NAME+> - Skeleton of Perl Script
+{{_expr_:expand('%')}} - Skeleton of Perl Script
 
 =head1 SYNOPSIS
 
-  <+FILE NAME+> [options]
+  {{_expr_:expand('%')}} [options]
 
 =head1 OPTIONS
 
@@ -93,6 +90,6 @@ This script requires the C<Getopt::Long>, C<Pod::Usage>
 
 =head1 Author
 
- <+AUTHOR+> <<+EMAIL+>>
+  {{_input_:author}} <{{_input_:email}}>
 
 =cut

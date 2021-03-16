@@ -1,12 +1,4 @@
 #!/bin/sh
-
-# <+FILE NAME+>
-#   Purpose: skelton of shell script
-#
-#   Author: <+AUTHOR+> <<+EMAIL+>>
-#   Create Date:   <+DATE+>
-#   Last Modified: 2011/09/29.
-
 FLAG_DEBUG=
 MAILTO=
 

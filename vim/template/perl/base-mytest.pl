@@ -4,7 +4,7 @@ use warnings;
 use Test2::V0;
 
 BEGIN{
-    use_ok('<+FILE NAME+>');
+    use_ok('{{_expr_:substitute(expand('%:r'), '[\\-]', '::', 'g')}}')
 }
 
 done_testing;

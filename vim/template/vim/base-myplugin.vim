@@ -1,16 +1,16 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"          FILE:  <+FILE NAME+>
+"          FILE:  {{_expr_:expand('%')}}
 " Last Modified:  2011/09/18.
-"        AUTHOR:  <+AUTHOR+> <<+EMAIL+>>
+"        AUTHOR:  {{_input_:author}} <{{_input_:email}}>
 "       VERSION:  1.0
-"       CREATED:  <+DATE+>
-"   DESCRIPTION:  
+"       CREATED:  {{_expr_:strftime('%F')}}
+"   DESCRIPTION:  {{_cursor_}}
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Only do this when not done yet for this buffer
-if exists("b:did_<+FILE NAME+>_ftplugin")
+if exists("b:did_{{_name_}}_ftplugin")
 	finish
 endif
-let b:did_<+FILE NAME+>_ftplugin = 1
+let b:did_{{_name_}}_ftplugin = 1
 
 function! RunMake ()
 	if has('python')

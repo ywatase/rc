@@ -1,9 +1,11 @@
-package <+FILE DIRNAME+>::<+FILE NAME ROOT+>;
+package {{_expr_:substitute(substitute(expand('%:r'), '.*lib[\\/]', '', 'g'), '[\\/]', '::', 'g')}};
 use strict;
 use warnings;
 use Class::Tiny ();
 
 our $VERSION = "0.01";
+
+{{_cursor_}}
 
 1;
 
@@ -13,11 +15,11 @@ __END__
 
 =head1 NAME
 
-<+FILE DIRNAME+>::<+FILE NAME ROOT+> - 
+{{_expr_:substitute(substitute(expand('%:r'), '.*lib[\\/]', '', 'g'), '[\\/]', '::', 'g')}} -
 
 =head1 SYNOPSIS
 
-  <+FILE DIRNAME+>::<+FILE NAME ROOT+> - 
+  {{_expr_:substitute(substitute(expand('%:r'), '.*lib[\\/]', '', 'g'), '[\\/]', '::', 'g')}} -
 
 =head1 DESCRIPTION
 
@@ -39,6 +41,6 @@ C<Class::Tiny>
 
 =head1 Author
 
- <+AUTHOR+> <<+EMAIL+>>
+  {{_input_:author}} <{{_input_:email}}>
 
 =cut
