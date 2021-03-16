@@ -49,6 +49,8 @@ Plug 'Shougo/neosnippet-snippets'
 Plug 'honza/vim-snippets'
 Plug 'bonsaiben/bootstrap-snippets'
 
+Plug 'mattn/vim-sonictemplate'
+
 Plug 'mattn/emmet-vim'
 
 " for Japanese Help
