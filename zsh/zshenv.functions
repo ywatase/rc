@@ -147,7 +147,8 @@ gwt() {
 github_repositories () {
   local git_user
   git_user=${1:=ywatase}
-  curl https://api.github.com/users/$git_user/repos\?per_page\=100 | jq  '.[].name'
+  curl -qsS https://api.github.com/users/$git_user/repos\?per_page\=100 \
+    | jq  -r '.[].name'
 }
 
 ###
