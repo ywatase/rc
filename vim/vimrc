@@ -495,14 +495,6 @@ let Tlist_Use_Right_Window = 1
 let Tlist_Exit_OnlyWindow = 1
 
 """"""""""""""""""""""""""""""
-" TSkelton
-""""""""""""""""""""""""""""""
-let g:tskelDateFormat = '%Y/%m/%d'
-let g:tskelUserName   = 'Yusuke Watase'
-let g:tskelUserEmail  = 'ywatase@gmail.com'
-let g:tskelUserWWW    = 'http://u-suke.org/'
-let g:tskelLicense    = 'apache'
-""""""""""""""""""""""""""""""
 " errormaker.vim
 """"""""""""""""""""""""""""""
 nnoremap <silent> <Leader>em :ErrorAtCursor<CR>
