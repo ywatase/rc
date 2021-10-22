@@ -476,6 +476,22 @@ install-dry () {
   sudo chmod 755 /usr/local/bin/dry
 }
 ###
+# docker with minikube
+###
+docker-start () {
+  minikube start --container-runtime="docker"
+  docker-setenv
+}
+
+docker-stop () {
+  minikube stop
+}
+
+docker-setenv () {
+  eval "$(minikube docker-env)"
+}
+
+###
 # other
 ###
 clear_cache () {
