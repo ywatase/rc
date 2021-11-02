@@ -51,6 +51,7 @@ rename
 rpm2cpio
 ruby
 ruby-build
+shellcheck
 skaffold
 sqlite
 subversion
