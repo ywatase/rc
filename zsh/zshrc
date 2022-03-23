@@ -59,6 +59,16 @@ fi
 ###
 alias l=ls
 if is_mac ; then
+  x86 () {
+    unset PATH
+    eval "$(/usr/libexec/path_helper)"
+    arch -x86_64 /usr/local/bin/zsh
+  }
+  arm () {
+    unset PATH
+    eval "$(/usr/libexec/path_helper)"
+    arch -arm64e /usr/local/bin/zsh
+  }
   if [[ $commands[gls] ]] ; then
     alias ls="gls --color=auto --show-control-chars"
   else
@@ -466,6 +476,10 @@ source_if_exist ~/google-cloud-sdk/completion.zsh.inc
 
 # kubectl
 [[ $commands[kubectl] ]] && source <(kubectl completion zsh)
+# minikube
+[[ $commands[minikube] ]] && eval "$(minikube completion zsh | sed -e 's/aliashash\["\([a-z]*\)"\]/aliashash[\1]/g')"
+# colima
+[[ $commands[colima] ]] && eval "$(colima completion zsh)"
 
 # terraform
 if whence -p terraform >/dev/null 2>&1 ; then

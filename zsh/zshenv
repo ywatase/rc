@@ -7,14 +7,24 @@ source_if_exist () {
 }
 zcompile_if_newer () { [[ ! -f "$1.zwc" || "${1:A}" -nt "$1.zwc" ]] && zcompile "$1" }
 
-# brew
-if whence -p /usr/local/bin/brew >/dev/null ; then
-  path=(/usr/local/bin(N-/) /usr/local/sbin(N-/) $path)
-  # tuning
-  # /usr/local/opt/coreutils = $(brew --prefix coreutils)
-  path=(/usr/local/opt/coreutils/libexec/gnubin(N-/) $path)
-fi
 source_if_exist $HOME/.zsh/zshenv.functions
+
+# brew
+if is_linux ; then
+  homebrew_dir=/home/linuxbrew/.linuxbrew
+elif is_mac_apple ; then
+  homebrew_dir=/opt/homebrew
+elif is_mac_intel ; then
+  homebrew_dir=/usr/local
+fi
+if whence -p $homebrew_dir/bin/brew >/dev/null ; then
+  eval "$($homebrew_dir/bin/brew shellenv)"
+  path=($homebrew_dir/bin(N-/) $homebrew_dir/sbin(N-/) $path)
+  # tuning
+  # $homebrew_dir/opt/coreutils = $(brew --prefix coreutils)
+  path=($homebrew_dir/opt/coreutils/libexec/gnubin(N-/) $path)
+fi
+
 source_if_exist $HOME/.zsh/zshenv.xxenv
 
 export LANG=ja_JP.UTF-8

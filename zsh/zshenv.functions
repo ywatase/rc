@@ -70,19 +70,19 @@ localvim () {
 ###
 # Check Command
 ###
-__IS_LINUX=$([[ `command uname` = "Linux" ]])
-__IS_MAC=$([[ `command uname` = "Darwin" ]])
-can ()           { where "$1" >/dev/null 2>&1                }
-is_linux ()      { $__IS_LINUX                               }
-is_mac ()        { $__IS_MAC                                 }
-is_debian ()     { [[ -e '/etc/debian-release' ]]            }
-is_redhat ()     { [[ -e '/etc/redhat-release' ]]            }
-is_cygwin ()     { [[ "$CYGWIN" ]]                           }
-is_screen ()     { [[ "$TERM" = "screen" ]] && ! is_tmux     }
-is_tmux ()       { [[ "$TMUX" != "" ]]                       }
-is_vim ()        { [[ "$VIM" != "" ]]                        }
-is_host ()       { [[ ${${(A)${(s:.:)HOST}}[(w)1]} = "$1" ]] }
-is_ssh_client () { ! [[ "$SSH_TTY" ]]                        }
+can ()           { where "$1" >/dev/null 2>&1                             }
+is_linux ()      { [[ `command /usr/bin/uname` = "Linux" ]]               }
+is_mac ()        { [[ `command /usr/bin/uname` = "Darwin" ]]              }
+is_mac_apple ()  { is_mac && [[ `command /usr/bin/uname -m` = "arm64" ]]  }
+is_mac_intel ()  { is_mac && [[ `command /usr/bin/uname -m` = "x86_64" ]] }
+is_debian ()     { [[ -e '/etc/debian-release' ]]                         }
+is_redhat ()     { [[ -e '/etc/redhat-release' ]]                         }
+is_cygwin ()     { [[ "$CYGWIN" ]]                                        }
+is_screen ()     { [[ "$TERM" = "screen" ]] && ! is_tmux                  }
+is_tmux ()       { [[ "$TMUX" != "" ]]                                    }
+is_vim ()        { [[ "$VIM" != "" ]]                                     }
+is_host ()       { [[ ${${(A)${(s:.:)HOST}}[(w)1]} = "$1" ]]              }
+is_ssh_client () { ! [[ "$SSH_TTY" ]]                                     }
 
 get_myip () {
   curl -s ifconfig.me
