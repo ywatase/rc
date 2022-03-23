@@ -86,6 +86,7 @@
 	generic = <Ctrl-B> move-page-up
 	main    = R !git rebase -i %(commit)
 	diff    = R !git rebase -i %(commit)
+	status  = V !vim -c :Gdiff '%(file)'
 	# ` で commit ID をクリップボードにコピー(Mac用)
 	generic = ` @bash -c "echo -n '%(commit)' | pbcopy"
 	# ` でファイルパスをクリップボードにコピー (Mac用)
