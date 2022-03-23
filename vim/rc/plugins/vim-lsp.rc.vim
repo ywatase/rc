@@ -81,11 +81,17 @@ function! s:configure_lsp() abort
   nnoremap <buffer> <F1> :<C-u>LspImplementation<CR>
   nnoremap <buffer> <F2> :<C-u>LspRename<CR>
 
+  nnoremap <buffer> <Leader>ry :<C-u>LspDocumentFormat<CR>
+  vnoremap <buffer> <Leader>ry <C-C>:LspDocumentFormat<CR>
+  nnoremap <buffer> <Leader>rp :<C-u>LspDefinition<CR>
+  vnoremap <buffer> <Leader>rp <C-C>:LspDefinition<CR>
+  nnoremap <buffer> <Leader>rP :<C-u>LspPeekDefinition<CR>
+  vnoremap <buffer> <Leader>rP <C-C>:LspPeekDefinition<CR>
+  nnoremap <buffer> <Leader>rs :<C-u>LspDocumentSymbol<CR>
+  vnoremap <buffer> <Leader>rs <C-C>:LspDocumentSymbol<CR>
+
   " snippet
   inoremap <expr> <Tab> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<Tab>"
   snoremap <expr> <Tab> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<Tab>"
 
 endfunction
-
-nnoremap <buffer> <Leader>ry :<C-u>LspDocumentFormat<CR>
-vnoremap <buffer> <Leader>ry <C-C>:LspDocumentFormat<CR>
