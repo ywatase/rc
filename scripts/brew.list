@@ -24,6 +24,7 @@ iftop
 imagemagick
 innotop
 # Golangのクロスコンパイル用
+lefthook
 mingw-w64
 minio
 mysql
