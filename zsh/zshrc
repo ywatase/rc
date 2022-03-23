@@ -485,7 +485,8 @@ source_if_exist ~/.travis/travis.sh
 # source_if_exist ~/.fzf.zsh
 
 # pipenv
-whence -p pipenv >/dev/null 2>&1 && eval "$(pipenv --completion)"
+whence -p pipenv >/dev/null 2>&1 && eval eval "$(_PIPENV_COMPLETE=zsh_source pipenv)"
+
 
 zcomple_zshrc () {
   local zshrc=~/.zshrc
