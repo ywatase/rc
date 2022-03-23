@@ -22,8 +22,11 @@ brew tap sachaos/todoist
 # apps
 for pkg in $(cat brew.cask.list|xargs)
 do
-  brew cask install  $pkg
+  brew install  $pkg
 done
 
 # utilities
-brew install $(cat brew.list|xargs)
+for pkg in $(cat brew.list|xargs)
+do
+  brew install  $pkg
+done
