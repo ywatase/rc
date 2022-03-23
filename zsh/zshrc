@@ -38,11 +38,6 @@ typeset -U path
 ###
 autoload -U compinit
 compinit
-### Added by Zplugin's installer
-source ~/.zinit/bin/zinit.zsh
-autoload -Uz _zinit
-(( ${+_comps} )) && _comps[zinit]=_zinit
-#### End of Zplugin's installer chunk
 source $HOME/.zsh/zshrc.zinit
 
 ###
