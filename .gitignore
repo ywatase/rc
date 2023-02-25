@@ -1,6 +1,7 @@
 *.zwc
 perl-modules.list
 screen/screen/
+vim/autoload/plug.vim.old
 vim/bundle/
 vim/dein/
 vim/cache/
