@@ -7,7 +7,6 @@ ctags
 curl
 dfu-programmer
 docker
-docker-compose
 freetype
 gettext
 git
