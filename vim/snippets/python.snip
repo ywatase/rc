@@ -49,6 +49,9 @@ snippet ld
 	${1:var} = lambda ${2:vars} : ${3:action}
 snippet .
 	self.
+snippet openw
+	with open(${1:filename}, 'w') as f:
+		print(${2:'This will be written to somedir/spamspam.txt'}, file=f)
 snippet try Try/Except
 	try:
 		${1:pass}
