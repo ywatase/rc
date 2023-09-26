@@ -1,43 +1,43 @@
  #!/bin/bash
 snippet #!
-	#!/bin/bash
+    #!/bin/bash
 snippet if
-	if [[ ${1:condition} ]]; then
-		${2:#statements}
-	fi
+    if [[ ${1:condition} ]]; then
+      ${2:#statements}
+    fi
 snippet elif
-	elif [[ ${1:condition} ]]; then
-		${2:#statements}
+    elif [[ ${1:condition} ]]; then
+      ${2:#statements}
 snippet ifundef
-	if [[ "\${${1:var}+set}" ]]; then
-		${2:#statements}
-	fi
+    if [[ "\${${1:var}+set}" ]]; then
+      ${2:#statements}
+    fi
 snippet for
-	for (( ${2:i} = 0; $2 < ${1:count}; $2++ )); do
-		${3:#statements}
-	done
+    for (( ${2:i} = 0; $2 < ${1:count}; $2++ )); do
+      ${3:#statements}
+    done
 snippet forarry
     for (( ${2:i} = 0; $2 < ${#${1:array}[@]}; ++$2 ))
     do
-        ${$1[$$2]}
+      ${$1[$$2]}
     done
 snippet wh
-	while [[ ${1:condition} ]]; do
-		${2:#statements}
-	done
+    while [[ ${1:condition} ]]; do
+      ${2:#statements}
+    done
 snippet until
-	until [[ ${1:condition} ]]; do
-		${2:#statements}
-	done
+    until [[ ${1:condition} ]]; do
+      ${2:#statements}
+    done
 snippet case
-	case ${1:word} in
-		${2:pattern})
-			${3};;
-	esac
+    case ${1:word} in
+      ${2:pattern})
+        ${3};;
+    esac
 snippet script_dir
-	SCRIPT_DIR=$(cd $(dirname $(readlink -f \$0 || echo \$0)); pwd -P)
+    SCRIPT_DIR=$(cd $(dirname $(readlink -f \$0 || echo \$0)); pwd -P)
 snippet app_home
-	APP_HOME=$(cd $(dirname $(readlink -f \$0 || echo \$0))/..; pwd -P)
+    APP_HOME=$(cd $(dirname $(readlink -f \$0 || echo \$0))/..; pwd -P)
 snippet abs_dirname
     abs_dirname() {
       local cwd="$(pwd)"
@@ -100,15 +100,15 @@ snippet getopts
       shift \`expr $OPTIND - 1\`
     }
     usage () {
-    	/bin/cat <<END
+      /bin/cat <<END
     usage: \`basename \$0\` [-m mail_address] [-v]
       m mail_adderss : send to mail_address
       D              : debug option
       v              : show version
     END
-    	exit 0
+      exit 0
     }
     show_version () {
-    	echo -e \`basename \$0\` Version: $VERSION
+      echo -e \`basename \$0\` Version: $VERSION
     }
     init "$@"
