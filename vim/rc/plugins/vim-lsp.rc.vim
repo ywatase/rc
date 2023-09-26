@@ -30,6 +30,7 @@ let g:lsp_settings = {
       \        'customTags': [
       \          '!Ref',
       \          '!Sub',
+      \          '!Sub sequence',
       \          '!GetAtt',
       \          '!GetAZs',
       \          '!If',
