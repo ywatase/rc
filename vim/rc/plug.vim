@@ -68,7 +68,6 @@ Plug 'osyo-manga/vim-precious', { 'for': g:vim_precious_enable }
 Plug 'Shougo/context_filetype.vim', { 'for': g:vim_precious_enable }
 
 " Language server protocol
-Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
