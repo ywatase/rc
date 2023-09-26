@@ -1,8 +1,8 @@
 #compdef todoist
 
-local version="todoist version 0.15.0"
+local version="todoist version 0.18.0"
 if [[ $(todoist -v) != $version ]] ; then
-  print "$(command todoist -v). but function for v0.15.0. update function"
+  print "$(command todoist -v). but function for v0.18.0. update function"
 fi
 
 _todoist_all_items() {
@@ -14,6 +14,23 @@ _todoist_projects () {
 }
 _todoist_label_ids () {
   _values 'label ids' "$(todoist --project-namespace projects)"
+}
+
+_todoist_date () {
+  local OPTION
+  if date -v 1d &>/dev/null ; then
+      # BSD date option
+      OPTION="-v+#d"
+  elif date -d 1 day &>/dev/null ; then
+      # GNU date option
+      OPTION="-d # day"
+  elif date -d "1 days" &>/dev/null ; then
+      # macOS date option
+      OPTION='-d #days'
+  fi
+
+  _values 'Date' ${(@f)$(seq 0 30 | xargs -I\# date $OPTION '+%Y/%m/%d')} \
+    yesterday today tomorrow
 }
 
 local -a _1st_arguments
@@ -66,7 +83,7 @@ case "$words[1]" in
       '(--label-ids  -L)'{--label-ids,-L}'[label ids (separated by ,)]:label ids:_todoist_label_ids' \
       '(--project-id -P)'{--project-id,-P}'[project id (default: 0)]:project id:_todoist_projects' \
       '(--project-name -N)'{--project-name,-N}'[project name]:project name' \
-      '(--date -d)'{--date,-d}'[date string (today, 2016/10/02, 2016/09/02 18:00)]:date string (today, 2016/10/02, 2016/09/02 18:00)' \
+      '(--date -d)'{--date,-d}'[date string (today, 2016/10/02, 2016/09/02 18:00)]:date:_todoist_date' \
       '(--reminder -r)'{--remider,-r}'[set reminder (only premium users)]' ;;
 #  'show:Show task detail'
 #  'completed-list:Show all completed tasks (only premium user)'
