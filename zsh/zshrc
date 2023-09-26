@@ -472,6 +472,8 @@ if whence -p terraform >/dev/null 2>&1 ; then
   complete -o nospace -C =terraform terraform
 fi
 
+source_if_exist ~/.zshrc.local
+
 # fzf
 # source_if_exist ~/.fzf.zsh
 
