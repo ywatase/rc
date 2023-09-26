@@ -1,6 +1,6 @@
 # xxenv
 xxenv_load () {
-	for xxenv in rbenv pyenv plenv ndenv nodenv phpenv
+	for xxenv in rbenv pyenv plenv ndenv nodenv phpenv jenv
 	do
 		xxenv_root="$HOME/.${xxenv}_$(command /usr/bin/uname -m)"
 		export ${xxenv:u}_ROOT="${xxenv_root}"
