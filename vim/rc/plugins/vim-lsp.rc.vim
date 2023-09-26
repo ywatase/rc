@@ -3,7 +3,7 @@
 
 
 " デバッグ用設定
-let g:lsp_log_verbose = 1  " デバッグ用ログを出力
+let g:lsp_log_verbose = 0  " デバッグ用ログを出力: 有効:1 無効:
 let g:lsp_log_file = expand('~/.cache/tmp/vim-lsp.log')  " ログ出力のPATHを設定
 
 let g:lsp_diagnostics_enabled = 1
