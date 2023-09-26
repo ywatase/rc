@@ -140,7 +140,6 @@ alias rdesk="rdesktop -r clipboard -zP -ken-us"
 alias rdesk_full="rdesk -f"
 alias git-submodule-pull="git submodule foreach 'git checkout master; git pull'"
 alias git-submodule-fetch="git submodule foreach 'git checkout master; git fetch'"
-alias get_viplugin="lftp -u viplugin,667well www.satokar.com"
 alias make_patch='diff -u --strip-trailing-cr -B -w'
 alias delete_proxy_env='unset HTTP_PROXY HTTPS_PROX http_proxy https_proxyy'
 alias -g V='| vim -'
@@ -158,9 +157,6 @@ alias dstat-mem='dstat -Tclm'
 alias dstat-cpu='dstat -Tclr'
 alias dstat-net='dstat -Tclnd'
 alias dstat-disk='dstat -Tcldr'
-alias sshv="$(whence -p ssh) -l vagrant -o 'NoHostAuthenticationForLocalhost=yes' -i ~/.vagrant.d/insecure_private_key"
-alias be="bundle exec"
-alias ce="carton exec"
 [[ $commands[jsonlint] ]] && alias lint-json=jsonlint
 
 diary () { vim _posts/$(date '+%Y-%m-%d' --date "${1:-today}")-diary.md }
@@ -331,17 +327,6 @@ elif is_tmux ; then
   compdef _man man_tmux=man
 fi
 
-function ssh_resolve_cname () {
-    TARGET=`host $1 | perl -e '$a=join q{},<>;$a=~m/is an alias for ([^\s]+)/; print $1'`
-  if [ x$TARGET = x ] ; then
-    ssh $@
-  else
-    shift
-    echo $TARGET
-    ssh $@ $TARGET
-  fi
-}
-
 # ec2
 ec2_get_metadata () {
   curl -s http://169.254.169.254/latest/meta-data/
@@ -486,9 +471,6 @@ if whence -p terraform >/dev/null 2>&1 ; then
   autoload -U +X bashcompinit && bashcompinit
   complete -o nospace -C =terraform terraform
 fi
-
-# added by travis gem
-source_if_exist ~/.travis/travis.sh
 
 # fzf
 # source_if_exist ~/.fzf.zsh
