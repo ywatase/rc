@@ -265,6 +265,15 @@ cpan-uninstall () {
   done
 }
 
+install-scraper () {
+  local SCRAPER_BIN="$(dirname $(perl -e 'print "$^X"'))/scraper"
+  curl -Lo "$SCRAPER_BIN" https://fastapi.metacpan.org/source/MIYAGAWA/Web-Scraper-0.38/bin/scraper
+  gsed -ie '1c\#!'"$(perl -e 'print "$^X"')" "$SCRAPER_BIN"
+  chmod a+x "$SCRAPER_BIN"
+  plenv rehash
+  rehash
+}
+
 yaml2pl () {
   local FILE
   local BASENAME
