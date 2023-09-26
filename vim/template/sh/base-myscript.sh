@@ -24,9 +24,9 @@ init () {
         ;;
     esac
   done
-  shift `expr $OPTIND - 1`
+  shift $(("$OPTIND" - 1))
 
-  if [ "$MAILTO" == "" ] ; then
+  if [ "$MAILTO" = "" ] ; then
     usage
   fi
 
@@ -36,23 +36,23 @@ init () {
 }
 
 usage () {
-	/bin/cat <<END
-usage: `basename $0` [-m mail_address] [-v]
+  /bin/cat <<END
+usage: $(basename "$0") [-m mail_address] [-v]
   m mail_adderss : send to mail_address
   D              : debug option
   v              : show version
 END
-	exit 0
+  exit 0
 }
 
 _send_mail () {
-  /bin/cat <<END | $MAIL -s "`/bin/hostname`: `basename $0`" $MAILTO
+  /bin/cat <<END | "$MAIL" -s "$(/bin/hostname): $(basename "$0")" "$MAILTO"
 Hoge
 END
 }
 
 show_version () {
-	echo -e `basename $0` Version: $VERSION
+  echo "$(basename "$0") Version: $VERSION"
 }
 
 main "$@"
