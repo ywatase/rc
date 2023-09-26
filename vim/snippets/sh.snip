@@ -84,24 +84,43 @@ snippet return
 
 snippet getopts
     init () {
-      while getopts 'Dm:v' opt
-      do
-        case $opt in
-          D) FLAG_DEBUG=1
+      local opt optarg message
+      while getopts m:v-: opt; do
+        # OPTARG を = の位置で分割して opt と optarg に代入
+        optarg="\$OPTARG"
+        [[ "\$opt" = - ]] &&
+          opt="-${OPTARG%%=*}" &&
+          optarg="${OPTARG/${OPTARG%%=*}/}" &&
+          optarg="${optarg#=}"
+
+        case "-$opt" in
+          -h|--help)
+            usage
             ;;
-          m) MAILTO=$OPTARG
+          -m|--message)
+            message="$optarg"
             ;;
-          v) show_version; usage
+          -v|--version)
+            show_version
+            exit
             ;;
-          *) usage
+          --)
+            break
             ;;
+          -\?)
+            exit 1
+          ;;
+          --*)
+            echo "\$0: illegal option -- ${opt##-}" >&2
+            exit 1
+          ;;
         esac
       done
-      shift \`expr $OPTIND - 1\`
+      shift $((OPTIND - 1))
     }
     usage () {
       /bin/cat <<END
-    usage: \`basename \$0\` [-m mail_address] [-v]
+    usage: $(basename "\$0") [-m mail_address] [-v]
       m mail_adderss : send to mail_address
       D              : debug option
       v              : show version
@@ -109,6 +128,6 @@ snippet getopts
       exit 0
     }
     show_version () {
-      echo -e \`basename \$0\` Version: $VERSION
+      echo -e $(basename "\$0") Version: $VERSION
     }
     init "$@"
