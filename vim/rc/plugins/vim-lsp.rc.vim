@@ -1,36 +1,69 @@
 " vim: et ts=2 sts=2 sw=2
 " 言語用Serverの設定
+
+
+" デバッグ用設定
+let g:lsp_log_verbose = 1  " デバッグ用ログを出力
+let g:lsp_log_file = expand('~/.cache/tmp/vim-lsp.log')  " ログ出力のPATHを設定
+
+let g:lsp_diagnostics_enabled = 1
+let g:lsp_diagnostics_echo_cursor = 1
+let g:asyncomplete_auto_popup = 1
+let g:asyncomplete_auto_completeopt = 1
+let g:asyncomplete_popup_delay = 200
+let g:lsp_text_edit_enabled = 1
+
+let g:lsp_settings = {
+      \  'perl-languageserver': {
+      \    'disabled': 0,
+      \   },
+      \  'yaml-language-server': {
+      \    'workspace_config': {
+      \      'yaml': {
+      \        'schemas': {
+      \          'https://mattn.github.io/efm-langserver/schema.json': '/efm-langserver/config.yaml',
+      \          'https://raw.githubusercontent.com/SchemaStore/schemastore/master/src/api/json/catalog.json': '/cf.yml',
+      \        },
+      \        'completion': v:true,
+      \        'hover': v:true,
+      \        'validate': v:true,
+      \        'customTags': [
+      \          '!Ref',
+      \          '!Sub',
+      \          '!GetAtt',
+      \          '!GetAZs',
+      \          '!If',
+      \          '!If sequence',
+      \          '!Equals',
+      \          '!Equals sequence',
+      \          '!Not',
+      \          '!Not sequence',
+      \          '!And',
+      \          '!And sequence',
+      \          '!Or',
+      \          '!Or sequence',
+      \          '!FindInMap',
+      \          '!FindInMap sequence',
+      \          '!Join',
+      \          '!Join sequence',
+      \          '!Select',
+      \          '!Select sequence',
+      \          '!Split',
+      \          '!Split sequence',
+      \          '!ImportValue',
+      \          '!Base64',
+      \          '!Base64 mapping',
+      \          '!Cidr',
+      \          '!Cidr sequence',
+      \          '!ImportValue'
+      \        ],
+      \      },
+      \    },
+      \  },
+      \}
+
 augroup MyLsp
-  " デバッグ用設定
-  let g:lsp_log_verbose = 1  " デバッグ用ログを出力
-  let g:lsp_log_file = expand('~/.cache/tmp/vim-lsp.log')  " ログ出力のPATHを設定
-
-  let g:lsp_diagnostics_enabled = 1
-  let g:lsp_diagnostics_echo_cursor = 1
-  let g:asyncomplete_auto_popup = 1
-  let g:asyncomplete_auto_completeopt = 1
-  let g:asyncomplete_popup_delay = 200
-  let g:lsp_text_edit_enabled = 1
-
-  let g:lsp_settings = {
-        \  'perl-languageserver': {
-        \    'disabled': 0,
-        \   },
-        \  'yaml-language-server1': {
-        \    'workspace_config': {
-        \      'yaml': {
-        \        'schemas': {
-        \          'https://mattn.github.io/efm-langserver/schema.json': '/efm-langserver/config.yaml'
-        \        },
-        \        'completion': v:true,
-        \        'hover': v:true,
-        \        'validate': v:true,
-        \      }
-        \    }
-        \  },
-        \}
-
-
+  autocmd!
 
   if executable('pyls')
     " Python用の設定を記載
