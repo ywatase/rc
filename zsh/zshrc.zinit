@@ -28,13 +28,13 @@ autoload -Uz chpwd_recent_dirs
 
 # binary
 zinit ice from'gh-r' as'program' mv'jq* -> jq'
-zinit load stedolan/jq
+zinit load jqlang/jq
 
 # YAML aliases expander
 zinit ice from'gh-r' as'program' pick'yqe'
 zinit load shin1x1/yae
 
-zinit ice from'gh-r' as'program' bpick"" pick'ghq*/ghq'
+zinit ice from'gh-r' as'program' pick'ghq*/ghq'
 zinit load x-motemen/ghq
 
 zinit ice from"gh-r" as"program" pick'peco*/peco'
@@ -50,7 +50,7 @@ zinit load "charmbracelet/glow"
 # plugins
 
 zinit ice has'ghq'
-zinit load vintersnow/anyframe
+zinit load mollifier/anyframe
 
 zinit ice wait'!0'
 zinit load zsh-users/zsh-completions
