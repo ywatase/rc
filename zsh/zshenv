@@ -28,8 +28,11 @@ fi
 source_if_exist $HOME/.zsh/zshenv.xxenv
 
 export LANG=ja_JP.UTF-8
-MANPATH=
-export MANPATH=`manpath`
+# manpath（非インタラクティブでは不要）
+if [[ -o interactive ]]; then
+  MANPATH=
+  export MANPATH=`manpath`
+fi
 export GISTY_DIR=$HOME/dev/gists
 export DOCKER_BUILDKIT=1
 
@@ -45,8 +48,8 @@ path=($HOME/go/bin(N-/) $path)
 
 path=($HOME/bin/*(N-/) $HOME/bin(N-/) $path)
 
-# awsenv
-if whence -p awsenv >/dev/null ; then
+# awsenv（補完はインタラクティブ専用）
+if [[ -o interactive ]] && whence -p awsenv >/dev/null ; then
   . <(awsenv completions)
   setaws () {
       case $1 in

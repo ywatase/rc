@@ -6,7 +6,8 @@ xxenv_load () {
 		export ${xxenv:u}_ROOT="${xxenv_root}"
 		path=(${path:#*/.${xxenv}*})
 		path=(${xxenv_root}/shims(N-/) ${xxenv_root}/bin(N-/) $homebrew_dir/var/$xxenv/shims(N-) $path)
-		whence -p $xxenv >/dev/null && eval "$($xxenv init -)"
+		# init はインタラクティブシェルでのみ実行（シェル関数・補完・rehash）
+		[[ -o interactive ]] && whence -p $xxenv >/dev/null && eval "$($xxenv init -)"
 	done
 }
 
